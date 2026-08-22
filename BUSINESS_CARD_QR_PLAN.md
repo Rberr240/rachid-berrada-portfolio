@@ -20,10 +20,10 @@ de l'impression :
 
 1. **Domaine acheté et connecté** (voir `DOMAIN_SETUP_GUIDE.md`) :
    `https://rachidberrada.com` — cible définitive.
-2. **Domaine pas encore acheté** : URL Vercel temporaire fournie automatiquement
-   au déploiement (forme `https://<nom-projet>.vercel.app`) — utilisable comme
+2. **Domaine pas encore acheté** : URL Netlify temporaire fournie automatiquement
+   au déploiement (forme `https://<nom-du-site>.netlify.app`) — utilisable comme
    cible provisoire, à condition de régénérer le QR quand le domaine définitif
-   est connecté (une URL Vercel `.vercel.app` continue de fonctionner même après
+   est connecté (une URL `.netlify.app` continue de fonctionner même après
    l'ajout d'un domaine personnalisé, mais n'est pas la version "propre" à
    afficher sur une carte imprimée à long terme).
 
@@ -73,7 +73,7 @@ avec le monogramme RB à proximité pour le lien visuel avec le site.
 ## Étapes avant génération du QR définitif
 
 - [ ] Domaine connecté (voir `DOMAIN_SETUP_GUIDE.md`) **ou** décision explicite
-      d'utiliser l'URL Vercel temporaire en connaissance de cause
+      d'utiliser l'URL Netlify temporaire en connaissance de cause
 - [ ] Site déployé et vérifié en production (pas seulement en local)
 - [ ] Validation explicite de Rachid sur l'URL finale à encoder
 - [ ] Choix d'un générateur QR fiable (ex. génération vectorielle via une

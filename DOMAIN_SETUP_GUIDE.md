@@ -11,54 +11,58 @@ Cloudflare Registrar…). Vérifier la disponibilité de `rachidberrada.com` et,
 souhaité, réserver aussi `rachidberrada.ma` ou d'autres variantes en défense de
 marque — non requis pour lancer.
 
-## 2. Connecter le domaine à Vercel
+## 2. Connecter le domaine à Netlify
 
-Une fois le projet déployé sur Vercel (voir README, section Déploiement) :
+Une fois le projet déployé sur Netlify (voir README, section Déploiement) :
 
-1. Dashboard Vercel → projet → **Settings → Domains**
-2. Ajouter `rachidberrada.com`
-3. Vercel affiche les enregistrements DNS à créer chez le registrar
+1. Dashboard Netlify → site → **Domain management** (ou **Domain settings**)
+2. **Add a domain** → saisir `rachidberrada.com`
+3. Netlify affiche les enregistrements DNS à créer chez le registrar
 
 ## 3. Configurer le DNS
 
-Chez le registrar, créer les enregistrements indiqués par Vercel (typiquement) :
+Deux approches possibles avec Netlify :
 
-- Un enregistrement **A** sur `@` pointant vers l'IP de Vercel, **ou**
-- Un enregistrement **CNAME** sur `@` (si le registrar le permet) / sur `www`
-  pointant vers `cname.vercel-dns.com`
+- **Registrar externe conservé** : créer chez le registrar un enregistrement
+  **A** sur `@` pointant vers l'IP de load balancer Netlify (affichée dans le
+  dashboard au moment de l'ajout), et un **CNAME** sur `www` pointant vers
+  `<nom-du-site>.netlify.app`
+- **Netlify DNS** (alternative plus simple) : déléguer les serveurs de noms du
+  domaine à Netlify directement depuis le registrar — Netlify gère alors tous
+  les enregistrements automatiquement
 
-Suivre exactement les valeurs affichées dans le dashboard Vercel au moment de
+Suivre exactement les valeurs affichées dans le dashboard Netlify au moment de
 l'ajout (elles peuvent évoluer).
 
 ## 4. Activer HTTPS
 
-Automatique sur Vercel : un certificat TLS (Let's Encrypt) est émis dès que le
-DNS pointe correctement vers Vercel. Aucune action manuelle nécessaire au-delà de
-l'étape 3. Prévoir jusqu'à quelques heures de propagation DNS.
+Automatique sur Netlify : un certificat TLS (Let's Encrypt) est provisionné dès
+que le DNS pointe correctement vers Netlify. Aucune action manuelle nécessaire
+au-delà de l'étape 3. Prévoir jusqu'à quelques heures de propagation DNS.
 
 ## 5. Définir le domaine principal
 
-Dans Vercel, choisir lequel de `rachidberrada.com` ou `www.rachidberrada.com` est
-le domaine **canonique** (recommandation : `rachidberrada.com` sans `www`, plus
-court pour une carte de visite).
+Dans Netlify → Domain management, choisir lequel de `rachidberrada.com` ou
+`www.rachidberrada.com` est le domaine **principal** (recommandation :
+`rachidberrada.com` sans `www`, plus court pour une carte de visite).
 
 ## 6. Rediriger www
 
-Dans Vercel Domains, configurer `www.rachidberrada.com` en redirection 308 vers
-le domaine principal choisi à l'étape 5 (option disponible directement dans
-l'interface d'ajout de domaine).
+Netlify redirige automatiquement le domaine secondaire (`www` ou apex, selon
+le choix fait à l'étape 5) vers le domaine principal — aucune configuration
+supplémentaire nécessaire dans le cas standard.
 
 ## 7. Mettre à jour `NEXT_PUBLIC_SITE_URL`
 
-Dans Vercel → **Settings → Environment Variables** :
+Dans Netlify → **Site configuration → Environment variables** :
 
 ```
 NEXT_PUBLIC_SITE_URL=https://rachidberrada.com
 ```
 
-Puis redéployer (un redéploiement est nécessaire pour que le build régénère les
-métadonnées avec la nouvelle URL — cette variable est lue au build, pas au
-runtime).
+Puis redéployer (**Deploys → Trigger deploy**) — un redéploiement est
+nécessaire pour que le build régénère les métadonnées avec la nouvelle URL,
+cette variable étant lue au build, pas au runtime.
 
 ## 8. Vérifier l'URL canonique
 
@@ -91,6 +95,6 @@ partager le lien en message privé sur WhatsApp pour voir l'aperçu).
 - [ ] Générer le QR code définitif de la carte de visite (voir
       `BUSINESS_CARD_QR_PLAN.md`) — pas avant que ce guide soit entièrement
       complété et vérifié
-- [ ] Vérifier `PORTFOLIO_GITHUB_AUDIT.md` : mettre à jour tout lien `href`
-      pointant vers l'ancienne URL Vercel temporaire, si applicable
+- [ ] Mettre à jour tout lien `href` pointant vers l'ancienne URL `.netlify.app`
+      temporaire dans les documents du projet, si applicable
 - [ ] Soumettre le sitemap à Google Search Console (optionnel mais recommandé)
