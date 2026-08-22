@@ -86,17 +86,40 @@ mais **n'envoie rien tant qu'aucun service n'est connecté** — par choix, pour
 envoi réussi qui n'aurait pas réellement lieu. Tant que `NEXT_PUBLIC_FORM_ENDPOINT` est vide, un
 message clair invite le visiteur à vous contacter via WhatsApp ou email.
 
-Pour l'activer, deux options simples :
+### Recommandation : Formspree pour démarrer
 
-1. **Formspree** (le plus rapide) : créez un formulaire sur [formspree.io](https://formspree.io),
-   récupérez l'URL `https://formspree.io/f/xxxxxxx`, mettez-la dans `NEXT_PUBLIC_FORM_ENDPOINT`.
-2. **API personnalisée / Resend / Supabase** : créez une route qui accepte un `POST` JSON
-   (`{ name, company, phone, email, projectType, message }`) et renvoie un statut HTTP 2xx,
-   puis pointez `NEXT_PUBLIC_FORM_ENDPOINT` vers cette route.
+Comparatif rapide (coût, sécurité, facilité avec l'architecture actuelle,
+anti-spam, maintenance) :
 
-Aucune clé secrète n'est nécessaire côté frontend : si votre backend a besoin d'une API key
-(Resend, etc.), elle doit rester **côté serveur uniquement** (route API Next.js ou service externe),
-jamais dans une variable `NEXT_PUBLIC_*`.
+| Solution | Coût | Intégration | Anti-spam | Maintenance |
+|---|---|---|---|---|
+| **Formspree** | Gratuit jusqu'à 50 envois/mois | Aucun code à ajouter — colle directement dans `NEXT_PUBLIC_FORM_ENDPOINT` tel que le formulaire est déjà construit | Honeypot + reCAPTCHA intégrés | Aucune (service géré) |
+| Resend | Gratuit jusqu'à 3000 emails/mois | Nécessite d'ajouter une route API Next.js (clé API à garder côté serveur) | À implémenter soi-même | Faible, mais plus de code |
+| Web3Forms | Gratuit, illimité | Similaire à Formspree (POST direct) | Basique | Aucune |
+
+**Formspree** est recommandé pour démarrer : 50 envois/mois est largement
+suffisant pour un formulaire de contact de portfolio personnel, aucune ligne de
+code à ajouter (l'architecture du formulaire — validation, état "non connecté",
+POST JSON — a été construite précisément pour brancher un endpoint de ce type),
+et la protection anti-spam est gérée par le service. Si le volume dépasse un
+jour ce quota, ou si un contrôle plus fin de l'email (domaine personnalisé,
+templates) devient utile, migrer vers Resend via une petite route API Next.js
+est l'évolution naturelle — sans rien changer côté formulaire.
+
+### Activer Formspree
+
+1. Créer un compte sur [formspree.io](https://formspree.io) (gratuit)
+2. Créer un formulaire, récupérer l'URL `https://formspree.io/f/xxxxxxx`
+3. La renseigner dans `.env.local` → `NEXT_PUBLIC_FORM_ENDPOINT`
+4. Redéployer (ou relancer `npm run dev` en local)
+
+Aucune clé secrète n'est nécessaire côté frontend pour Formspree. Si vous migrez
+plus tard vers une API personnalisée (Resend, Supabase…) nécessitant une clé,
+celle-ci doit rester **côté serveur uniquement** (route API Next.js ou service
+externe), jamais dans une variable `NEXT_PUBLIC_*`.
+
+Aucun compte n'a été créé et aucune clé n'a été ajoutée au code dans le cadre de
+cette préparation — ce choix reste à votre initiative.
 
 ---
 
@@ -165,35 +188,42 @@ témoignages réels (`name`, `role`, `company`, `quote`) pour que la section app
 
 ---
 
-## 6. Déploiement
+## 6. Déploiement gratuit Vercel
 
-Le projet est un site Next.js standard, déployable sur n'importe quel hébergeur compatible
-(Vercel recommandé — c'est l'éditeur de Next.js) :
+Le projet a été vérifié prêt pour un déploiement Vercel (plan gratuit / Hobby) :
+build Next.js standard sans configuration spéciale (`next.config.ts` par défaut,
+aucun mode `output` particulier requis), routes statiques + 4 pages case study
+générées (`generateStaticParams`), favicon/OG générés dynamiquement, sitemap et
+robots.txt fonctionnels, aucune variable d'environnement obligatoire au build
+(des valeurs de repli sûres existent tant qu'elles ne sont pas définies).
 
-1. Poussez le projet sur un dépôt Git (GitHub/GitLab).
-2. Importez le dépôt sur [vercel.com](https://vercel.com).
-3. Renseignez les variables d'environnement (`NEXT_PUBLIC_SITE_URL`,
-   `NEXT_PUBLIC_WHATSAPP_NUMBER`, `NEXT_PUBLIC_FORM_ENDPOINT`) dans les paramètres du projet Vercel.
-4. Déployez, puis associez votre nom de domaine.
+Étapes exactes :
 
-Pour un hébergement Node.js classique : `npm run build` puis `npm run start` (nécessite Node 20+).
+1. Poussez le projet sur un dépôt Git (GitHub/GitLab) — **non fait
+   automatiquement**, voir section Git de ce projet pour l'état actuel.
+2. Sur [vercel.com](https://vercel.com), **Add New → Project**, importez le dépôt.
+3. Vercel détecte Next.js automatiquement — aucune configuration de build à
+   changer.
+4. Variables d'environnement (Settings → Environment Variables), optionnelles au
+   premier déploiement, à ajouter quand disponibles :
+   - `NEXT_PUBLIC_SITE_URL` — laisser vide tant qu'aucun domaine n'est connecté ;
+     Vercel fournit une URL `https://<projet>.vercel.app` fonctionnelle en
+     attendant (ne pas la coder en dur dans le projet — elle est lue dynamiquement
+     via cette variable au build)
+   - `NEXT_PUBLIC_WHATSAPP_NUMBER` — déjà correcte par défaut dans le code
+   - `NEXT_PUBLIC_FORM_ENDPOINT` — voir section 3 (recommandation Formspree)
+5. **Deploy**. Le site est en ligne sur une URL `.vercel.app` gratuite.
+6. Domaine personnalisé : voir `DOMAIN_SETUP_GUIDE.md` (à faire plus tard, une
+   fois `rachidberrada.com` acheté).
+
+Pour un hébergement Node.js classique (alternative à Vercel) : `npm run build`
+puis `npm run start` (nécessite Node 20+).
 
 ### QR code de la carte de visite
 
-Une fois le domaine final connu, générez le QR code vers :
-
-```
-https://votre-domaine.com/
-```
-
-ou, pour distinguer ce canal dans vos statistiques ultérieures :
-
-```
-https://votre-domaine.com/?source=business-card
-```
-
-Aucune configuration supplémentaire n'est nécessaire : le paramètre est ignoré par le routage
-et la page s'affiche normalement.
+Voir `BUSINESS_CARD_QR_PLAN.md` pour la stratégie complète (spécifications
+d'impression, tests requis, texte recommandé). Le QR définitif n'est généré
+qu'une fois l'URL publique validée — jamais vers `localhost`.
 
 ---
 
