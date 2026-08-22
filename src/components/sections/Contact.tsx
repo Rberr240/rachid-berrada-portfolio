@@ -9,6 +9,23 @@ import { getWhatsAppLink } from "@/lib/whatsapp";
 export function Contact() {
   return (
     <section id="contact" className="scroll-mt-[68px] border-t border-border bg-navy/30 py-20 sm:py-28">
+      {/*
+        Formulaire statique caché, rendu côté serveur (ce composant n'est pas
+        un Client Component) : garantit que le robot d'indexation Netlify
+        détecte le formulaire "contact" au build, indépendamment du rendu
+        client du vrai formulaire interactif (ProjectForm). Mêmes noms de
+        champs que ProjectForm — jamais affiché, jamais soumis lui-même.
+      */}
+      <form name="contact" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
+        <input type="hidden" name="form-name" value="contact" />
+        <input type="text" name="name" />
+        <input type="text" name="company" />
+        <input type="tel" name="phone" />
+        <input type="email" name="email" />
+        <input type="text" name="projectType" />
+        <textarea name="message" />
+        <input type="text" name="bot-field" />
+      </form>
       <Container>
         <div className="grid gap-14 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
           <div>

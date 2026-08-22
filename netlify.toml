@@ -1,0 +1,12 @@
+[build]
+  command = "npm run build"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Runtime officiel Next.js pour Netlify (App Router, SSG, images, routes
+# dynamiques /realisations/[slug], génération de sitemap/robots/OG).
+# Installé et géré automatiquement par Netlify au build — ne pas l'ajouter
+# comme dépendance npm du projet (éviterait de figer une version obsolète).
+[[plugins]]
+  package = "@netlify/plugin-nextjs"

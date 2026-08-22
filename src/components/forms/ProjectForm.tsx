@@ -1,11 +1,10 @@
 "use client";
 
 import { useId, useState, type FormEvent } from "react";
-import { Loader2, CheckCircle2, AlertCircle } from "lucide-react";
-import { projectTypes, siteConfig } from "@/data/profile";
-import { getWhatsAppLink } from "@/lib/whatsapp";
+import { Loader2, CheckCircle2 } from "lucide-react";
+import { projectTypes } from "@/data/profile";
 
-const FORM_ENDPOINT = process.env.NEXT_PUBLIC_FORM_ENDPOINT ?? "";
+const FORM_NAME = "contact";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -16,6 +15,7 @@ interface FormState {
   email: string;
   projectType: string;
   message: string;
+  botField: string;
 }
 
 const initialState: FormState = {
@@ -25,17 +25,22 @@ const initialState: FormState = {
   email: "",
   projectType: projectTypes[0],
   message: "",
+  botField: "",
 };
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function encodeForm(data: Record<string, string>): string {
+  return Object.entries(data)
+    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+    .join("&");
+}
 
 export function ProjectForm() {
   const formId = useId();
   const [values, setValues] = useState<FormState>(initialState);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const [status, setStatus] = useState<Status>("idle");
-
-  const isConnected = FORM_ENDPOINT.length > 0;
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
     setValues((prev) => ({ ...prev, [key]: value }));
@@ -44,7 +49,6 @@ export function ProjectForm() {
   function validate(): boolean {
     const next: Partial<Record<keyof FormState, string>> = {};
     if (!values.name.trim()) next.name = "Merci d'indiquer votre nom.";
-    if (!values.phone.trim()) next.phone = "Merci d'indiquer un numéro de téléphone.";
     if (!values.email.trim()) {
       next.email = "Merci d'indiquer votre email.";
     } else if (!EMAIL_REGEX.test(values.email)) {
@@ -57,21 +61,25 @@ export function ProjectForm() {
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!isConnected) return;
     if (!validate()) return;
+    // Honeypot : un champ normalement invisible/inaccessible pour un humain.
+    // S'il est rempli, la soumission vient très probablement d'un robot.
+    if (values.botField) return;
 
     setStatus("submitting");
     try {
-      const res = await fetch(FORM_ENDPOINT, {
+      const res = await fetch("/", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: encodeForm({
+          "form-name": FORM_NAME,
           name: values.name,
           company: values.company,
           phone: values.phone,
           email: values.email,
           projectType: values.projectType,
           message: values.message,
+          "bot-field": values.botField,
         }),
       });
 
@@ -100,36 +108,36 @@ export function ProjectForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="space-y-5">
-      {!isConnected ? (
-        <div className="flex items-start gap-3 rounded-xl border border-gold/30 bg-gold/[0.06] p-4">
-          <AlertCircle className="mt-0.5 size-4 shrink-0 text-gold" aria-hidden="true" />
-          <p className="text-sm leading-relaxed text-fg-muted">
-            Le formulaire n&apos;est pas encore connecté à un service d&apos;envoi. En
-            attendant, contactez-moi directement via{" "}
-            <a
-              href={getWhatsAppLink()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium text-accent-2 underline underline-offset-2"
-            >
-              WhatsApp
-            </a>{" "}
-            ou par{" "}
-            <a
-              href={`mailto:${siteConfig.email}`}
-              className="font-medium text-accent-2 underline underline-offset-2"
-            >
-              email
-            </a>
-            .
-          </p>
-        </div>
-      ) : null}
+    <form
+      name={FORM_NAME}
+      onSubmit={handleSubmit}
+      noValidate
+      data-netlify="true"
+      data-netlify-honeypot="bot-field"
+      className="space-y-5"
+    >
+      {/* Champ requis par Netlify Forms pour associer la soumission au formulaire */}
+      <input type="hidden" name="form-name" value={FORM_NAME} />
+
+      {/* Honeypot anti-spam : positionné hors écran, jamais rempli par un humain */}
+      <p className="absolute -left-[9999px]" aria-hidden="true">
+        <label>
+          Ne pas remplir si vous êtes humain
+          <input
+            type="text"
+            name="bot-field"
+            tabIndex={-1}
+            autoComplete="off"
+            value={values.botField}
+            onChange={(e) => update("botField", e.target.value)}
+          />
+        </label>
+      </p>
 
       <div className="grid gap-5 sm:grid-cols-2">
         <Field
           id={`${formId}-name`}
+          name="name"
           label="Nom"
           required
           autoComplete="name"
@@ -139,6 +147,7 @@ export function ProjectForm() {
         />
         <Field
           id={`${formId}-company`}
+          name="company"
           label="Entreprise"
           autoComplete="organization"
           value={values.company}
@@ -146,8 +155,8 @@ export function ProjectForm() {
         />
         <Field
           id={`${formId}-phone`}
-          label="Téléphone / WhatsApp"
-          required
+          name="phone"
+          label="Téléphone / WhatsApp (facultatif)"
           type="tel"
           autoComplete="tel"
           value={values.phone}
@@ -156,6 +165,7 @@ export function ProjectForm() {
         />
         <Field
           id={`${formId}-email`}
+          name="email"
           label="Email"
           required
           type="email"
@@ -175,6 +185,7 @@ export function ProjectForm() {
         </label>
         <select
           id={`${formId}-type`}
+          name="projectType"
           value={values.projectType}
           onChange={(e) => update("projectType", e.target.value)}
           className="w-full rounded-xl border border-border-strong bg-surface px-4 py-3 text-sm text-fg outline-none transition-colors focus:border-accent-2"
@@ -196,6 +207,7 @@ export function ProjectForm() {
         </label>
         <textarea
           id={`${formId}-message`}
+          name="message"
           required
           rows={4}
           value={values.message}
@@ -222,7 +234,7 @@ export function ProjectForm() {
 
       <button
         type="submit"
-        disabled={!isConnected || status === "submitting"}
+        disabled={status === "submitting"}
         className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent px-6 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:bg-accent-2 disabled:cursor-not-allowed disabled:opacity-40 sm:w-auto"
       >
         {status === "submitting" ? (
@@ -236,6 +248,7 @@ export function ProjectForm() {
 
 function Field({
   id,
+  name,
   label,
   value,
   onChange,
@@ -245,6 +258,7 @@ function Field({
   error,
 }: {
   id: string;
+  name: string;
   label: string;
   value: string;
   onChange: (value: string) => void;
@@ -260,6 +274,7 @@ function Field({
       </label>
       <input
         id={id}
+        name={name}
         type={type}
         required={required}
         autoComplete={autoComplete}

@@ -79,47 +79,48 @@ Puis renseignez :
 
 ---
 
-## 3. Connecter le formulaire de contact
+## 3. Formulaire de contact — Netlify Forms
 
-Le formulaire (`src/components/forms/ProjectForm.tsx`) est entièrement fonctionnel côté validation,
-mais **n'envoie rien tant qu'aucun service n'est connecté** — par choix, pour ne jamais simuler un
-envoi réussi qui n'aurait pas réellement lieu. Tant que `NEXT_PUBLIC_FORM_ENDPOINT` est vide, un
-message clair invite le visiteur à vous contacter via WhatsApp ou email.
+Le formulaire (`src/components/forms/ProjectForm.tsx`) utilise **Netlify
+Forms** : détection automatique au build par Netlify (aucun compte tiers,
+aucune clé API, aucune variable d'environnement). Choisi en priorité une fois
+l'hébergement Netlify décidé — critères : coût nul, aucun code serveur à
+maintenir, honeypot anti-spam intégré, fonctionne nativement avec Next.js/SSR
+tant que le formulaire fait partie du HTML statique généré.
 
-### Recommandation : Formspree pour démarrer
+### Fonctionnement technique (Next.js + Netlify Forms)
 
-Comparatif rapide (coût, sécurité, facilité avec l'architecture actuelle,
-anti-spam, maintenance) :
+Netlify détecte les formulaires en scannant le HTML généré au build — pas en
+exécutant le JavaScript React. Deux éléments ont donc été mis en place :
 
-| Solution | Coût | Intégration | Anti-spam | Maintenance |
-|---|---|---|---|---|
-| **Formspree** | Gratuit jusqu'à 50 envois/mois | Aucun code à ajouter — colle directement dans `NEXT_PUBLIC_FORM_ENDPOINT` tel que le formulaire est déjà construit | Honeypot + reCAPTCHA intégrés | Aucune (service géré) |
-| Resend | Gratuit jusqu'à 3000 emails/mois | Nécessite d'ajouter une route API Next.js (clé API à garder côté serveur) | À implémenter soi-même | Faible, mais plus de code |
-| Web3Forms | Gratuit, illimité | Similaire à Formspree (POST direct) | Basique | Aucune |
+1. **`Contact.tsx`** (composant serveur) rend un `<form name="contact"
+   data-netlify="true" hidden>` statique, avec les mêmes champs que le
+   formulaire réel — garantit la détection par Netlify quel que soit le mode
+   de rendu du composant client. Jamais affiché, jamais soumis lui-même.
+2. **`ProjectForm.tsx`** (composant client) est le formulaire réellement
+   interactif : validation, état de soumission, et à la soumission un `fetch`
+   `POST` vers `/` en `application/x-www-form-urlencoded` avec un champ caché
+   `form-name=contact` — le mécanisme officiel de Netlify pour les formulaires
+   pilotés en JavaScript.
 
-**Formspree** est recommandé pour démarrer : 50 envois/mois est largement
-suffisant pour un formulaire de contact de portfolio personnel, aucune ligne de
-code à ajouter (l'architecture du formulaire — validation, état "non connecté",
-POST JSON — a été construite précisément pour brancher un endpoint de ce type),
-et la protection anti-spam est gérée par le service. Si le volume dépasse un
-jour ce quota, ou si un contrôle plus fin de l'email (domaine personnalisé,
-templates) devient utile, migrer vers Resend via une petite route API Next.js
-est l'évolution naturelle — sans rien changer côté formulaire.
+Champ honeypot (`bot-field`) : positionné hors écran (`-left-[9999px]`), avec
+`tabIndex={-1}` et `autoComplete="off"` pour rester invisible et inatteignable
+pour un humain (y compris au clavier), tout en restant rempli par les robots
+naïfs — Netlify rejette alors la soumission automatiquement
+(`data-netlify-honeypot="bot-field"`).
 
-### Activer Formspree
+### Important — ne fonctionne qu'une fois déployé sur Netlify
 
-1. Créer un compte sur [formspree.io](https://formspree.io) (gratuit)
-2. Créer un formulaire, récupérer l'URL `https://formspree.io/f/xxxxxxx`
-3. La renseigner dans `.env.local` → `NEXT_PUBLIC_FORM_ENDPOINT`
-4. Redéployer (ou relancer `npm run dev` en local)
+Netlify Forms n'existe pas en local (`npm run dev`) ni sur un autre hébergeur :
+la détection et la réception des soumissions sont un service propre à
+l'hébergement Netlify. Le formulaire est fonctionnel en code, mais **ne pourra
+être testé pour de vrai qu'une fois le site déployé** (voir section 6).
 
-Aucune clé secrète n'est nécessaire côté frontend pour Formspree. Si vous migrez
-plus tard vers une API personnalisée (Resend, Supabase…) nécessitant une clé,
-celle-ci doit rester **côté serveur uniquement** (route API Next.js ou service
-externe), jamais dans une variable `NEXT_PUBLIC_*`.
+### Consulter les soumissions reçues
 
-Aucun compte n'a été créé et aucune clé n'a été ajoutée au code dans le cadre de
-cette préparation — ce choix reste à votre initiative.
+Une fois déployé : dashboard Netlify du site → **Forms** → formulaire
+`contact`. Possibilité d'y activer des notifications par email pour chaque
+nouvelle soumission (Site settings → Forms → Form notifications).
 
 ---
 
@@ -188,36 +189,46 @@ témoignages réels (`name`, `role`, `company`, `quote`) pour que la section app
 
 ---
 
-## 6. Déploiement gratuit Vercel
+## 6. Déploiement gratuit Netlify
 
-Le projet a été vérifié prêt pour un déploiement Vercel (plan gratuit / Hobby) :
-build Next.js standard sans configuration spéciale (`next.config.ts` par défaut,
-aucun mode `output` particulier requis), routes statiques + 4 pages case study
-générées (`generateStaticParams`), favicon/OG générés dynamiquement, sitemap et
-robots.txt fonctionnels, aucune variable d'environnement obligatoire au build
-(des valeurs de repli sûres existent tant qu'elles ne sont pas définies).
+Choisi plutôt que Vercel Hobby pour ce site : le formulaire de contact utilise
+Netlify Forms (section 3), qui n'existe que sur l'hébergement Netlify.
+
+Le projet a été vérifié prêt : build Next.js standard, `netlify.toml` fourni
+à la racine (commande de build, version Node, plugin `@netlify/plugin-nextjs`
+géré automatiquement par Netlify — pas ajouté comme dépendance npm du projet,
+pour ne jamais figer une version obsolète), routes statiques + 4 pages case
+study générées (`generateStaticParams`), favicon/OG générés dynamiquement,
+sitemap et robots.txt fonctionnels, formulaire de contact déjà câblé, aucune
+variable d'environnement obligatoire au build.
 
 Étapes exactes :
 
-1. Poussez le projet sur un dépôt Git (GitHub/GitLab) — **non fait
-   automatiquement**, voir section Git de ce projet pour l'état actuel.
-2. Sur [vercel.com](https://vercel.com), **Add New → Project**, importez le dépôt.
-3. Vercel détecte Next.js automatiquement — aucune configuration de build à
-   changer.
-4. Variables d'environnement (Settings → Environment Variables), optionnelles au
-   premier déploiement, à ajouter quand disponibles :
-   - `NEXT_PUBLIC_SITE_URL` — laisser vide tant qu'aucun domaine n'est connecté ;
-     Vercel fournit une URL `https://<projet>.vercel.app` fonctionnelle en
-     attendant (ne pas la coder en dur dans le projet — elle est lue dynamiquement
-     via cette variable au build)
+1. Poussez le projet sur un dépôt Git GitHub — **non fait automatiquement**,
+   voir section Git de ce projet pour l'état actuel.
+2. Sur [app.netlify.com](https://app.netlify.com), **Add new site → Import an
+   existing project**, connectez GitHub et sélectionnez le dépôt.
+3. Netlify détecte `netlify.toml` automatiquement (commande de build et
+   plugin Next.js déjà configurés — rien à changer).
+4. Variables d'environnement (Site configuration → Environment variables),
+   optionnelles au premier déploiement :
+   - `NEXT_PUBLIC_SITE_URL` — laisser vide tant qu'aucun domaine n'est
+     connecté ; Netlify fournit une URL `https://<nom-du-site>.netlify.app`
+     fonctionnelle en attendant
    - `NEXT_PUBLIC_WHATSAPP_NUMBER` — déjà correcte par défaut dans le code
-   - `NEXT_PUBLIC_FORM_ENDPOINT` — voir section 3 (recommandation Formspree)
-5. **Deploy**. Le site est en ligne sur une URL `.vercel.app` gratuite.
-6. Domaine personnalisé : voir `DOMAIN_SETUP_GUIDE.md` (à faire plus tard, une
-   fois `rachidberrada.com` acheté).
+5. **Deploy site**. Le site est en ligne sur une URL `.netlify.app` gratuite
+   (plan Free).
+6. Formulaire : après le premier déploiement, vérifier dashboard Netlify →
+   **Forms** — le formulaire `contact` doit apparaître automatiquement
+   (détecté au build, voir section 3).
+7. Domaine personnalisé : voir `DOMAIN_SETUP_GUIDE.md` (à faire plus tard, une
+   fois `rachidberrada.com` acheté — la procédure DNS diffère légèrement de
+   Vercel, à adapter à Netlify le moment venu).
 
-Pour un hébergement Node.js classique (alternative à Vercel) : `npm run build`
-puis `npm run start` (nécessite Node 20+).
+Pour un hébergement Node.js classique (alternative) : `npm run build` puis
+`npm run start` (nécessite Node 20+) — Netlify Forms ne fonctionnerait alors
+plus (la soumission afficherait l'état d'erreur du formulaire, qui invite déjà
+à contacter via WhatsApp ou email — jamais de faux succès affiché).
 
 ### QR code de la carte de visite
 
