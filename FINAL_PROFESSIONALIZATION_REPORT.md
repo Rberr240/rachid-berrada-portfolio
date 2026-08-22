@@ -36,7 +36,7 @@ audité intégralement, `.env.example` vérifié sans valeur sensible, aucun fic
 `.env`/`.env.local` réel présent sur le disque.
 
 **Repository externe `gestion-attestations`** : découverte d'un vrai secret en
-clair (`APP_KEY` Laravel + mot de passe MySQL `[REDACTED-DB-PASSWORD]`) dans
+clair (`APP_KEY` Laravel + mot de passe MySQL `[REDACTED]`) dans
 `docker-compose.yml`, committé publiquement, réutilisé également dans
 `gestion-attestations-stage`. Voir section D pour la résolution appliquée dans
 le clone de préparation. **Ce secret reste exposé sur le dépôt GitHub réel tant

@@ -144,7 +144,7 @@ et irréversible côté serveur une fois faite.
 ```bash
 # Dans le dépôt réécrit :
 git log --all --oneline                     # confirmer les nouveaux hashs
-git log --all -p | grep -i "APP_KEY\|[REDACTED-DB-PASSWORD]"   # doit ne rien retourner
+git log --all -p | grep -i "APP_KEY=base64\|<ancien-mot-de-passe>"   # doit ne rien retourner
 git show <nouveau-hash>:docker-compose.yml   # confirmer le contenu assaini
 
 # Après push :

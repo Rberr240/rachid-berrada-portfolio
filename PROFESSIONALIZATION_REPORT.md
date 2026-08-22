@@ -16,7 +16,7 @@ intervention. 12 routes générées (accueil + 4 case studies + SEO/OG/sitemap/r
 
 Découverte **plus grave que prévu** en creusant `docker/ssl/nginx.key` : le
 fichier `docker-compose.yml` contenait un vrai `APP_KEY` Laravel et un mot de
-passe MySQL (`[REDACTED-DB-PASSWORD]`) **en clair**, committés publiquement. Le même mot
+passe MySQL (`[REDACTED]`) **en clair**, committés publiquement. Le même mot
 de passe est réutilisé dans `gestion-attestations-stage`
 (`backend-laravel/create_db.php`). L'indice `APP_NAME: "Portail des Savoirs"`
 dans ce même fichier suggère fortement que ce `docker-compose.yml` a été copié
