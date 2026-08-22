@@ -1,0 +1,31 @@
+import { Plus } from "lucide-react";
+import { Container } from "@/components/ui/Container";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { faqs } from "@/data/profile";
+
+export function Faq() {
+  return (
+    <section className="border-t border-border py-20 sm:py-28">
+      <Container>
+        <SectionHeading eyebrow="Questions fréquentes" title="Questions fréquentes" />
+
+        <div className="mt-10 max-w-3xl divide-y divide-border border-y border-border">
+          {faqs.map((faq) => (
+            <details key={faq.question} className="group py-5">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-base font-medium text-fg marker:content-none">
+                {faq.question}
+                <Plus
+                  className="size-4 shrink-0 text-fg-muted transition-transform duration-200 group-open:rotate-45"
+                  aria-hidden="true"
+                />
+              </summary>
+              <p className="mt-3 max-w-2xl text-sm leading-relaxed text-fg-muted">
+                {faq.answer}
+              </p>
+            </details>
+          ))}
+        </div>
+      </Container>
+    </section>
+  );
+}
