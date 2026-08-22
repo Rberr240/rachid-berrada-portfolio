@@ -19,23 +19,28 @@ déjà tourné reste visible et prête à confusion).
 
 ## Portée
 
-| Repository | Commit(s) contenant le secret | Nettoyage nécessaire |
-|---|---|---|
-| `gestion-attestations` | `3077cfd` (APP_KEY + DB_PASSWORD) | Oui, si vous voulez purger l'historique après avoir poussé le correctif |
-| `gestion-attestations-stage` | `3f0bfc3` (DB_PASSWORD dans `create_db.php`) | Oui — aucun correctif HEAD n'existe encore pour ce dépôt (hors périmètre des phases précédentes) ; le nettoyage d'historique devra être précédé d'un correctif HEAD (retirer le mot de passe de `create_db.php`, le faire lire depuis l'environnement) |
-| `portail-des-savoirs` | `0d51dc5` (DB_PASSWORD) | Oui — même remarque : correctif HEAD d'abord (aucun préparé) |
+Les correctifs HEAD sont désormais **prêts pour les 3 dépôts** (commits
+locaux, non poussés). Le nettoyage d'historique reste une étape distincte et
+postérieure — voir l'ordre exact dans `SECRET_ROTATION_PLAN.md`.
+
+| Repository | Commit(s) contenant le secret | Correctif HEAD local | Nettoyage historique nécessaire |
+|---|---|---|---|
+| `gestion-attestations` | `3077cfd` (APP_KEY + DB_PASSWORD) | ✅ `9cb6dfd` | Oui, une fois le correctif poussé |
+| `gestion-attestations-stage` | `3f0bfc3` (DB_PASSWORD dans `create_db.php`) | ✅ `d56a9fa` | Oui, une fois le correctif poussé |
+| `portail-des-savoirs` | `0d51dc5` (DB_PASSWORD) | ✅ `d83bc19` | Oui, une fois le correctif poussé |
 
 ## Fichiers concernés (pour la commande de purge)
 
-- `gestion-attestations` : `docker-compose.yml` uniquement (le secret n'existe
-  que dans ce fichier, à ce commit précis)
-- `gestion-attestations-stage` : `backend-laravel/create_db.php`
-- `portail-des-savoirs` : `docker-compose.yml`
+- `gestion-attestations` : `docker-compose.yml`, au commit `3077cfd`
+  uniquement (le secret n'existe qu'à ce commit précis dans ce fichier)
+- `gestion-attestations-stage` : `backend-laravel/create_db.php`, au commit
+  `3f0bfc3`
+- `portail-des-savoirs` : `docker-compose.yml`, au commit `0d51dc5`
 
-Chaque dépôt n'ayant qu'un seul commit d'historique avant tout correctif
+Chaque dépôt n'ayant qu'un seul commit d'historique avant son correctif
 (import initial en bloc), la purge revient concrètement à **réécrire ce commit
 unique** pour qu'il ne contienne jamais le secret — pas une longue chaîne de
-commits à traiter.
+commits à traiter. C'est le cas le plus simple possible pour `git filter-repo`.
 
 ## Outil recommandé
 
@@ -56,6 +61,10 @@ pip install git-filter-repo
 **Ne pas exécuter avant autorisation explicite.**
 
 ### 1. Sauvegarde avant toute réécriture
+
+Voir la checklist dédiée : `PRE_REWRITE_BACKUP_CHECKLIST.md` (mirror clone ou
+bundle, hash HEAD, branches, tags — pour les 3 dépôts). Résumé rapide pour
+`gestion-attestations` :
 
 ```bash
 cd C:\Users\majdl\OneDrive\Desktop\RACHID-PRO-GITHUB-PREP
@@ -143,13 +152,58 @@ git show <nouveau-hash>:docker-compose.yml   # confirmer le contenu assaini
 # vérification, pour confirmer que GitHub sert bien le nouvel historique
 ```
 
-## Même procédure pour `gestion-attestations-stage` et `portail-des-savoirs`
+## Commandes exactes pour les 3 dépôts
 
-Identique dans la forme, mais nécessite d'abord un correctif du HEAD (retirer
-le mot de passe en clair du code actuel — non préparé dans cette mission,
-voir `SECURITY_INCIDENT_REPORT.md`) avant que le nettoyage d'historique ait un
-sens : nettoyer l'historique tout en laissant le secret dans le fichier actuel
-ne résout rien.
+Même logique que ci-dessus (option B, remplacement de texte), un fichier
+`replacements.txt` distinct par dépôt puisque le secret n'apparaît pas au même
+endroit :
+
+**`gestion-attestations`** (`docker-compose.yml`) :
+```
+regex:APP_KEY:\s*base64:[A-Za-z0-9+/=]+==>APP_KEY: [REDACTED]
+regex:DB_PASSWORD:\s*\S+==>DB_PASSWORD: [REDACTED]
+regex:MYSQL_ROOT_PASSWORD:\s*\S+==>MYSQL_ROOT_PASSWORD: [REDACTED]
+```
+
+**`gestion-attestations-stage`** (`backend-laravel/create_db.php`) :
+```
+regex:"root",\s*"[^"]+"\)==>"root", getenv('DB_ROOT_PASSWORD'))
+```
+(remplace l'appel `PDO(...)` directement plutôt qu'un simple masquage
+textuel, pour que le commit réécrit reste un code cohérent et non un fichier
+avec un `[REDACTED]` en plein milieu d'une chaîne PHP)
+
+**`portail-des-savoirs`** (`docker-compose.yml`) :
+```
+regex:MYSQL_ROOT_PASSWORD:\s*\S+==>MYSQL_ROOT_PASSWORD: [REDACTED]
+```
+
+Commande, identique pour les 3 (à exécuter séparément dans chaque clone, avec
+le fichier `replacements.txt` correspondant) :
+
+```bash
+git filter-repo --replace-text replacements.txt --force
+```
+
+## Limites de `git filter-repo` — à connaître avant de l'utiliser
+
+- **Ne protège pas contre les forks déjà existants** (voir point 5 ci-dessus)
+  ni contre des copies déjà téléchargées par un tiers avant la réécriture.
+- **Ne fonctionne que sur des blobs texte identifiables** — si un secret avait
+  été encodé (base64 d'un fichier binaire, capture d'écran contenant la
+  valeur en image, etc.), `--replace-text` ne le trouverait pas. Non
+  applicable ici (tous les secrets trouvés sont du texte brut dans des
+  fichiers texte), mais à garder en tête pour un futur audit.
+- **Réécrit tous les commits en aval du premier commit modifié** — sans
+  impact ici puisque chaque dépôt n'a qu'un seul commit avant son correctif,
+  mais sur un dépôt à l'historique plus long, cela réécrirait la totalité de
+  l'historique postérieur, changeant tous les hashs de commits (même ceux
+  sans rapport avec le secret).
+- **Ne supprime rien côté GitHub tant qu'un push n'est pas fait** — l'outil
+  agit uniquement sur la copie locale.
+- **La suppression du remote `origin` après réécriture est un comportement
+  volontaire de l'outil** (garde-fou anti-push-accidentel), pas un bug — il
+  faudra le rajouter (`git remote add origin <url>`) avant de pousser.
 
 ## Rappel
 
