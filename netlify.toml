@@ -1,12 +1,12 @@
+# Netlify détecte Next.js automatiquement et applique son adapter moderne
+# (Next Runtime, basé sur OpenNext) sans déclaration explicite de plugin —
+# App Router, SSG, routes dynamiques /realisations/[slug], sitemap/robots/OG
+# générés sont tous pris en charge nativement. Ne pas ajouter manuellement
+# [[plugins]] package = "@netlify/plugin-nextjs" : cette déclaration explicite
+# est l'ancienne méthode, inutile ici et pouvant figer un comportement moins
+# à jour que la détection automatique.
 [build]
   command = "npm run build"
 
 [build.environment]
   NODE_VERSION = "20"
-
-# Runtime officiel Next.js pour Netlify (App Router, SSG, images, routes
-# dynamiques /realisations/[slug], génération de sitemap/robots/OG).
-# Installé et géré automatiquement par Netlify au build — ne pas l'ajouter
-# comme dépendance npm du projet (éviterait de figer une version obsolète).
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
