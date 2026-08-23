@@ -112,8 +112,6 @@ export function ProjectForm() {
       name={FORM_NAME}
       onSubmit={handleSubmit}
       noValidate
-      data-netlify="true"
-      data-netlify-honeypot="bot-field"
       className="space-y-5"
     >
       {/* Champ requis par Netlify Forms pour associer la soumission au formulaire */}
