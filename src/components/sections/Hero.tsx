@@ -14,7 +14,7 @@ export function Hero() {
   return (
     <section
       id="accueil"
-      className="relative overflow-hidden bg-hero-glow pt-14 pb-20 sm:pt-20 sm:pb-28 lg:pb-32"
+      className="relative overflow-hidden bg-hero-glow pt-28 pb-20 sm:pt-32 sm:pb-28 lg:pb-32"
     >
       <div className="absolute inset-0 bg-grid" aria-hidden="true" />
 
@@ -61,32 +61,33 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Colonne composition portrait */}
-          <div className="motion-safe:animate-fade-in relative mx-auto aspect-[4/5] w-full max-w-[420px] lg:mx-0 lg:max-w-none">
-            <AbstractFigure className="absolute -inset-x-6 -inset-y-10 sm:-inset-x-10 sm:-inset-y-14" />
+          {/* Colonne composition portrait — cutout détouré, sans arrière-plan photo */}
+          <div className="motion-safe:animate-fade-in relative mx-auto w-full max-w-[360px] lg:mx-0 lg:max-w-none">
+            <AbstractFigure className="absolute -inset-x-10 -inset-y-16 sm:-inset-x-16 sm:-inset-y-20" />
 
             <div
-              className="halo-blue absolute -inset-10 -z-10 sm:-inset-14"
+              className="halo-blue absolute -inset-16 -z-10 sm:-inset-20"
               aria-hidden="true"
             />
 
-            <div className="portrait-fade-edge relative h-full w-full overflow-hidden rounded-tl-[3.5rem] rounded-br-[3.5rem] rounded-tr-2xl rounded-bl-2xl border border-white/10 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.65)]">
+            <div
+              className="absolute inset-x-[12%] bottom-[6%] h-10 rounded-full bg-accent/30 blur-2xl"
+              aria-hidden="true"
+            />
+
+            <div className="relative mx-auto aspect-[1166/2000] w-full max-w-[300px] lg:max-w-[380px]">
               <Image
-                src="/images/rachid/hero-rachid.jpg"
+                src="/images/rachid/hero-rachid-cutout.png"
                 alt="Rachid Berrada, ingénieur en solutions digitales"
                 fill
                 priority
-                sizes="(min-width: 1024px) 40vw, (min-width: 640px) 60vw, 85vw"
-                className="portrait-treatment object-cover object-top"
-              />
-              <div
-                className="absolute inset-0 bg-[radial-gradient(120%_90%_at_50%_100%,rgba(2,3,7,0.55)_0%,transparent_55%)]"
-                aria-hidden="true"
+                sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 70vw"
+                className="portrait-treatment object-contain object-bottom drop-shadow-[0_25px_50px_rgba(0,0,0,0.55)]"
               />
             </div>
 
             <div
-              className="pointer-events-none absolute -right-2 top-6 hidden flex-col items-end gap-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-fg-subtle sm:flex"
+              className="pointer-events-none absolute -right-2 top-0 hidden flex-col items-end gap-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-fg-subtle sm:flex"
               aria-hidden="true"
             >
               <span>{siteConfig.monogram}</span>

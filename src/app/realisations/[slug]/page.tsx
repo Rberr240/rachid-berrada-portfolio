@@ -56,7 +56,7 @@ export default async function CaseStudyPage({
 
   return (
     <article>
-      <section className="border-b border-border bg-hero-glow py-16 sm:py-20">
+      <section className="border-b border-border bg-hero-glow pt-28 pb-16 sm:pt-32 sm:pb-20">
         <Container>
           <Link
             href="/#realisations"
