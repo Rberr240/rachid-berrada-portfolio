@@ -1,5 +1,5 @@
 import { Container } from "@/components/ui/Container";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { SectionIndex } from "@/components/ui/SectionIndex";
 import { industryIconMap } from "@/components/ui/icon-map";
 import { industries } from "@/data/profile";
 
@@ -7,11 +7,14 @@ export function Industries() {
   return (
     <section id="solutions" className="scroll-mt-[68px] border-t border-border py-20 sm:py-28">
       <Container>
-        <SectionHeading
-          eyebrow="Solutions par métier"
-          title="Exemples de solutions que je peux concevoir"
-          description="Chaque secteur a ses propres contraintes. Voici des pistes concrètes selon votre activité — adaptées ensuite à votre réalité."
-        />
+        <SectionIndex number="04" label="Solutions par métier" />
+        <h2 className="max-w-2xl text-balance text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
+          Exemples de solutions que je peux concevoir
+        </h2>
+        <p className="mt-4 max-w-2xl text-pretty text-base leading-relaxed text-fg-muted sm:text-lg">
+          Chaque secteur a ses propres contraintes. Voici des pistes concrètes selon votre
+          activité — adaptées ensuite à votre réalité.
+        </p>
 
         <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {industries.map((industry) => {

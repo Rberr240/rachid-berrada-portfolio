@@ -1,13 +1,16 @@
 import { Plus } from "lucide-react";
 import { Container } from "@/components/ui/Container";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { SectionIndex } from "@/components/ui/SectionIndex";
 import { faqs } from "@/data/profile";
 
 export function Faq() {
   return (
-    <section className="border-t border-border py-20 sm:py-28">
+    <section className="border-t border-border bg-navy/30 py-20 sm:py-28">
       <Container>
-        <SectionHeading eyebrow="Questions fréquentes" title="Questions fréquentes" />
+        <SectionIndex number="09" label="Questions fréquentes" />
+        <h2 className="text-balance text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
+          Questions fréquentes
+        </h2>
 
         <div className="mt-10 max-w-3xl divide-y divide-border border-y border-border">
           {faqs.map((faq) => (

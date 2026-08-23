@@ -45,6 +45,11 @@ yarn-error.log*
 # vercel
 .vercel
 
+# assets sources bruts (originaux non retouchés, référence artistique) —
+# jamais publiés tels quels ; seuls les fichiers copiés dans public/images/rachid/
+# sont utilisés par le site
+/public/images/rachid/incoming/
+
 # outillage local (non lié au site)
 .claude/
 AGENTS.md

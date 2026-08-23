@@ -1,12 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --color-ink: #05060a;
-  --color-navy: #0a1024;
-  --color-surface: #10141d;
-  --color-surface-2: #161b27;
-  --color-border: rgba(255, 255, 255, 0.09);
-  --color-border-strong: rgba(255, 255, 255, 0.16);
+  --color-ink: #020307;
+  --color-navy: #06080d;
+  --color-surface: #0b0e14;
+  --color-surface-2: #11151d;
+  --color-graphite: #1a1f29;
+  --color-graphite-2: #262c38;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-strong: rgba(255, 255, 255, 0.15);
   --color-fg: #f5f7fb;
   --color-fg-muted: #9aa4b6;
   --color-fg-subtle: #7d8496;
@@ -21,6 +23,8 @@
   --color-navy: var(--color-navy);
   --color-surface: var(--color-surface);
   --color-surface-2: var(--color-surface-2);
+  --color-graphite: var(--color-graphite);
+  --color-graphite-2: var(--color-graphite-2);
   --color-border: var(--color-border);
   --color-border-strong: var(--color-border-strong);
   --color-fg: var(--color-fg);
@@ -34,6 +38,8 @@
   --font-mono: var(--font-geist-mono);
   --animate-fade-in-up: fade-in-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
   --animate-fade-in: fade-in 0.8s ease both;
+  --animate-float-slow: float-slow 9s ease-in-out infinite;
+  --animate-float-slower: float-slow 13s ease-in-out infinite;
 
   @keyframes fade-in-up {
     from {
@@ -51,6 +57,15 @@
     }
     to {
       opacity: 1;
+    }
+  }
+  @keyframes float-slow {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+    50% {
+      transform: translate3d(0, -12px, 0);
     }
   }
 }
@@ -95,4 +110,58 @@ body {
   background-size: 56px 56px;
   -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, black 40%, transparent 100%);
   mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, black 40%, transparent 100%);
+}
+
+.bg-dot-grid {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.14) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/*
+ * Correction de la dominante orange/rouge des photos prises en éclairage
+ * artificiel chaud (lampadaire/façade) : on désature légèrement, on repousse
+ * la teinte vers le froid et on resserre le contraste pour un rendu premium
+ * cohérent avec la palette graphite/bleu électrique du site.
+ */
+.portrait-treatment {
+  filter: saturate(0.82) contrast(1.08) brightness(0.96) hue-rotate(-6deg);
+}
+
+.portrait-fade-edge {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    black 78%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(to bottom, black 78%, transparent 100%);
+}
+
+.portrait-fade-side {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 14%,
+    black 100%
+  );
+  mask-image: linear-gradient(to right, transparent 0%, black 14%, black 100%);
+}
+
+.halo-blue {
+  background: radial-gradient(
+    closest-side,
+    rgba(111, 141, 255, 0.35) 0%,
+    rgba(61, 99, 255, 0.14) 45%,
+    transparent 75%
+  );
+  filter: blur(4px);
+}
+
+.blob-graphite {
+  background: radial-gradient(
+    circle at 35% 30%,
+    var(--color-graphite-2) 0%,
+    var(--color-graphite) 45%,
+    transparent 72%
+  );
+  border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%;
 }
