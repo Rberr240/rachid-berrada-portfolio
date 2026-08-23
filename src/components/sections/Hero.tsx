@@ -1,15 +1,28 @@
+"use client";
+
 import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { CtaLink } from "@/components/ui/CtaLink";
 import { AbstractFigure } from "@/components/ui/AbstractFigure";
 import { siteConfig } from "@/data/profile";
 import { getWhatsAppLink } from "@/lib/whatsapp";
+import { useHeroScrollProgress, lerp } from "@/lib/useHeroScrollProgress";
 
 const taglineParts = siteConfig.tagline.split(" • ");
 
 export function Hero() {
   const [firstName, ...restName] = siteConfig.name.split(" ");
   const lastName = restName.join(" ");
+  const progress = useHeroScrollProgress();
+
+  const textStyle = {
+    transform: `translateY(${lerp(0, -20, progress)}px)`,
+  };
+  const portraitStyle = {
+    transform: `translateY(${lerp(0, -20, progress)}px) scale(${lerp(1, 0.56, progress)})`,
+    opacity: lerp(1, 0.85, progress),
+    transformOrigin: "bottom center",
+  };
 
   return (
     <section
@@ -21,7 +34,10 @@ export function Hero() {
       <Container className="relative">
         <div className="grid items-center gap-14 lg:grid-cols-[1.12fr_1fr] lg:gap-10">
           {/* Colonne texte */}
-          <div className="motion-safe:animate-fade-in-up">
+          <div
+            className="motion-safe:animate-fade-in-up transition-transform duration-150 ease-out"
+            style={textStyle}
+          >
             <p className="mb-6 inline-flex items-center gap-2 rounded-full border border-border-strong bg-white/[0.03] px-4 py-1.5 font-mono text-xs font-medium uppercase tracking-[0.18em] text-accent-2">
               {siteConfig.title}
             </p>
@@ -62,7 +78,10 @@ export function Hero() {
           </div>
 
           {/* Colonne composition portrait — cutout détouré, sans arrière-plan photo */}
-          <div className="motion-safe:animate-fade-in relative mx-auto w-full max-w-[360px] lg:mx-0 lg:max-w-none">
+          <div
+            className="motion-safe:animate-fade-in relative mx-auto w-full max-w-[360px] transition-transform duration-150 ease-out lg:mx-0 lg:max-w-none"
+            style={portraitStyle}
+          >
             <AbstractFigure className="absolute -inset-x-10 -inset-y-16 sm:-inset-x-16 sm:-inset-y-20" />
 
             <div
