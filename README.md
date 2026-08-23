@@ -127,9 +127,8 @@ nouvelle soumission (Site settings → Forms → Form notifications).
 ## 4. Réalisations & pages case study
 
 Le portfolio est piloté par un seul fichier : [`src/data/profile.ts`](src/data/profile.ts),
-tableau `projects`. Il contient actuellement 4 réalisations réelles, auditées à partir de
-vos dépôts GitHub (voir [`PORTFOLIO_GITHUB_AUDIT.md`](PORTFOLIO_GITHUB_AUDIT.md) pour le
-détail complet de cet audit — méthodologie, sécurité, recommandations).
+tableau `projects`. Il contient actuellement 4 réalisations réelles, chacune vérifiée
+(code source et/ou site en ligne) avant d'être présentée.
 
 Chaque projet avec un champ `caseStudy` obtient automatiquement une page dédiée à
 `/realisations/[id]` (générée statiquement, avec son propre SEO). Structure d'une entrée :
@@ -221,9 +220,9 @@ variable d'environnement obligatoire au build.
 6. Formulaire : après le premier déploiement, vérifier dashboard Netlify →
    **Forms** — le formulaire `contact` doit apparaître automatiquement
    (détecté au build, voir section 3).
-7. Domaine personnalisé : voir `DOMAIN_SETUP_GUIDE.md` (à faire plus tard, une
-   fois `rachidberrada.com` acheté — la procédure DNS diffère légèrement de
-   Vercel, à adapter à Netlify le moment venu).
+7. Domaine personnalisé (plus tard, une fois acheté) : dashboard Netlify →
+   **Domain management → Add a domain**, puis suivre les enregistrements DNS
+   affichés par Netlify chez votre registrar.
 
 Pour un hébergement Node.js classique (alternative) : `npm run build` puis
 `npm run start` (nécessite Node 20+) — Netlify Forms ne fonctionnerait alors
@@ -232,9 +231,9 @@ plus (la soumission afficherait l'état d'erreur du formulaire, qui invite déj�
 
 ### QR code de la carte de visite
 
-Voir `BUSINESS_CARD_QR_PLAN.md` pour la stratégie complète (spécifications
-d'impression, tests requis, texte recommandé). Le QR définitif n'est généré
-qu'une fois l'URL publique validée — jamais vers `localhost`.
+Le QR définitif n'est généré qu'une fois l'URL publique validée — jamais vers
+`localhost`. Prévoir un contraste net, une zone blanche suffisante autour du
+code, et un test réel sur plusieurs téléphones avant impression.
 
 ---
 
@@ -261,9 +260,6 @@ src/
 
 public/
   portfolio/<id-du-projet>/  Images des réalisations (captures, photo carte physique…)
-
-PORTFOLIO_GITHUB_AUDIT.md    Audit interne des dépôts GitHub ayant servi à construire
-                              le portfolio (méthodologie, sécurité, recommandations)
 ```
 
 ---
@@ -289,8 +285,7 @@ PORTFOLIO_GITHUB_AUDIT.md    Audit interne des dépôts GitHub ayant servi à co
   sur l'environnement de mesure dans le message de livraison). Poids total de la page
   d'accueil : 248 Ko.
 - ✅ Sécurité : aucun secret dans le code, `.env.local` ignoré par Git, `.env.example`
-  fourni. Audit de sécurité réalisé sur les dépôts GitHub référencés avant toute mise en
-  lien publique (voir `PORTFOLIO_GITHUB_AUDIT.md`).
+  fourni.
 - ✅ Aucune fausse information : aucun faux client, diplôme, certification, témoignage,
   statistique ou tarif fixe n'a été inventé. Chaque réalisation du portfolio a été vérifiée
   (code source et/ou site en ligne) avant rédaction.
@@ -305,8 +300,6 @@ PORTFOLIO_GITHUB_AUDIT.md    Audit interne des dépôts GitHub ayant servi à co
 - [ ] Nom de domaine définitif (`.env.local` → `NEXT_PUBLIC_SITE_URL`) — masqué tant que non fourni
 - [ ] Lien LinkedIn (`src/data/profile.ts` → `socialLinks`) — volontairement absent pour l'instant
 - [ ] Vos vrais témoignages clients, si disponibles (`src/data/profile.ts` → `testimonials`)
-- [ ] Un service d'envoi pour le formulaire de contact (`NEXT_PUBLIC_FORM_ENDPOINT`)
+- [x] Formulaire de contact connecté (Netlify Forms — actif dès le déploiement sur Netlify)
 - [ ] Photo de la carte physique Gold Fitness (QR code) — emplacement prêt, voir section 4
-- [ ] Décisions à prendre sur `PORTFOLIO_GITHUB_AUDIT.md` : README à améliorer sur
-      certains dépôts, dépôt `gestion-attestations-stage` à archiver, `nginx.key` à retirer
-      du suivi Git dans `gestion-attestations` (voir rapport pour le détail)
+- [ ] Déploiement Netlify et connexion du domaine personnalisé

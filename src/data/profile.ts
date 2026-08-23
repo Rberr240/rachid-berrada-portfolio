@@ -315,8 +315,7 @@ export const methodSteps: MethodStep[] = [
   },
 ];
 
-// Réalisations réelles, vérifiées lors d'un audit des dépôts GitHub concernés
-// (voir PORTFOLIO_GITHUB_AUDIT.md à la racine du projet pour le détail de l'audit).
+// Réalisations réelles, vérifiées avant rédaction (code source et/ou site en ligne).
 // Rien n'est inventé : chaque fonctionnalité listée est vérifiée dans le code ou sur le
 // site en ligne. Les projets sans preuve suffisante ne sont pas mis en avant ici.
 export const projects: ProjectItem[] = [
