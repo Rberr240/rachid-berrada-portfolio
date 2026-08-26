@@ -68,7 +68,7 @@ export function ProjectForm() {
 
     setStatus("submitting");
     try {
-      const res = await fetch("/", {
+      const res = await fetch("/netlify-forms/contact.html", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: encodeForm({
