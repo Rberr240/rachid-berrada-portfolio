@@ -8,26 +8,31 @@ import { Badge } from "@/components/ui/Badge";
 import { CtaLink } from "@/components/ui/CtaLink";
 import { getCaseStudyProjects, getProject, publicAssetExists } from "@/lib/portfolio";
 import { getWhatsAppLink } from "@/lib/whatsapp";
+import { getProfile, isLocale } from "@/data/profile";
 
-export function generateStaticParams() {
-  return getCaseStudyProjects().map((p) => ({ slug: p.id }));
+export function generateStaticParams({ params }: { params: { lang: string } }) {
+  const lang = isLocale(params.lang) ? params.lang : "en";
+  const { projects } = getProfile(lang);
+  return getCaseStudyProjects(projects).map((p) => ({ slug: p.id }));
 }
 
 export async function generateMetadata({
   params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-  const { slug } = await params;
-  const project = getProject(slug);
+}: PageProps<"/[lang]/realisations/[slug]">): Promise<Metadata> {
+  const { lang, slug } = await params;
+  if (!isLocale(lang)) notFound();
+  const { projects, siteConfig, ui } = getProfile(lang);
+  const project = getProject(projects, slug);
   if (!project?.caseStudy) return {};
 
+  const basePath = lang === "en" ? "/realisations" : "/fr/realisations";
+
   return {
-    title: `${project.title} — Réalisation`,
+    title: `${project.title} — ${ui.caseStudy.titleSuffix}`,
     description: project.caseStudy.metaDescription,
-    alternates: { canonical: `/realisations/${project.id}` },
+    alternates: { canonical: `${basePath}/${project.id}` },
     openGraph: {
-      title: `${project.title} | Rachid Berrada`,
+      title: `${project.title} | ${siteConfig.name}`,
       description: project.caseStudy.metaDescription,
     },
   };
@@ -35,14 +40,17 @@ export async function generateMetadata({
 
 export default async function CaseStudyPage({
   params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  const { slug } = await params;
-  const project = getProject(slug);
+}: PageProps<"/[lang]/realisations/[slug]">) {
+  const { lang, slug } = await params;
+  if (!isLocale(lang)) notFound();
+  const { projects, siteConfig, ui } = getProfile(lang);
+  const project = getProject(projects, slug);
   if (!project?.caseStudy) notFound();
 
   const { caseStudy } = project;
+  const copy = ui.caseStudy;
+  const whatsappHref = getWhatsAppLink(siteConfig.whatsappNumber, siteConfig.whatsappDefaultMessage);
+  const backHref = lang === "en" ? "/#realisations" : "/fr#realisations";
 
   const physicalCardPath = "/portfolio/gold-fitness/card-real.jpg";
   const hasPhysicalCard = project.id === "gold-fitness" && publicAssetExists(physicalCardPath);
@@ -50,7 +58,7 @@ export default async function CaseStudyPage({
   const gallery = [
     ...(caseStudy.gallery ?? []),
     ...(hasPhysicalCard
-      ? [{ src: physicalCardPath, alt: `Carte physique ${project.title} avec QR code` }]
+      ? [{ src: physicalCardPath, alt: `${copy.qrCardAltPrefix} ${project.title} ${copy.qrCardAltSuffix}` }]
       : []),
   ];
 
@@ -59,11 +67,11 @@ export default async function CaseStudyPage({
       <section className="border-b border-border bg-hero-glow pt-28 pb-16 sm:pt-32 sm:pb-20">
         <Container>
           <Link
-            href="/#realisations"
+            href={backHref}
             className="mb-8 inline-flex items-center gap-1.5 text-sm font-medium text-fg-muted transition-colors hover:text-fg"
           >
             <ArrowLeft className="size-4" aria-hidden="true" />
-            Retour aux réalisations
+            {copy.back}
           </Link>
 
           <div className="max-w-2xl">
@@ -91,7 +99,7 @@ export default async function CaseStudyPage({
           <aside className="space-y-10 lg:sticky lg:top-24 lg:self-start">
             <div>
               <h2 className="font-mono text-xs font-medium uppercase tracking-wider text-fg-subtle">
-                Technologies
+                {copy.technologies}
               </h2>
               <ul className="mt-4 space-y-2.5">
                 {caseStudy.technologies.map((tech) => (
@@ -105,7 +113,7 @@ export default async function CaseStudyPage({
 
             <div>
               <h2 className="font-mono text-xs font-medium uppercase tracking-wider text-fg-subtle">
-                Liens
+                {copy.links}
               </h2>
               {project.links.length > 0 ? (
                 <div className="mt-4 flex flex-col gap-3">
@@ -116,21 +124,16 @@ export default async function CaseStudyPage({
                   ))}
                 </div>
               ) : (
-                <p className="mt-4 text-sm leading-relaxed text-fg-muted">
-                  Aucun lien public n&apos;est partagé pour ce projet : il traite des données
-                  réelles, et le code source reste privé par prudence.
-                </p>
+                <p className="mt-4 text-sm leading-relaxed text-fg-muted">{copy.noPublicLink}</p>
               )}
             </div>
 
             <div className="rounded-2xl border border-border bg-surface/60 p-6">
-              <p className="text-sm font-medium text-fg">Un projet similaire en tête ?</p>
-              <p className="mt-1.5 text-sm text-fg-muted">
-                Discutons de votre besoin et de ce qui est réaliste de mettre en place.
-              </p>
+              <p className="text-sm font-medium text-fg">{copy.similarProjectTitle}</p>
+              <p className="mt-1.5 text-sm text-fg-muted">{copy.similarProjectBody}</p>
               <div className="mt-4">
-                <CtaLink href={getWhatsAppLink()} variant="primary" className="w-full sm:w-auto">
-                  Discuter sur WhatsApp
+                <CtaLink href={whatsappHref} variant="primary" className="w-full sm:w-auto">
+                  {copy.ctaWhatsapp}
                 </CtaLink>
               </div>
             </div>
@@ -138,7 +141,7 @@ export default async function CaseStudyPage({
 
           <div className="space-y-14">
             <section>
-              <h2 className="text-xl font-semibold tracking-tight text-fg">Le besoin</h2>
+              <h2 className="text-xl font-semibold tracking-tight text-fg">{copy.need}</h2>
               <div className="mt-4 space-y-4">
                 {caseStudy.need.map((p, i) => (
                   <p key={i} className="text-pretty leading-relaxed text-fg-muted">
@@ -149,7 +152,7 @@ export default async function CaseStudyPage({
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold tracking-tight text-fg">La solution</h2>
+              <h2 className="text-xl font-semibold tracking-tight text-fg">{copy.solution}</h2>
               <div className="mt-4 space-y-4">
                 {caseStudy.solution.map((p, i) => (
                   <p key={i} className="text-pretty leading-relaxed text-fg-muted">
@@ -170,7 +173,7 @@ export default async function CaseStudyPage({
 
             {caseStudy.experience ? (
               <section>
-                <h2 className="text-xl font-semibold tracking-tight text-fg">Expérience</h2>
+                <h2 className="text-xl font-semibold tracking-tight text-fg">{copy.experience}</h2>
                 <div className="mt-4 space-y-3">
                   {caseStudy.experience.map((flow) => (
                     <div
@@ -198,7 +201,7 @@ export default async function CaseStudyPage({
 
             {gallery.length > 0 ? (
               <section>
-                <h2 className="text-xl font-semibold tracking-tight text-fg">Galerie</h2>
+                <h2 className="text-xl font-semibold tracking-tight text-fg">{copy.gallery}</h2>
                 <div className="mt-4 grid gap-4 sm:grid-cols-2">
                   {gallery.map((item) => {
                     const isMobileShot = item.src.includes("mobile");
@@ -225,7 +228,7 @@ export default async function CaseStudyPage({
 
             <section className="rounded-2xl border border-border bg-surface/40 p-6">
               <h2 className="font-mono text-xs font-medium uppercase tracking-wider text-fg-subtle">
-                Résultat
+                {copy.result}
               </h2>
               <p className="mt-3 text-pretty leading-relaxed text-fg-muted">{project.result}</p>
             </section>

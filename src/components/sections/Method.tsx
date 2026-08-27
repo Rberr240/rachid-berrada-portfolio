@@ -1,14 +1,19 @@
 import { Container } from "@/components/ui/Container";
 import { SectionIndex } from "@/components/ui/SectionIndex";
-import { methodSteps } from "@/data/profile";
+import type { MethodStep, UiCopy } from "@/data/types";
 
-export function Method() {
+interface MethodProps {
+  methodSteps: MethodStep[];
+  copy: UiCopy["method"];
+}
+
+export function Method({ methodSteps, copy }: MethodProps) {
   return (
     <section className="border-t border-border bg-navy/30 py-20 sm:py-28">
       <Container>
-        <SectionIndex number="07" label="Ma méthode" />
+        <SectionIndex number="07" label={copy.eyebrow} />
         <h2 className="max-w-2xl text-balance text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
-          Une méthode claire, du besoin à la solution
+          {copy.title}
         </h2>
 
         <ol className="mt-14 grid gap-0 divide-y divide-border border-y border-border sm:grid-cols-5 sm:divide-x sm:divide-y-0">
@@ -17,12 +22,8 @@ export function Method() {
               <span className="font-mono text-3xl font-semibold text-accent-2/70">
                 {step.number}
               </span>
-              <h3 className="mt-4 text-base font-semibold tracking-tight text-fg">
-                {step.title}
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-fg-muted">
-                {step.description}
-              </p>
+              <h3 className="mt-4 text-base font-semibold tracking-tight text-fg">{step.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-fg-muted">{step.description}</p>
             </li>
           ))}
         </ol>

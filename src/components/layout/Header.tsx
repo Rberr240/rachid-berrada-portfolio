@@ -2,12 +2,11 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { nav, siteConfig } from "@/data/profile";
-import { getWhatsAppLink } from "@/lib/whatsapp";
+import type { NavItem, UiCopy } from "@/data/types";
 import { useHeroScrollProgress, lerp } from "@/lib/useHeroScrollProgress";
 import { MobileNav } from "./MobileNav";
 
-function useActiveSection() {
+function useActiveSection(nav: NavItem[]) {
   const [active, setActive] = useState("");
 
   useEffect(() => {
@@ -29,14 +28,25 @@ function useActiveSection() {
     );
     elements.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return active;
 }
 
-export function Header() {
+interface HeaderProps {
+  nav: NavItem[];
+  monogram: string;
+  name: string;
+  whatsappHref: string;
+  email: string;
+  copy: UiCopy["nav"];
+  localeSwitch: { href: string; label: string };
+}
+
+export function Header({ nav, monogram, name, whatsappHref, email, copy, localeSwitch }: HeaderProps) {
   const progress = useHeroScrollProgress();
-  const active = useActiveSection();
+  const active = useActiveSection(nav);
 
   const outerPadTop = lerp(0, 12, progress);
   const barMaxWidth = lerp(1152, 880, progress);
@@ -89,14 +99,14 @@ export function Header() {
         >
           <Link href="/" className="flex items-center gap-2.5">
             <span className="flex size-9 items-center justify-center rounded-lg border border-border-strong bg-surface font-mono text-sm font-bold tracking-tight text-fg">
-              {siteConfig.monogram}
+              {monogram}
             </span>
             <span className="hidden text-sm font-medium tracking-tight text-fg sm:block">
-              {siteConfig.name}
+              {name}
             </span>
           </Link>
 
-          <nav className="hidden items-center gap-1 md:flex" aria-label="Navigation principale">
+          <nav className="hidden items-center gap-1 md:flex" aria-label={copy.ariaLabel}>
             {nav.map((item) => {
               const hash = item.href.split("#")[1];
               const isActive = Boolean(hash) && hash === active;
@@ -116,15 +126,21 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-3">
+            <Link
+              href={localeSwitch.href}
+              className="hidden rounded-full border border-border-strong px-3 py-1.5 font-mono text-xs font-medium uppercase tracking-wider text-fg-subtle transition-colors hover:text-fg lg:inline-flex"
+            >
+              {localeSwitch.label}
+            </Link>
             <a
-              href={getWhatsAppLink()}
+              href={whatsappHref}
               target="_blank"
               rel="noopener noreferrer"
               className="hidden items-center justify-center whitespace-nowrap rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-accent-2 md:inline-flex"
             >
-              Discuter de mon projet
+              {copy.ctaLabel}
             </a>
-            <MobileNav />
+            <MobileNav nav={nav} whatsappHref={whatsappHref} email={email} copy={copy} localeSwitch={localeSwitch} />
           </div>
         </div>
       </header>

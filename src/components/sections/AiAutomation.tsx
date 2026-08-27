@@ -1,27 +1,26 @@
 import { Container } from "@/components/ui/Container";
 import { SectionIndex } from "@/components/ui/SectionIndex";
 import { AbstractFigure } from "@/components/ui/AbstractFigure";
-import { services } from "@/data/profile";
+import type { ServiceItem, UiCopy } from "@/data/types";
 
-// Contenu entièrement dérivé de src/data/profile.ts (services "ai" et
-// "automation") — aucune compétence ni label n'est ajouté ici.
-const ai = services.find((s) => s.id === "ai")!;
-const automation = services.find((s) => s.id === "automation")!;
+interface AiAutomationProps {
+  services: ServiceItem[];
+  copy: UiCopy["aiAutomation"];
+}
 
-const orbitLabels = [
-  ai.bullets[0],
-  automation.bullets[0],
-  ai.bullets[5],
-  automation.bullets[4],
-];
+export function AiAutomation({ services, copy }: AiAutomationProps) {
+  // Contenu entièrement dérivé des services "ai" et "automation" du profil
+  // localisé — aucune compétence ni label n'est ajouté ici.
+  const ai = services.find((s) => s.id === "ai")!;
+  const automation = services.find((s) => s.id === "automation")!;
+  const orbitLabels = [ai.bullets[0], automation.bullets[0], ai.bullets[5], automation.bullets[4]];
 
-export function AiAutomation() {
   return (
     <section className="relative overflow-hidden border-t border-border py-20 sm:py-28">
       <div className="absolute inset-0 bg-grid opacity-60" aria-hidden="true" />
 
       <Container className="relative">
-        <SectionIndex number="06" label="IA & Automatisation" />
+        <SectionIndex number="06" label={copy.eyebrow} />
         <h2 className="max-w-2xl text-balance text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
           {ai.title} &amp; {automation.title}
         </h2>
@@ -63,12 +62,8 @@ export function AiAutomation() {
               </ul>
             </div>
             <div>
-              <h3 className="text-lg font-semibold tracking-tight text-fg">
-                {automation.title}
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-fg-muted">
-                {automation.description}
-              </p>
+              <h3 className="text-lg font-semibold tracking-tight text-fg">{automation.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-fg-muted">{automation.description}</p>
               <ul className="mt-5 space-y-2">
                 {automation.bullets.map((bullet) => (
                   <li key={bullet} className="text-sm leading-relaxed text-fg-muted">

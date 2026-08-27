@@ -1,19 +1,23 @@
 import { Container } from "@/components/ui/Container";
 import { SectionIndex } from "@/components/ui/SectionIndex";
 import { industryIconMap } from "@/components/ui/icon-map";
-import { industries } from "@/data/profile";
+import type { IndustryItem, UiCopy } from "@/data/types";
 
-export function Industries() {
+interface IndustriesProps {
+  industries: IndustryItem[];
+  copy: UiCopy["industries"];
+}
+
+export function Industries({ industries, copy }: IndustriesProps) {
   return (
     <section id="solutions" className="scroll-mt-[68px] border-t border-border py-20 sm:py-28">
       <Container>
-        <SectionIndex number="04" label="Solutions par métier" />
+        <SectionIndex number="04" label={copy.eyebrow} />
         <h2 className="max-w-2xl text-balance text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
-          Exemples de solutions que je peux concevoir
+          {copy.title}
         </h2>
         <p className="mt-4 max-w-2xl text-pretty text-base leading-relaxed text-fg-muted sm:text-lg">
-          Chaque secteur a ses propres contraintes. Voici des pistes concrètes selon votre
-          activité — adaptées ensuite à votre réalité.
+          {copy.intro}
         </p>
 
         <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

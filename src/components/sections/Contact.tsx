@@ -4,38 +4,47 @@ import { Container } from "@/components/ui/Container";
 import { CtaLink } from "@/components/ui/CtaLink";
 import { SectionIndex } from "@/components/ui/SectionIndex";
 import { ProjectForm } from "@/components/forms/ProjectForm";
-import { siteConfig } from "@/data/profile";
-import { getWhatsAppLink } from "@/lib/whatsapp";
+import type { Profile, UiCopy } from "@/data/types";
 
-const phoneHref = `tel:+${siteConfig.whatsappNumber}`;
+interface ContactProps {
+  siteConfig: Profile["siteConfig"];
+  whatsappHref: string;
+  copy: UiCopy["contact"];
+  formCopy: UiCopy["form"];
+  projectTypes: readonly string[];
+}
 
-export function Contact() {
+export function Contact({ siteConfig, whatsappHref, copy, formCopy, projectTypes }: ContactProps) {
+  const phoneHref = `tel:+${siteConfig.whatsappNumber}`;
+
   return (
     <section id="contact" className="scroll-mt-[68px] border-t border-border py-20 sm:py-28">
       <Container>
-        <SectionIndex number="10" label="Contact" />
+        <SectionIndex number="10" label={copy.eyebrow} />
 
         <div className="grid gap-14 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
           <div>
             <h2 className="text-balance text-4xl font-semibold uppercase leading-[1.05] tracking-tight text-fg sm:text-5xl">
-              Vous avez un projet ?
-              <br />
-              Parlons-en.
+              {copy.titleLines.map((line, i) => (
+                <span key={i}>
+                  {line}
+                  {i < copy.titleLines.length - 1 ? <br /> : null}
+                </span>
+              ))}
             </h2>
             <p className="mt-5 max-w-md text-pretty text-base leading-relaxed text-fg-muted">
-              Que vous ayez déjà une idée précise ou simplement un problème à résoudre,
-              nous pouvons commencer par en discuter.
+              {copy.intro}
             </p>
 
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <CtaLink href={getWhatsAppLink()} variant="primary">
-                Discuter sur WhatsApp
+              <CtaLink href={whatsappHref} variant="primary">
+                {copy.ctaWhatsapp}
               </CtaLink>
               <a
                 href={phoneHref}
                 className="group inline-flex items-center justify-center gap-2 rounded-full border border-border-strong bg-white/[0.02] px-6 py-3.5 text-sm font-semibold text-fg transition-all duration-200 hover:border-accent-2/60 hover:bg-white/[0.05] active:scale-[0.98]"
               >
-                Appeler maintenant
+                {copy.ctaCall}
                 <ArrowUpRight
                   className="size-4 shrink-0 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                   aria-hidden="true"
@@ -44,33 +53,28 @@ export function Contact() {
             </div>
 
             <div className="mt-10 space-y-5 border-t border-border pt-8">
-              <ContactRow icon={MessageCircle} label="WhatsApp">
-                <a
-                  href={getWhatsAppLink()}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-fg"
-                >
+              <ContactRow icon={MessageCircle} label={copy.rowWhatsapp}>
+                <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="hover:text-fg">
                   {siteConfig.phoneDisplay}
                 </a>
               </ContactRow>
-              <ContactRow icon={Phone} label="Téléphone">
+              <ContactRow icon={Phone} label={copy.rowPhone}>
                 <a href={phoneHref} className="hover:text-fg">
                   {siteConfig.phoneDisplay}
                 </a>
               </ContactRow>
-              <ContactRow icon={Mail} label="Email">
+              <ContactRow icon={Mail} label={copy.rowEmail}>
                 <a href={`mailto:${siteConfig.email}`} className="hover:text-fg">
                   {siteConfig.email}
                 </a>
               </ContactRow>
               {siteConfig.location ? (
-                <ContactRow icon={MapPin} label="Localisation">
+                <ContactRow icon={MapPin} label={copy.rowLocation}>
                   {siteConfig.location}
                 </ContactRow>
               ) : null}
               {siteConfig.hasConfirmedDomain ? (
-                <ContactRow icon={Globe} label="Site">
+                <ContactRow icon={Globe} label={copy.rowSite}>
                   {siteConfig.website.replace(/^https?:\/\//, "")}
                 </ContactRow>
               ) : null}
@@ -78,13 +82,9 @@ export function Contact() {
           </div>
 
           <div className="rounded-2xl border border-border bg-surface/60 p-6 sm:p-8">
-            <h3 className="mb-1 text-lg font-semibold tracking-tight text-fg">
-              Parlez-moi de votre projet
-            </h3>
-            <p className="mb-6 text-sm text-fg-muted">
-              Quelques informations suffisent pour démarrer la discussion.
-            </p>
-            <ProjectForm />
+            <h3 className="mb-1 text-lg font-semibold tracking-tight text-fg">{copy.formHeading}</h3>
+            <p className="mb-6 text-sm text-fg-muted">{copy.formIntro}</p>
+            <ProjectForm projectTypes={projectTypes} copy={formCopy} />
           </div>
         </div>
       </Container>

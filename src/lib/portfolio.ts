@@ -1,12 +1,12 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
-import { projects } from "@/data/profile";
+import type { ProjectItem } from "@/data/types";
 
-export function getProject(id: string) {
+export function getProject(projects: ProjectItem[], id: string) {
   return projects.find((p) => p.id === id);
 }
 
-export function getCaseStudyProjects() {
+export function getCaseStudyProjects(projects: ProjectItem[]) {
   return projects.filter((p) => p.caseStudy);
 }
 

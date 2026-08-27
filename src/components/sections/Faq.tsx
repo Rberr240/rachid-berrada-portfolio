@@ -1,15 +1,20 @@
 import { Plus } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { SectionIndex } from "@/components/ui/SectionIndex";
-import { faqs } from "@/data/profile";
+import type { FaqItem, UiCopy } from "@/data/types";
 
-export function Faq() {
+interface FaqProps {
+  faqs: FaqItem[];
+  copy: UiCopy["faq"];
+}
+
+export function Faq({ faqs, copy }: FaqProps) {
   return (
     <section className="border-t border-border bg-navy/30 py-20 sm:py-28">
       <Container>
-        <SectionIndex number="09" label="Questions fréquentes" />
+        <SectionIndex number="09" label={copy.eyebrow} />
         <h2 className="text-balance text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
-          Questions fréquentes
+          {copy.title}
         </h2>
 
         <div className="mt-10 max-w-3xl divide-y divide-border border-y border-border">
@@ -22,9 +27,7 @@ export function Faq() {
                   aria-hidden="true"
                 />
               </summary>
-              <p className="mt-3 max-w-2xl text-sm leading-relaxed text-fg-muted">
-                {faq.answer}
-              </p>
+              <p className="mt-3 max-w-2xl text-sm leading-relaxed text-fg-muted">{faq.answer}</p>
             </details>
           ))}
         </div>

@@ -1,11 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { Menu, X } from "lucide-react";
-import { nav, siteConfig } from "@/data/profile";
-import { getWhatsAppLink } from "@/lib/whatsapp";
+import type { NavItem, UiCopy } from "@/data/types";
 
-export function MobileNav() {
+interface MobileNavProps {
+  nav: NavItem[];
+  whatsappHref: string;
+  email: string;
+  copy: UiCopy["nav"];
+  localeSwitch: { href: string; label: string };
+}
+
+export function MobileNav({ nav, whatsappHref, email, copy, localeSwitch }: MobileNavProps) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -25,7 +33,7 @@ export function MobileNav() {
     <div className="md:hidden">
       <button
         type="button"
-        aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
+        aria-label={open ? copy.closeMenu : copy.openMenu}
         aria-expanded={open}
         aria-controls="mobile-menu"
         onClick={() => setOpen((v) => !v)}
@@ -39,7 +47,7 @@ export function MobileNav() {
           id="mobile-menu"
           className="fixed left-0 right-0 top-[68px] z-40 h-[calc(100dvh-68px)] overflow-y-auto bg-ink"
         >
-          <nav className="flex flex-col gap-1 px-6 py-8" aria-label="Navigation principale">
+          <nav className="flex flex-col gap-1 px-6 py-8" aria-label={copy.ariaLabel}>
             {nav.map((item) => (
               <a
                 key={item.href}
@@ -51,20 +59,24 @@ export function MobileNav() {
               </a>
             ))}
             <a
-              href={getWhatsAppLink()}
+              href={whatsappHref}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setOpen(false)}
               className="mt-4 inline-flex items-center justify-center rounded-full bg-accent px-6 py-3.5 text-sm font-semibold text-white"
             >
-              Discuter de mon projet
+              {copy.ctaLabel}
             </a>
-            <a
-              href={`mailto:${siteConfig.email}`}
-              className="mt-4 px-3 text-sm text-fg-subtle"
+            <a href={`mailto:${email}`} className="mt-4 px-3 text-sm text-fg-subtle">
+              {email}
+            </a>
+            <Link
+              href={localeSwitch.href}
+              onClick={() => setOpen(false)}
+              className="mt-2 px-3 text-sm font-medium text-fg-subtle"
             >
-              {siteConfig.email}
-            </a>
+              {localeSwitch.label}
+            </Link>
           </nav>
         </div>
       ) : null}

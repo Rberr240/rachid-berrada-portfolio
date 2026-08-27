@@ -2,19 +2,23 @@ import { Check } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { SectionIndex } from "@/components/ui/SectionIndex";
 import { serviceIconMap } from "@/components/ui/icon-map";
-import { services } from "@/data/profile";
+import type { ServiceItem, UiCopy } from "@/data/types";
 
-export function Services() {
+interface ServicesProps {
+  services: ServiceItem[];
+  copy: UiCopy["services"];
+}
+
+export function Services({ services, copy }: ServicesProps) {
   return (
     <section id="services" className="scroll-mt-[68px] border-t border-border py-20 sm:py-28">
       <Container>
-        <SectionIndex number="02" label="Ce que je construis" />
+        <SectionIndex number="02" label={copy.eyebrow} />
         <h2 className="max-w-2xl text-balance text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
-          Des solutions adaptées à votre activité
+          {copy.title}
         </h2>
         <p className="mt-4 max-w-2xl text-pretty text-base leading-relaxed text-fg-muted sm:text-lg">
-          Du site vitrine à l&apos;automatisation avancée, chaque solution est pensée pour
-          résoudre un problème concret de votre entreprise.
+          {copy.intro}
         </p>
 
         <div className="mt-14 divide-y divide-border border-y border-border">
