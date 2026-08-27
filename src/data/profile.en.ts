@@ -1,4 +1,5 @@
 import type { Profile } from "./types";
+import { getSiteUrl } from "@/lib/site-url";
 
 /**
  * Contenu anglais — expérience principale (English-first), servie sur /.
@@ -19,8 +20,7 @@ export const profileEn: Profile = {
     phoneDisplay: "+212 6 48 55 22 22",
     whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "212648552222",
     location: "",
-    website:
-      process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || "http://localhost:3000",
+    website: getSiteUrl(),
     hasConfirmedDomain: Boolean(process.env.NEXT_PUBLIC_SITE_URL),
 
     whatsappDefaultMessage:

@@ -106,7 +106,7 @@ export function Header({ nav, monogram, name, whatsappHref, email, copy, localeS
             </span>
           </Link>
 
-          <nav className="hidden items-center gap-1 md:flex" aria-label={copy.ariaLabel}>
+          <nav className="hidden items-center gap-1 lg:flex" aria-label={copy.ariaLabel}>
             {nav.map((item) => {
               const hash = item.href.split("#")[1];
               const isActive = Boolean(hash) && hash === active;
@@ -136,7 +136,7 @@ export function Header({ nav, monogram, name, whatsappHref, email, copy, localeS
               href={whatsappHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden items-center justify-center whitespace-nowrap rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-accent-2 md:inline-flex"
+              className="hidden items-center justify-center whitespace-nowrap rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-accent-2 lg:inline-flex"
             >
               {copy.ctaLabel}
             </a>
