@@ -6,7 +6,7 @@ import { Container } from "@/components/ui/Container";
 import { SectionIndex } from "@/components/ui/SectionIndex";
 import { Badge } from "@/components/ui/Badge";
 import { AbstractFigure } from "@/components/ui/AbstractFigure";
-import { projects } from "@/data/profile";
+import type { ProjectItem, UiCopy } from "@/data/types";
 
 const fallbackIcons: Record<string, LucideIcon> = {
   "residence-mirador": Building2,
@@ -14,23 +14,28 @@ const fallbackIcons: Record<string, LucideIcon> = {
   jarvis: Cpu,
 };
 
-export function Projects() {
+interface ProjectsProps {
+  projects: ProjectItem[];
+  copy: UiCopy["projects"];
+  caseStudyBasePath: string;
+}
+
+export function Projects({ projects, copy, caseStudyBasePath }: ProjectsProps) {
   return (
     <section id="realisations" className="scroll-mt-[68px] border-t border-border bg-navy/30 py-20 sm:py-28">
       <Container>
-        <SectionIndex number="05" label="Réalisations" />
+        <SectionIndex number="05" label={copy.eyebrow} />
         <h2 className="max-w-2xl text-balance text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
-          Réalisations sélectionnées
+          {copy.title}
         </h2>
         <p className="mt-4 max-w-2xl text-pretty text-base leading-relaxed text-fg-muted sm:text-lg">
-          Problème, solution, fonctionnalités et technologies — présentés uniquement pour ce
-          qui est réellement vérifié.
+          {copy.intro}
         </p>
 
         <div className="mt-16 space-y-20 sm:space-y-28">
           {projects.map((project, index) => {
-            const demoLink = project.links.find((l) => l.label === "Voir le site");
-            const repoLink = project.links.find((l) => l.label === "Voir le repository");
+            const demoLink = project.links.find((l) => l.type === "demo");
+            const repoLink = project.links.find((l) => l.type === "repo");
             const FallbackIcon = fallbackIcons[project.id];
             const reversed = index % 2 === 1;
 
@@ -52,21 +57,15 @@ export function Projects() {
                     />
                   ) : (
                     <div className="relative flex h-full w-full items-center justify-center overflow-hidden bg-hero-glow">
-                      <AbstractFigure
-                        className="absolute inset-[-20%]"
-                        animated={false}
-                      />
+                      <AbstractFigure className="absolute inset-[-20%]" animated={false} />
                       {FallbackIcon ? (
-                        <FallbackIcon
-                          className="relative size-12 text-fg-subtle"
-                          aria-hidden="true"
-                        />
+                        <FallbackIcon className="relative size-12 text-fg-subtle" aria-hidden="true" />
                       ) : null}
                     </div>
                   )}
                   {project.placeholder ? (
                     <span className="absolute right-3 top-3">
-                      <Badge tone="warning">À compléter</Badge>
+                      <Badge tone="warning">{copy.placeholderBadge}</Badge>
                     </span>
                   ) : null}
                 </div>
@@ -103,10 +102,10 @@ export function Projects() {
                   <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-border pt-6">
                     {project.caseStudy ? (
                       <Link
-                        href={`/realisations/${project.id}`}
+                        href={`${caseStudyBasePath}/${project.id}`}
                         className="group/link inline-flex items-center gap-1.5 text-sm font-semibold text-accent-2 transition-colors hover:text-fg"
                       >
-                        Voir le projet
+                        {copy.viewProject}
                         <ArrowRight
                           className="size-3.5 transition-transform duration-200 group-hover/link:translate-x-0.5"
                           aria-hidden="true"
@@ -120,7 +119,7 @@ export function Projects() {
                         rel="noopener noreferrer"
                         className="text-sm font-medium text-fg-muted transition-colors hover:text-fg"
                       >
-                        Voir le site
+                        {copy.viewSite}
                       </a>
                     ) : null}
                     {repoLink ? (
@@ -130,7 +129,7 @@ export function Projects() {
                         rel="noopener noreferrer"
                         className="text-sm font-medium text-fg-muted transition-colors hover:text-fg"
                       >
-                        Voir le repository
+                        {copy.viewRepo}
                       </a>
                     ) : null}
                   </div>

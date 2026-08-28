@@ -1,13 +1,36 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { nav, siteConfig } from "@/data/profile";
-import { getWhatsAppLink } from "@/lib/whatsapp";
+import { usePathname } from "next/navigation";
+import type { Locale, NavItem, UiCopy } from "@/data/types";
 import { useHeroScrollProgress, lerp } from "@/lib/useHeroScrollProgress";
 import { MobileNav } from "./MobileNav";
 
-function useActiveSection() {
+const CASE_STUDY_PATH = /^\/(?:fr\/)?realisations\/([^/]+)\/?$/;
+
+/**
+ * Le localeSwitch reçu du layout ne connaît que le fallback "page d'accueil"
+ * (calculé côté serveur, sans le pathname). Sur une case-study, on préfère
+ * rester sur le même projet plutôt que renvoyer vers l'accueil de l'autre
+ * langue — les 4 case studies existent dans les deux locales avec le même id.
+ */
+function useResolvedLocaleSwitch(
+  lang: Locale,
+  localeSwitch: { href: string; label: string },
+) {
+  const pathname = usePathname();
+  return useMemo(() => {
+    const match = pathname.match(CASE_STUDY_PATH);
+    if (!match) return localeSwitch;
+    const slug = match[1];
+    const targetLang: Locale = lang === "en" ? "fr" : "en";
+    const href = targetLang === "en" ? `/realisations/${slug}` : `/fr/realisations/${slug}`;
+    return { href, label: localeSwitch.label };
+  }, [pathname, lang, localeSwitch]);
+}
+
+function useActiveSection(nav: NavItem[]) {
   const [active, setActive] = useState("");
 
   useEffect(() => {
@@ -29,14 +52,27 @@ function useActiveSection() {
     );
     elements.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return active;
 }
 
-export function Header() {
+interface HeaderProps {
+  nav: NavItem[];
+  monogram: string;
+  name: string;
+  whatsappHref: string;
+  email: string;
+  copy: UiCopy["nav"];
+  lang: Locale;
+  localeSwitch: { href: string; label: string };
+}
+
+export function Header({ nav, monogram, name, whatsappHref, email, copy, lang, localeSwitch }: HeaderProps) {
   const progress = useHeroScrollProgress();
-  const active = useActiveSection();
+  const active = useActiveSection(nav);
+  const resolvedLocaleSwitch = useResolvedLocaleSwitch(lang, localeSwitch);
 
   const outerPadTop = lerp(0, 12, progress);
   const barMaxWidth = lerp(1152, 880, progress);
@@ -89,14 +125,14 @@ export function Header() {
         >
           <Link href="/" className="flex items-center gap-2.5">
             <span className="flex size-9 items-center justify-center rounded-lg border border-border-strong bg-surface font-mono text-sm font-bold tracking-tight text-fg">
-              {siteConfig.monogram}
+              {monogram}
             </span>
             <span className="hidden text-sm font-medium tracking-tight text-fg sm:block">
-              {siteConfig.name}
+              {name}
             </span>
           </Link>
 
-          <nav className="hidden items-center gap-1 md:flex" aria-label="Navigation principale">
+          <nav className="hidden items-center gap-1 lg:flex" aria-label={copy.ariaLabel}>
             {nav.map((item) => {
               const hash = item.href.split("#")[1];
               const isActive = Boolean(hash) && hash === active;
@@ -116,15 +152,21 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-3">
+            <Link
+              href={resolvedLocaleSwitch.href}
+              className="hidden rounded-full border border-border-strong px-3 py-1.5 font-mono text-xs font-medium uppercase tracking-wider text-fg-subtle transition-colors hover:text-fg lg:inline-flex"
+            >
+              {resolvedLocaleSwitch.label}
+            </Link>
             <a
-              href={getWhatsAppLink()}
+              href={whatsappHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden items-center justify-center whitespace-nowrap rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-accent-2 md:inline-flex"
+              className="hidden items-center justify-center whitespace-nowrap rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-accent-2 lg:inline-flex"
             >
-              Discuter de mon projet
+              {copy.ctaLabel}
             </a>
-            <MobileNav />
+            <MobileNav nav={nav} whatsappHref={whatsappHref} email={email} copy={copy} localeSwitch={resolvedLocaleSwitch} />
           </div>
         </div>
       </header>

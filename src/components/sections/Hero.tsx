@@ -4,39 +4,48 @@ import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { CtaLink } from "@/components/ui/CtaLink";
 import { HeroSculpture } from "@/components/ui/HeroSculpture";
-import { siteConfig } from "@/data/profile";
-import { getWhatsAppLink } from "@/lib/whatsapp";
+import type { Profile, UiCopy } from "@/data/types";
 import { useHeroScrollProgress, lerp } from "@/lib/useHeroScrollProgress";
 
-const taglineParts = siteConfig.tagline.split(" • ");
+interface HeroProps {
+  siteConfig: Profile["siteConfig"];
+  whatsappHref: string;
+  copy: UiCopy["hero"];
+}
 
-const HIGHLIGHT = "performantes.";
-const highlightIndex = siteConfig.heroHeadline.indexOf(HIGHLIGHT);
-const headlineBefore =
-  highlightIndex >= 0 ? siteConfig.heroHeadline.slice(0, highlightIndex) : siteConfig.heroHeadline;
-const headlineAfter =
-  highlightIndex >= 0 ? siteConfig.heroHeadline.slice(highlightIndex + HIGHLIGHT.length) : "";
+function Headline({
+  headline,
+  highlight,
+  className = "",
+}: {
+  headline: string;
+  highlight: string;
+  className?: string;
+}) {
+  const highlightIndex = highlight ? headline.indexOf(highlight) : -1;
+  const before = highlightIndex >= 0 ? headline.slice(0, highlightIndex) : headline;
+  const after = highlightIndex >= 0 ? headline.slice(highlightIndex + highlight.length) : "";
 
-function Headline({ className = "" }: { className?: string }) {
   return (
     <p className={`text-balance font-medium leading-[1.12] text-fg ${className}`}>
-      {headlineBefore}
-      {highlightIndex >= 0 ? <span className="text-accent-2">{HIGHLIGHT}</span> : null}
-      {headlineAfter}
+      {before}
+      {highlightIndex >= 0 ? <span className="text-accent-2">{highlight}</span> : null}
+      {after}
     </p>
   );
 }
 
-function Eyebrow() {
+function Eyebrow({ title }: { title: string }) {
   return (
     <p className="inline-flex items-center gap-2 rounded-full border border-border-strong bg-white/[0.03] px-4 py-1.5 font-mono text-xs font-medium uppercase tracking-[0.18em] text-accent-2">
       <span className="size-1.5 shrink-0 rounded-full bg-accent-2" aria-hidden="true" />
-      {siteConfig.title}
+      {title}
     </p>
   );
 }
 
-function TagRow() {
+function TagRow({ tagline }: { tagline: string }) {
+  const taglineParts = tagline.split(" • ");
   return (
     <div className="inline-flex flex-wrap items-center gap-x-3 gap-y-1.5 rounded-full border border-border px-4 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-fg-subtle">
       {taglineParts.map((part, i) => (
@@ -49,20 +58,20 @@ function TagRow() {
   );
 }
 
-function CtaRow() {
+function CtaRow({ whatsappHref, copy }: { whatsappHref: string; copy: UiCopy["hero"] }) {
   return (
     <div className="flex flex-col gap-3 sm:flex-row">
-      <CtaLink href={getWhatsAppLink()} variant="primary">
-        Discuter de mon projet
+      <CtaLink href={whatsappHref} variant="primary">
+        {copy.ctaPrimary}
       </CtaLink>
       <CtaLink href="#realisations" variant="secondary" icon={false}>
-        Voir mes réalisations
+        {copy.ctaSecondary}
       </CtaLink>
     </div>
   );
 }
 
-export function Hero() {
+export function Hero({ siteConfig, whatsappHref, copy }: HeroProps) {
   const progress = useHeroScrollProgress();
 
   const textStyle = { transform: `translateY(${lerp(0, -20, progress)}px)` };
@@ -75,7 +84,6 @@ export function Hero() {
     transform: `translateY(${lerp(0, -14, progress)}px) scale(${lerp(1, 0.86, progress)})`,
     transformOrigin: "center 60%",
   };
-  const ghostStyle = { opacity: lerp(0.09, 0, progress) };
 
   return (
     <section
@@ -101,39 +109,18 @@ export function Hero() {
           <HeroSculpture className="h-full w-full" />
         </div>
 
-        {/* Portrait fantôme — même cutout réel, très faible opacité, atmosphérique */}
+        {/* Portrait principal — seul visuel du sujet, centré dans la composition */}
         <div
-          className="absolute right-0 top-[4%] h-[48%] w-[26%] grayscale transition-opacity duration-150"
-          style={{
-            ...ghostStyle,
-            maskImage:
-              "radial-gradient(120% 100% at 80% 20%, black 30%, transparent 85%)",
-            WebkitMaskImage:
-              "radial-gradient(120% 100% at 80% 20%, black 30%, transparent 85%)",
-          }}
-          aria-hidden="true"
-        >
-          <Image
-            src="/images/rachid/hero-rachid-cutout.png"
-            alt=""
-            fill
-            sizes="26vw"
-            className="object-contain object-top blur-[1px]"
-          />
-        </div>
-
-        {/* Portrait principal */}
-        <div
-          className="absolute bottom-0 right-[9%] aspect-[1166/2000] h-[90%] transition-transform duration-150 ease-out"
+          className="absolute bottom-0 right-[7%] aspect-[1166/2000] h-[90%] transition-transform duration-150 ease-out"
           style={portraitStyle}
         >
           <div
-            className="absolute inset-x-[10%] bottom-[4%] h-10 rounded-full bg-accent/30 blur-2xl"
+            className="absolute inset-x-[6%] bottom-[4%] h-12 rounded-full bg-accent/35 blur-2xl"
             aria-hidden="true"
           />
           <Image
             src="/images/rachid/hero-rachid-cutout.png"
-            alt="Rachid Berrada, ingénieur en solutions digitales"
+            alt={copy.portraitAlt}
             fill
             priority
             sizes="35vw"
@@ -163,23 +150,27 @@ export function Hero() {
             className="max-w-[38%] space-y-6 transition-transform duration-150 ease-out"
             style={textStyle}
           >
-            <Eyebrow />
+            <Eyebrow title={siteConfig.title} />
 
             <h1 className="text-balance text-[3.4rem] font-semibold leading-[0.96] tracking-tight text-fg xl:text-[4rem]">
               <span className="block">Rachid</span>
               <span className="block">Berrada</span>
             </h1>
 
-            <Headline className="max-w-md text-xl xl:text-2xl" />
+            <Headline
+              headline={siteConfig.heroHeadline}
+              highlight={siteConfig.heroHighlight}
+              className="max-w-md text-xl xl:text-2xl"
+            />
 
             <p className="max-w-sm text-pretty text-sm leading-relaxed text-fg-muted xl:text-base">
               {siteConfig.heroSubtitle}
             </p>
 
-            <TagRow />
+            <TagRow tagline={siteConfig.tagline} />
 
             <div className="pt-2">
-              <CtaRow />
+              <CtaRow whatsappHref={whatsappHref} copy={copy} />
             </div>
           </div>
         </Container>
@@ -188,17 +179,21 @@ export function Hero() {
       {/* Mobile / tablette : composition simplifiée et empilée */}
       <Container className="relative flex min-h-[100svh] flex-col justify-center gap-8 py-24 lg:hidden">
         <div className="motion-safe:animate-fade-in-up shrink-0 space-y-5">
-          <Eyebrow />
+          <Eyebrow title={siteConfig.title} />
           <h1 className="text-balance text-5xl font-semibold leading-[0.98] tracking-tight text-fg sm:text-6xl">
             <span className="block">Rachid</span>
             <span className="block">Berrada</span>
           </h1>
-          <Headline className="text-xl sm:text-2xl" />
+          <Headline
+            headline={siteConfig.heroHeadline}
+            highlight={siteConfig.heroHighlight}
+            className="text-xl sm:text-2xl"
+          />
           <p className="max-w-lg text-pretty text-base leading-relaxed text-fg-muted">
             {siteConfig.heroSubtitle}
           </p>
-          <TagRow />
-          <CtaRow />
+          <TagRow tagline={siteConfig.tagline} />
+          <CtaRow whatsappHref={whatsappHref} copy={copy} />
         </div>
 
         <div className="motion-safe:animate-fade-in relative mx-auto aspect-[1166/2000] h-[42vh] max-h-[420px] w-auto shrink-0 sm:h-[46vh]">
@@ -209,7 +204,7 @@ export function Hero() {
           />
           <Image
             src="/images/rachid/hero-rachid-cutout.png"
-            alt="Rachid Berrada, ingénieur en solutions digitales"
+            alt={copy.portraitAlt}
             fill
             priority
             sizes="70vw"
