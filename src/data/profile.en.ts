@@ -358,6 +358,58 @@ export const profileEn: Profile = {
       },
     },
     {
+      id: "menu-chez-bassou",
+      title: "Menu Chez Bassou",
+      category: "Digital Menu / Restaurant Web Experience",
+      statusLabel: "Live demo",
+      summary:
+        "A responsive digital menu for a restaurant concept (\"Chez Bassou — La Ferme de Loisirs\"), with live category filtering, instant dish search and direct WhatsApp contact.",
+      result: "Live, responsive digital menu with working category filters, search and direct WhatsApp contact.",
+      tags: ["Web", "Digital Menu", "Responsive", "GitHub Pages"],
+      technologies: ["HTML", "CSS", "JavaScript", "GitHub Pages"],
+      image: {
+        desktop: "/portfolio/menu-chez-bassou/desktop.webp",
+        mobile: "/portfolio/menu-chez-bassou/mobile.webp",
+        alt: "Menu Chez Bassou site preview on desktop and mobile",
+      },
+      links: [
+        { label: "View the site", href: "https://gold-fitness.github.io/menu-chez-bassou/", type: "demo" },
+        { label: "View the repository", href: "https://github.com/Gold-Fitness/menu-chez-bassou", type: "repo" },
+      ],
+      placeholder: false,
+      caseStudy: {
+        heroSubtitle: "A responsive digital menu experience, designed for direct, phone-first browsing.",
+        need: [
+          "A restaurant menu needs to work as a fast, mobile-first experience: something a visitor can open directly — for instance from a QR code on the table — and use immediately, with a simple way to browse dishes by category as the menu grows (breakfast, salads, grillades, pizzas and more).",
+        ],
+        solution: [
+          "A single static page, hosted on GitHub Pages, built with plain HTML, CSS and JavaScript — no framework, no build step.",
+          "A sticky filter bar jumps straight to a category (breakfast, salads, grillades, pizzas, burgers, paninis, tajines, drinks), and a live search box narrows the list by dish name as the visitor types.",
+          "A floating WhatsApp button lets a visitor open a pre-filled WhatsApp conversation from the menu, with no separate contact system.",
+        ],
+        experience: [
+          "QR code / direct link → Chez Bassou digital menu → filter or search dishes → contact via WhatsApp.",
+        ],
+        features: [
+          "Category filters and live search across all dishes",
+          "Dedicated weight-based pricing table for grillades",
+          "One-tap call and WhatsApp contact buttons",
+          "Fully responsive layout (desktop, tablet, mobile)",
+          "Zero-dependency static build, deployed on GitHub Pages",
+        ],
+        technologies: [
+          { name: "HTML / CSS / JavaScript" },
+          { name: "GitHub Pages", note: "static hosting" },
+        ],
+        gallery: [
+          { src: "/portfolio/menu-chez-bassou/desktop.webp", alt: "Menu Chez Bassou site shown on desktop" },
+          { src: "/portfolio/menu-chez-bassou/mobile.webp", alt: "Menu Chez Bassou site shown on mobile" },
+        ],
+        metaDescription:
+          "Case study: a responsive digital restaurant menu with category filtering, live search and WhatsApp contact, deployed on GitHub Pages.",
+      },
+    },
+    {
       id: "residence-mirador",
       title: "Residence Owner Registration Platform",
       category: "Web Application / Digitalization",

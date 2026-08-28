@@ -84,7 +84,6 @@ export function Hero({ siteConfig, whatsappHref, copy }: HeroProps) {
     transform: `translateY(${lerp(0, -14, progress)}px) scale(${lerp(1, 0.86, progress)})`,
     transformOrigin: "center 60%",
   };
-  const ghostStyle = { opacity: lerp(0.09, 0, progress) };
 
   return (
     <section
@@ -110,34 +109,13 @@ export function Hero({ siteConfig, whatsappHref, copy }: HeroProps) {
           <HeroSculpture className="h-full w-full" />
         </div>
 
-        {/* Portrait fantôme — même cutout réel, très faible opacité, atmosphérique */}
+        {/* Portrait principal — seul visuel du sujet, centré dans la composition */}
         <div
-          className="absolute right-0 top-[4%] h-[48%] w-[26%] grayscale transition-opacity duration-150"
-          style={{
-            ...ghostStyle,
-            maskImage:
-              "radial-gradient(120% 100% at 80% 20%, black 30%, transparent 85%)",
-            WebkitMaskImage:
-              "radial-gradient(120% 100% at 80% 20%, black 30%, transparent 85%)",
-          }}
-          aria-hidden="true"
-        >
-          <Image
-            src="/images/rachid/hero-rachid-cutout.png"
-            alt=""
-            fill
-            sizes="26vw"
-            className="object-contain object-top blur-[1px]"
-          />
-        </div>
-
-        {/* Portrait principal */}
-        <div
-          className="absolute bottom-0 right-[9%] aspect-[1166/2000] h-[90%] transition-transform duration-150 ease-out"
+          className="absolute bottom-0 right-[7%] aspect-[1166/2000] h-[90%] transition-transform duration-150 ease-out"
           style={portraitStyle}
         >
           <div
-            className="absolute inset-x-[10%] bottom-[4%] h-10 rounded-full bg-accent/30 blur-2xl"
+            className="absolute inset-x-[6%] bottom-[4%] h-12 rounded-full bg-accent/35 blur-2xl"
             aria-hidden="true"
           />
           <Image

@@ -1,10 +1,34 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import type { NavItem, UiCopy } from "@/data/types";
+import { usePathname } from "next/navigation";
+import type { Locale, NavItem, UiCopy } from "@/data/types";
 import { useHeroScrollProgress, lerp } from "@/lib/useHeroScrollProgress";
 import { MobileNav } from "./MobileNav";
+
+const CASE_STUDY_PATH = /^\/(?:fr\/)?realisations\/([^/]+)\/?$/;
+
+/**
+ * Le localeSwitch reçu du layout ne connaît que le fallback "page d'accueil"
+ * (calculé côté serveur, sans le pathname). Sur une case-study, on préfère
+ * rester sur le même projet plutôt que renvoyer vers l'accueil de l'autre
+ * langue — les 4 case studies existent dans les deux locales avec le même id.
+ */
+function useResolvedLocaleSwitch(
+  lang: Locale,
+  localeSwitch: { href: string; label: string },
+) {
+  const pathname = usePathname();
+  return useMemo(() => {
+    const match = pathname.match(CASE_STUDY_PATH);
+    if (!match) return localeSwitch;
+    const slug = match[1];
+    const targetLang: Locale = lang === "en" ? "fr" : "en";
+    const href = targetLang === "en" ? `/realisations/${slug}` : `/fr/realisations/${slug}`;
+    return { href, label: localeSwitch.label };
+  }, [pathname, lang, localeSwitch]);
+}
 
 function useActiveSection(nav: NavItem[]) {
   const [active, setActive] = useState("");
@@ -41,12 +65,14 @@ interface HeaderProps {
   whatsappHref: string;
   email: string;
   copy: UiCopy["nav"];
+  lang: Locale;
   localeSwitch: { href: string; label: string };
 }
 
-export function Header({ nav, monogram, name, whatsappHref, email, copy, localeSwitch }: HeaderProps) {
+export function Header({ nav, monogram, name, whatsappHref, email, copy, lang, localeSwitch }: HeaderProps) {
   const progress = useHeroScrollProgress();
   const active = useActiveSection(nav);
+  const resolvedLocaleSwitch = useResolvedLocaleSwitch(lang, localeSwitch);
 
   const outerPadTop = lerp(0, 12, progress);
   const barMaxWidth = lerp(1152, 880, progress);
@@ -127,10 +153,10 @@ export function Header({ nav, monogram, name, whatsappHref, email, copy, localeS
 
           <div className="flex items-center gap-3">
             <Link
-              href={localeSwitch.href}
+              href={resolvedLocaleSwitch.href}
               className="hidden rounded-full border border-border-strong px-3 py-1.5 font-mono text-xs font-medium uppercase tracking-wider text-fg-subtle transition-colors hover:text-fg lg:inline-flex"
             >
-              {localeSwitch.label}
+              {resolvedLocaleSwitch.label}
             </Link>
             <a
               href={whatsappHref}
@@ -140,7 +166,7 @@ export function Header({ nav, monogram, name, whatsappHref, email, copy, localeS
             >
               {copy.ctaLabel}
             </a>
-            <MobileNav nav={nav} whatsappHref={whatsappHref} email={email} copy={copy} localeSwitch={localeSwitch} />
+            <MobileNav nav={nav} whatsappHref={whatsappHref} email={email} copy={copy} localeSwitch={resolvedLocaleSwitch} />
           </div>
         </div>
       </header>

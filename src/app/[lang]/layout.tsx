@@ -127,6 +127,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
           whatsappHref={whatsappHref}
           email={siteConfig.email}
           copy={ui.nav}
+          lang={lang}
           localeSwitch={localeSwitch}
         />
         <main id="main-content" className="flex-1">

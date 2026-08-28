@@ -360,6 +360,58 @@ export const profileFr: Profile = {
       },
     },
     {
+      id: "menu-chez-bassou",
+      title: "Menu Chez Bassou",
+      category: "Menu digital / Expérience web restaurant",
+      statusLabel: "Démo en ligne",
+      summary:
+        "Un menu digital responsive pour un concept de restaurant (« Chez Bassou — La Ferme de Loisirs »), avec filtrage par catégorie en direct, recherche instantanée des plats et contact direct via WhatsApp.",
+      result: "Menu digital en ligne et responsive, avec filtres par catégorie, recherche et contact WhatsApp fonctionnels.",
+      tags: ["Web", "Menu digital", "Responsive", "GitHub Pages"],
+      technologies: ["HTML", "CSS", "JavaScript", "GitHub Pages"],
+      image: {
+        desktop: "/portfolio/menu-chez-bassou/desktop.webp",
+        mobile: "/portfolio/menu-chez-bassou/mobile.webp",
+        alt: "Aperçu du site Menu Chez Bassou sur desktop et mobile",
+      },
+      links: [
+        { label: "Voir le site", href: "https://gold-fitness.github.io/menu-chez-bassou/", type: "demo" },
+        { label: "Voir le repository", href: "https://github.com/Gold-Fitness/menu-chez-bassou", type: "repo" },
+      ],
+      placeholder: false,
+      caseStudy: {
+        heroSubtitle: "Une expérience de menu digital responsive, pensée pour une consultation directe depuis un téléphone.",
+        need: [
+          "Un menu de restaurant doit fonctionner comme une expérience rapide et mobile-first : quelque chose qu'un visiteur peut ouvrir directement — par exemple depuis un QR code posé sur la table — et utiliser immédiatement, avec une manière simple de parcourir les plats par catégorie à mesure que la carte s'étoffe (petit déjeuner, salades, grillades, pizzas, etc.).",
+        ],
+        solution: [
+          "Une page unique statique, hébergée sur GitHub Pages, construite en HTML, CSS et JavaScript natifs — sans framework ni étape de build.",
+          "Une barre de filtres sticky permet d'aller directement à une catégorie (petit déjeuner, salades, grillades, pizzas, burgers, paninis, tajines, boissons), et un champ de recherche filtre la liste en direct au fil de la saisie.",
+          "Un bouton WhatsApp flottant permet d'ouvrir une conversation WhatsApp pré-remplie depuis le menu, sans système de contact séparé.",
+        ],
+        experience: [
+          "QR code / lien direct → menu digital Chez Bassou → filtrage ou recherche des plats → contact via WhatsApp.",
+        ],
+        features: [
+          "Filtres par catégorie et recherche en direct sur tous les plats",
+          "Tableau de prix dédié au poids pour les grillades",
+          "Boutons d'appel et de contact WhatsApp en un geste",
+          "Mise en page entièrement responsive (desktop, tablette, mobile)",
+          "Build statique sans dépendance, déployé sur GitHub Pages",
+        ],
+        technologies: [
+          { name: "HTML / CSS / JavaScript" },
+          { name: "GitHub Pages", note: "hébergement statique" },
+        ],
+        gallery: [
+          { src: "/portfolio/menu-chez-bassou/desktop.webp", alt: "Site Menu Chez Bassou affiché en version desktop" },
+          { src: "/portfolio/menu-chez-bassou/mobile.webp", alt: "Site Menu Chez Bassou affiché en version mobile" },
+        ],
+        metaDescription:
+          "Case study : un menu digital de restaurant responsive avec filtrage par catégorie, recherche en direct et contact WhatsApp, déployé sur GitHub Pages.",
+      },
+    },
+    {
       id: "residence-mirador",
       title: "Plateforme digitale de gestion de résidence",
       category: "Application web / Digitalisation",
