@@ -52,6 +52,7 @@ yarn-error.log*
 
 # outillage local (non lié au site)
 .claude/
+.agents/
 AGENTS.md
 CLAUDE.md
 
