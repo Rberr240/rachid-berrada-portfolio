@@ -77,7 +77,7 @@ export function Footer({
                   className="flex items-center gap-2 text-sm text-fg-muted transition-colors hover:text-fg"
                 >
                   <Mail className="size-4 shrink-0" aria-hidden="true" />
-                  {email}
+                  <span className="min-w-0 break-words">{email}</span>
                 </a>
               </li>
               <li>
