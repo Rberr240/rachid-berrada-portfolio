@@ -1,4 +1,5 @@
 import { Hero } from "@/components/sections/Hero";
+import { CapabilityStrip } from "@/components/sections/CapabilityStrip";
 import { Services } from "@/components/sections/Services";
 import { Problems } from "@/components/sections/Problems";
 import { Industries } from "@/components/sections/Industries";
@@ -25,6 +26,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
   return (
     <>
       <Hero siteConfig={siteConfig} whatsappHref={whatsappHref} copy={ui.hero} />
+      <CapabilityStrip copy={ui.capabilities} projects={projects} />
       <Services services={services} copy={ui.services} />
       <Problems problems={problems} copy={ui.problems} />
       <Industries industries={industries} copy={ui.industries} />

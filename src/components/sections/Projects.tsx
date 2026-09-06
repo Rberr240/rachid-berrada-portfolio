@@ -6,7 +6,7 @@ import { Container } from "@/components/ui/Container";
 import { SectionIndex } from "@/components/ui/SectionIndex";
 import { Badge } from "@/components/ui/Badge";
 import { AbstractFigure } from "@/components/ui/AbstractFigure";
-import type { ProjectItem, UiCopy } from "@/data/types";
+import { tagLabel, type ProjectItem, type UiCopy } from "@/data/types";
 
 const fallbackIcons: Record<string, LucideIcon> = {
   "residence-mirador": Building2,
@@ -91,10 +91,10 @@ export function Projects({ projects, copy, caseStudyBasePath }: ProjectsProps) {
                   <div className="mt-5 flex flex-wrap gap-1.5">
                     {project.tags.map((tag) => (
                       <span
-                        key={tag}
+                        key={tagLabel(tag)}
                         className="rounded-full bg-white/[0.03] px-2.5 py-1 text-[11px] font-medium text-fg-subtle"
                       >
-                        {tag}
+                        {tagLabel(tag)}
                       </span>
                     ))}
                   </div>

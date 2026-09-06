@@ -9,6 +9,7 @@ import { CtaLink } from "@/components/ui/CtaLink";
 import { getCaseStudyProjects, getProject, publicAssetExists } from "@/lib/portfolio";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 import { getProfile, isLocale } from "@/data/profile";
+import { tagLabel } from "@/data/types";
 
 export function generateStaticParams({ params }: { params: { lang: string } }) {
   const lang = isLocale(params.lang) ? params.lang : "en";
@@ -87,7 +88,7 @@ export default async function CaseStudyPage({
             <div className="mt-6 flex flex-wrap items-center gap-2">
               <Badge tone="accent">{project.statusLabel}</Badge>
               {project.tags.map((tag) => (
-                <Badge key={tag}>{tag}</Badge>
+                <Badge key={tagLabel(tag)}>{tagLabel(tag)}</Badge>
               ))}
             </div>
           </div>

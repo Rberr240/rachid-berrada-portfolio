@@ -310,7 +310,7 @@ export const profileFr: Profile = {
       summary:
         "Un site mobile-first pensé pour être découvert par QR code : appel, WhatsApp et Instagram accessibles en un geste depuis une carte physique.",
       result: "Site en ligne et fonctionnel, relié à un support physique par QR code.",
-      tags: ["Web", "Mobile First", "QR Code", "GitHub Pages"],
+      tags: ["Web", "Mobile First", "QR Code", { name: "GitHub Pages", featured: "web", order: 2 }],
       technologies: ["HTML", "CSS", "JavaScript", "GitHub Pages"],
       image: {
         desktop: "/portfolio/gold-fitness/desktop.webp",
@@ -420,7 +420,7 @@ export const profileFr: Profile = {
         "Un parcours d'inscription sécurisé permettant aux propriétaires de s'identifier par code d'accès et de transmettre leurs disponibilités pour les réunions de copropriété.",
       result:
         "Parcours d'inscription et de collecte fonctionnel, avec vérification de code d'accès et enregistrement sécurisé côté serveur.",
-      tags: ["Web", "Supabase", "Sécurité"],
+      tags: ["Web", { name: "Supabase", featured: "backend", order: 2 }, "Sécurité"],
       technologies: ["HTML", "CSS", "JavaScript", "Supabase (PostgreSQL)", "Edge Functions (Deno)"],
       links: [],
       placeholder: false,
@@ -457,7 +457,12 @@ export const profileFr: Profile = {
       summary:
         "Centralisation de la gestion des attestations (étudiants, enseignants, stagiaires) avec authentification et génération de documents PDF, containerisée et intégrée en CI/CD.",
       result: "Application fonctionnelle avec pipeline d'intégration continue (tests et build de l'image Docker à chaque envoi).",
-      tags: ["React", "Laravel", "Docker", "CI/CD"],
+      tags: [
+        { name: "React", featured: "web", order: 1 },
+        { name: "Laravel", featured: "backend", order: 1 },
+        { name: "Docker", featured: "devops", order: 1 },
+        { name: "CI/CD", featured: "devops", order: 2 },
+      ],
       technologies: ["React", "Vite", "Chakra UI", "Laravel 12", "PHP 8.2", "Sanctum / JWT", "Docker", "GitHub Actions"],
       links: [{ label: "Voir le repository", href: "https://github.com/Rberr240/gestion-attestations", type: "repo" }],
       placeholder: false,
@@ -497,7 +502,12 @@ export const profileFr: Profile = {
         "Projet personnel de recherche autour d'un orchestrateur d'IA multi-modèles, avec mémoire vectorielle et pipelines voix/vision.",
       result:
         "Base de code fonctionnelle et documentée, gelée comme socle avant une nouvelle itération actuellement en développement privé.",
-      tags: ["Node.js", "LangGraph", "RAG", "R&D"],
+      tags: [
+        "Node.js",
+        { name: "LangGraph", featured: "ai", order: 1 },
+        { name: "RAG", featured: "ai", order: 2 },
+        "R&D",
+      ],
       technologies: ["Node.js", "LangChain / LangGraph", "Multi-fournisseurs LLM", "Qdrant", "SQLite"],
       links: [{ label: "Voir le repository", href: "https://github.com/Rberr240/JARVIS-V2", type: "repo" }],
       placeholder: false,
@@ -594,6 +604,15 @@ export const profileFr: Profile = {
       ctaPrimary: "Discuter de mon projet",
       ctaSecondary: "Voir mes réalisations",
       portraitAlt: "Rachid Berrada, ingénieur en solutions digitales",
+    },
+    capabilities: {
+      intro: "Ingénierie à travers mes projets",
+      groups: [
+        { id: "ai", label: "Systèmes IA" },
+        { id: "web", label: "Plateformes web" },
+        { id: "backend", label: "Backend & API" },
+        { id: "devops", label: "DevOps & Livraison" },
+      ],
     },
     services: {
       eyebrow: "Ce que je construis",
