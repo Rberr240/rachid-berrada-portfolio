@@ -151,7 +151,8 @@ export interface UiCopy {
   hero: {
     ctaPrimary: string;
     ctaSecondary: string;
-    portraitAlt: string;
+    focusEyebrow: string;
+    quoteWords: string[];
   };
   capabilities: {
     intro: string;

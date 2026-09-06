@@ -603,7 +603,8 @@ export const profileFr: Profile = {
     hero: {
       ctaPrimary: "Discuter de mon projet",
       ctaSecondary: "Voir mes réalisations",
-      portraitAlt: "Rachid Berrada, ingénieur en solutions digitales",
+      focusEyebrow: "Domaines",
+      quoteWords: ["Concevoir.", "Automatiser.", "Innover."],
     },
     capabilities: {
       intro: "Ingénierie à travers mes projets",

@@ -20,23 +20,23 @@ export function Industries({ industries, copy }: IndustriesProps) {
           {copy.intro}
         </p>
 
-        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-14 divide-y divide-border border-y border-border">
           {industries.map((industry) => {
             const Icon = industryIconMap[industry.icon];
             return (
               <article
                 key={industry.id}
-                className="rounded-2xl border border-border bg-surface/60 p-7"
+                className="group grid gap-4 py-7 sm:grid-cols-[minmax(0,14rem)_minmax(0,1fr)] sm:items-center sm:gap-8"
               >
                 <div className="flex items-center gap-3">
-                  <div className="flex size-10 items-center justify-center rounded-xl border border-border-strong bg-white/[0.03] text-accent-2">
+                  <div className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-border-strong bg-white/[0.03] text-accent-2 transition-colors duration-200 group-hover:border-accent-2/40">
                     <Icon className="size-5" aria-hidden="true" />
                   </div>
                   <h3 className="text-base font-semibold tracking-tight text-fg">
                     {industry.name}
                   </h3>
                 </div>
-                <ul className="mt-5 flex flex-wrap gap-1.5">
+                <ul className="flex flex-wrap gap-1.5">
                   {industry.items.map((item) => (
                     <li
                       key={item}

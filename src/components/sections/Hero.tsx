@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { CtaLink } from "@/components/ui/CtaLink";
 import { HeroSculpture } from "@/components/ui/HeroSculpture";
@@ -71,18 +70,53 @@ function CtaRow({ whatsappHref, copy }: { whatsappHref: string; copy: UiCopy["he
   );
 }
 
+/** Panneau vertical "index" — remplace, en documentation technique, l'espace
+ * laissé vacant par le retrait du portrait : les domaines réels (siteConfig)
+ * plutôt qu'une statistique inventée. */
+function FocusIndex({ eyebrow, items }: { eyebrow: string; items: string[] }) {
+  return (
+    <div className="space-y-3">
+      <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-fg-subtle">{eyebrow}</p>
+      <ul className="space-y-2">
+        {items.map((item) => (
+          <li key={item} className="flex items-baseline gap-2.5 text-sm leading-snug text-fg-muted">
+            <span className="h-px w-3 shrink-0 translate-y-[-0.3em] bg-accent-2/50" aria-hidden="true" />
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function QuoteBlock({ words }: { words: string[] }) {
+  return (
+    <div className="rounded-xl border-l border-accent-2/40 bg-ink/50 py-1 pl-4 backdrop-blur-sm">
+      <p className="text-base italic leading-snug text-fg/90">
+        <span className="text-accent-2">&ldquo;</span>
+        {words.map((word, i) => (
+          <span key={word}>
+            {i > 0 ? <br /> : null}
+            {word}
+          </span>
+        ))}
+      </p>
+      <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.14em] text-fg-subtle">— Rachid Berrada</p>
+    </div>
+  );
+}
+
 export function Hero({ siteConfig, whatsappHref, copy }: HeroProps) {
   const progress = useHeroScrollProgress();
 
   const textStyle = { transform: `translateY(${lerp(0, -20, progress)}px)` };
-  const portraitStyle = {
-    transform: `translateY(${lerp(0, -20, progress)}px) scale(${lerp(1, 0.78, progress)})`,
-    opacity: lerp(1, 0.88, progress),
-    transformOrigin: "bottom center",
-  };
   const sculptureStyle = {
-    transform: `translateY(${lerp(0, -14, progress)}px) scale(${lerp(1, 0.86, progress)})`,
-    transformOrigin: "center 60%",
+    transform: `translateY(${lerp(0, -14, progress)}px) scale(${lerp(1, 0.9, progress)})`,
+    transformOrigin: "center 55%",
+  };
+  const railStyle = {
+    transform: `translateY(${lerp(0, -14, progress)}px)`,
+    opacity: lerp(1, 0.5, progress),
   };
 
   return (
@@ -103,56 +137,30 @@ export function Hero({ siteConfig, whatsappHref, copy }: HeroProps) {
       {/* Desktop : composition "poster" unifiée, tout en position absolue */}
       <div className="absolute inset-0 hidden lg:block">
         <div
-          className="absolute right-[2%] top-[6%] h-[86%] w-[48%] transition-transform duration-150 ease-out"
+          className="absolute right-[-3%] top-[9%] h-[82%] w-[58%] transition-transform duration-150 ease-out"
           style={sculptureStyle}
         >
           <HeroSculpture className="h-full w-full" />
         </div>
 
-        {/* Portrait principal — seul visuel du sujet, centré dans la composition */}
+        {/* Colonne de métadonnées — index technique + signature, seule
+            présence "sujet" de la composition après retrait du portrait */}
         <div
-          className="absolute bottom-0 right-[7%] aspect-[1166/2000] h-[90%] transition-transform duration-150 ease-out"
-          style={portraitStyle}
+          className="absolute right-[4%] top-[13%] flex h-[74%] w-[17%] flex-col justify-between transition-transform duration-150 ease-out"
+          style={railStyle}
         >
-          <div
-            className="absolute inset-x-[6%] bottom-[4%] h-12 rounded-full bg-accent/35 blur-2xl"
-            aria-hidden="true"
-          />
-          <Image
-            src="/images/rachid/hero-rachid-cutout.png"
-            alt={copy.portraitAlt}
-            fill
-            priority
-            sizes="35vw"
-            className="portrait-treatment object-contain object-bottom drop-shadow-[0_30px_60px_rgba(0,0,0,0.6)]"
-          />
-        </div>
-
-        {/* Bloc citation — positionnement, pas une statistique */}
-        <div
-          className="absolute right-[2%] top-[68%] w-[15%] rounded-xl border-l border-accent-2/40 bg-ink/50 py-1 pl-4 backdrop-blur-sm transition-opacity duration-150"
-          style={{ opacity: lerp(1, 0.5, progress) }}
-        >
-          <p className="text-base italic leading-snug text-fg/90">
-            <span className="text-accent-2">&ldquo;</span>Build.
-            <br />
-            Automate.
-            <br />
-            Innovate.
-          </p>
-          <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.14em] text-fg-subtle">
-            — Rachid Berrada
-          </p>
+          <FocusIndex eyebrow={copy.focusEyebrow} items={siteConfig.knowsAbout} />
+          <QuoteBlock words={copy.quoteWords} />
         </div>
 
         <Container className="relative flex h-full items-center">
           <div
-            className="max-w-[38%] space-y-6 transition-transform duration-150 ease-out"
+            className="max-w-[48%] space-y-6 transition-transform duration-150 ease-out"
             style={textStyle}
           >
             <Eyebrow title={siteConfig.title} />
 
-            <h1 className="text-balance text-[3.4rem] font-semibold leading-[0.96] tracking-tight text-fg xl:text-[4rem]">
+            <h1 className="text-balance text-[3.4rem] font-semibold leading-[0.96] tracking-tight text-fg xl:text-[4.4rem]">
               <span className="block">Rachid</span>
               <span className="block">Berrada</span>
             </h1>
@@ -160,10 +168,10 @@ export function Hero({ siteConfig, whatsappHref, copy }: HeroProps) {
             <Headline
               headline={siteConfig.heroHeadline}
               highlight={siteConfig.heroHighlight}
-              className="max-w-md text-xl xl:text-2xl"
+              className="max-w-lg text-xl xl:text-2xl"
             />
 
-            <p className="max-w-sm text-pretty text-sm leading-relaxed text-fg-muted xl:text-base">
+            <p className="max-w-md text-pretty text-sm leading-relaxed text-fg-muted xl:text-base">
               {siteConfig.heroSubtitle}
             </p>
 
@@ -177,7 +185,7 @@ export function Hero({ siteConfig, whatsappHref, copy }: HeroProps) {
       </div>
 
       {/* Mobile / tablette : composition simplifiée et empilée */}
-      <Container className="relative flex min-h-[100svh] flex-col justify-center gap-8 py-24 lg:hidden">
+      <Container className="relative flex min-h-[100svh] flex-col justify-center gap-10 py-24 lg:hidden">
         <div className="motion-safe:animate-fade-in-up shrink-0 space-y-5">
           <Eyebrow title={siteConfig.title} />
           <h1 className="text-balance text-5xl font-semibold leading-[0.98] tracking-tight text-fg sm:text-6xl">
@@ -196,20 +204,11 @@ export function Hero({ siteConfig, whatsappHref, copy }: HeroProps) {
           <CtaRow whatsappHref={whatsappHref} copy={copy} />
         </div>
 
-        <div className="motion-safe:animate-fade-in relative mx-auto aspect-[1166/2000] h-[42vh] max-h-[420px] w-auto shrink-0 sm:h-[46vh]">
-          <HeroSculpture className="absolute -inset-x-16 -inset-y-16" animated={false} />
-          <div
-            className="absolute inset-x-[10%] bottom-[4%] h-8 rounded-full bg-accent/30 blur-2xl"
-            aria-hidden="true"
-          />
-          <Image
-            src="/images/rachid/hero-rachid-cutout.png"
-            alt={copy.portraitAlt}
-            fill
-            priority
-            sizes="70vw"
-            className="portrait-treatment relative object-contain object-bottom drop-shadow-[0_25px_50px_rgba(0,0,0,0.55)]"
-          />
+        <div className="motion-safe:animate-fade-in flex shrink-0 flex-col items-center gap-5">
+          <div className="relative aspect-square w-full max-w-[240px] sm:max-w-[260px]">
+            <HeroSculpture className="h-full w-full" animated={false} />
+          </div>
+          <TagRow tagline={siteConfig.knowsAbout.join(" • ")} />
         </div>
       </Container>
     </section>

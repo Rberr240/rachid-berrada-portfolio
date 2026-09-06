@@ -601,7 +601,8 @@ export const profileEn: Profile = {
     hero: {
       ctaPrimary: "Start a project",
       ctaSecondary: "View my work",
-      portraitAlt: "Rachid Berrada, AI & Digital Solutions Engineer",
+      focusEyebrow: "Focus",
+      quoteWords: ["Build.", "Automate.", "Innovate."],
     },
     capabilities: {
       intro: "Engineering across projects",

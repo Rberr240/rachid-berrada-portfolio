@@ -117,16 +117,6 @@ body {
   background-size: 22px 22px;
 }
 
-/*
- * Correction de la dominante orange/rouge des photos prises en éclairage
- * artificiel chaud (lampadaire/façade) : on désature légèrement, on repousse
- * la teinte vers le froid et on resserre le contraste pour un rendu premium
- * cohérent avec la palette graphite/bleu électrique du site.
- */
-.portrait-treatment {
-  filter: saturate(0.82) contrast(1.08) brightness(0.96) hue-rotate(-6deg);
-}
-
 .portrait-fade-edge {
   -webkit-mask-image: linear-gradient(
     to bottom,
