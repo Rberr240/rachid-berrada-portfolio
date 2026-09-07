@@ -124,7 +124,7 @@ export function Header({ nav, monogram, name, whatsappHref, email, copy, lang, l
           }}
         >
           <Link href="/" className="flex items-center gap-2.5">
-            <span className="flex size-9 items-center justify-center rounded-lg border border-border-strong bg-surface font-mono text-sm font-bold tracking-tight text-fg">
+            <span className="flex size-9 items-center justify-center rounded-lg border border-border-strong bg-surface font-serif text-base text-fg">
               {monogram}
             </span>
             <span className="hidden text-sm font-medium tracking-tight text-fg sm:block">
@@ -141,11 +141,17 @@ export function Header({ nav, monogram, name, whatsappHref, email, copy, lang, l
                   key={item.href}
                   href={item.href}
                   aria-current={isActive ? "true" : undefined}
-                  className={`whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium transition-colors duration-200 lg:px-4 ${
-                    isActive ? "bg-white/[0.07] text-fg" : "text-fg-muted hover:text-fg"
+                  className={`relative whitespace-nowrap px-3 py-2 text-sm font-medium transition-colors duration-200 lg:px-4 ${
+                    isActive ? "text-fg" : "text-fg-muted hover:text-fg"
                   }`}
                 >
                   {item.label}
+                  <span
+                    className={`absolute inset-x-3 bottom-1 h-px bg-accent-2 transition-opacity duration-200 lg:inset-x-4 ${
+                      isActive ? "opacity-100" : "opacity-0"
+                    }`}
+                    aria-hidden="true"
+                  />
                 </a>
               );
             })}

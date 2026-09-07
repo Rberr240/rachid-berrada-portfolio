@@ -28,7 +28,9 @@ function Headline({
   return (
     <p className={`text-balance font-medium leading-[1.12] text-fg ${className}`}>
       {before}
-      {highlightIndex >= 0 ? <span className="text-accent-2">{highlight}</span> : null}
+      {highlightIndex >= 0 ? (
+        <span className="font-serif italic font-normal">{highlight}</span>
+      ) : null}
       {after}
     </p>
   );
@@ -36,8 +38,8 @@ function Headline({
 
 function Eyebrow({ title }: { title: string }) {
   return (
-    <p className="inline-flex items-center gap-2 rounded-full border border-border-strong bg-white/[0.03] px-4 py-1.5 font-mono text-xs font-medium uppercase tracking-[0.18em] text-accent-2">
-      <span className="size-1.5 shrink-0 rounded-full bg-accent-2" aria-hidden="true" />
+    <p className="flex items-center gap-3 text-xs font-medium uppercase tracking-[0.18em] text-fg-subtle">
+      <span className="h-px w-6 shrink-0 bg-accent-2" aria-hidden="true" />
       {title}
     </p>
   );
@@ -46,10 +48,10 @@ function Eyebrow({ title }: { title: string }) {
 function TagRow({ tagline }: { tagline: string }) {
   const taglineParts = tagline.split(" • ");
   return (
-    <div className="inline-flex flex-wrap items-center gap-x-3 gap-y-1.5 rounded-full border border-border px-4 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-fg-subtle">
+    <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-fg-subtle">
       {taglineParts.map((part, i) => (
-        <span key={part} className="flex items-center gap-3">
-          {i > 0 ? <span className="size-1 rounded-full bg-accent-2/50" aria-hidden="true" /> : null}
+        <span key={part} className="flex items-center gap-4">
+          {i > 0 ? <span className="text-border-strong" aria-hidden="true">/</span> : null}
           {part}
         </span>
       ))}
@@ -91,9 +93,8 @@ function FocusIndex({ eyebrow, items }: { eyebrow: string; items: string[] }) {
 
 function QuoteBlock({ words }: { words: string[] }) {
   return (
-    <div className="rounded-xl border-l border-accent-2/40 bg-ink/50 py-1 pl-4 backdrop-blur-sm">
-      <p className="text-base italic leading-snug text-fg/90">
-        <span className="text-accent-2">&ldquo;</span>
+    <div className="border-l border-gold/50 py-1 pl-4">
+      <p className="font-serif text-lg italic leading-snug text-fg/90">
         {words.map((word, i) => (
           <span key={word}>
             {i > 0 ? <br /> : null}
@@ -101,7 +102,7 @@ function QuoteBlock({ words }: { words: string[] }) {
           </span>
         ))}
       </p>
-      <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.14em] text-fg-subtle">— Rachid Berrada</p>
+      <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.14em] text-gold">— Rachid Berrada</p>
     </div>
   );
 }
@@ -160,7 +161,7 @@ export function Hero({ siteConfig, whatsappHref, copy }: HeroProps) {
           >
             <Eyebrow title={siteConfig.title} />
 
-            <h1 className="text-balance text-[3.4rem] font-semibold leading-[0.96] tracking-tight text-fg xl:text-[4.4rem]">
+            <h1 className="text-balance font-serif text-[3.6rem] font-medium leading-[0.94] tracking-tight text-fg xl:text-[4.8rem]">
               <span className="block">Rachid</span>
               <span className="block">Berrada</span>
             </h1>
@@ -188,7 +189,7 @@ export function Hero({ siteConfig, whatsappHref, copy }: HeroProps) {
       <Container className="relative flex min-h-[100svh] flex-col justify-center gap-10 py-24 lg:hidden">
         <div className="motion-safe:animate-fade-in-up shrink-0 space-y-5">
           <Eyebrow title={siteConfig.title} />
-          <h1 className="text-balance text-5xl font-semibold leading-[0.98] tracking-tight text-fg sm:text-6xl">
+          <h1 className="text-balance font-serif text-5xl font-medium leading-[0.98] tracking-tight text-fg sm:text-6xl">
             <span className="block">Rachid</span>
             <span className="block">Berrada</span>
           </h1>

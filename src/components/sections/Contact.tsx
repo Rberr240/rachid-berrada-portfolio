@@ -18,8 +18,13 @@ export function Contact({ siteConfig, whatsappHref, copy, formCopy, projectTypes
   const phoneHref = `tel:+${siteConfig.whatsappNumber}`;
 
   return (
-    <section id="contact" className="scroll-mt-[68px] border-t border-border py-20 sm:py-28">
-      <Container>
+    <section
+      id="contact"
+      className="relative scroll-mt-[68px] overflow-hidden border-t border-border bg-hero-glow py-20 sm:py-28"
+    >
+      <div className="absolute inset-0 bg-grid opacity-30" aria-hidden="true" />
+
+      <Container className="relative">
         <SectionIndex number="10" label={copy.eyebrow} />
 
         <div className="grid gap-14 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
@@ -81,7 +86,7 @@ export function Contact({ siteConfig, whatsappHref, copy, formCopy, projectTypes
             </div>
           </div>
 
-          <div className="rounded-2xl border border-border bg-surface/60 p-6 sm:p-8">
+          <div className="corner-marks rounded-2xl border border-border bg-surface/70 p-6 backdrop-blur-sm sm:p-8">
             <h3 className="mb-1 text-lg font-semibold tracking-tight text-fg">{copy.formHeading}</h3>
             <p className="mb-6 text-sm text-fg-muted">{copy.formIntro}</p>
             <ProjectForm projectTypes={projectTypes} copy={formCopy} />
@@ -103,7 +108,7 @@ function ContactRow({
 }) {
   return (
     <div className="flex items-center gap-4">
-      <div className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-border-strong bg-white/[0.03] text-accent-2">
+      <div className="flex size-10 shrink-0 items-center justify-center rounded-full border border-border-strong bg-white/[0.03] text-accent-2">
         <Icon className="size-4" aria-hidden="true" />
       </div>
       <div>

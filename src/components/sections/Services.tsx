@@ -1,4 +1,3 @@
-import { Check } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { SectionIndex } from "@/components/ui/SectionIndex";
 import { serviceIconMap } from "@/components/ui/icon-map";
@@ -21,50 +20,80 @@ export function Services({ services, copy }: ServicesProps) {
           {copy.intro}
         </p>
 
-        <div className="mt-14 divide-y divide-border border-y border-border">
+        <div className="mt-14 border-y border-border">
           {services.map((service, index) => {
             const Icon = serviceIconMap[service.icon];
+            const reversed = index % 2 === 1;
             return (
               <article
                 key={service.id}
-                className="group grid gap-6 py-9 transition-colors duration-200 sm:grid-cols-[minmax(0,7rem)_minmax(0,1fr)] sm:gap-10 lg:grid-cols-[minmax(0,8rem)_minmax(0,1fr)_minmax(0,16rem)]"
+                className={`group relative grid gap-x-8 gap-y-6 border-b border-border py-10 last:border-b-0 sm:grid-cols-12 sm:gap-y-0 sm:py-14 ${
+                  reversed ? "sm:text-right" : ""
+                }`}
               >
-                <div className="flex items-start gap-4 sm:block">
-                  <span className="font-mono text-3xl font-semibold tabular-nums text-fg-subtle transition-colors duration-200 group-hover:text-accent-2 sm:text-4xl">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <div className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-border-strong bg-accent-soft text-accent-2 sm:mt-3">
-                    <Icon className="size-5" aria-hidden="true" />
-                  </div>
-                </div>
+                <span
+                  aria-hidden="true"
+                  className={`pointer-events-none col-span-4 row-span-2 select-none self-start font-serif text-[5.5rem] leading-none text-white/[0.04] transition-colors duration-300 group-hover:text-accent-2/10 sm:row-start-1 sm:text-[7rem] lg:text-[8.5rem] ${
+                    reversed ? "sm:col-start-9 sm:text-right" : "sm:col-start-1"
+                  }`}
+                >
+                  {String(index + 1).padStart(2, "0")}
+                </span>
 
-                <div>
-                  <h3 className="text-lg font-semibold tracking-tight text-fg sm:text-xl">
+                <div
+                  className={`col-span-12 -mt-2 flex items-center gap-3 sm:col-span-5 sm:row-start-1 sm:mt-3 ${
+                    reversed ? "sm:col-start-1 sm:justify-end" : "sm:col-start-4"
+                  }`}
+                >
+                  <div
+                    className={`flex size-9 shrink-0 items-center justify-center rounded-full border border-border-strong text-accent-2 ${
+                      reversed ? "sm:order-2" : ""
+                    }`}
+                  >
+                    <Icon className="size-4" aria-hidden="true" />
+                  </div>
+                  <h3 className="text-xl font-semibold tracking-tight text-fg sm:text-2xl">
                     {service.title}
                   </h3>
-                  <p className="mt-2 max-w-xl text-sm leading-relaxed text-fg-muted sm:text-base">
+                </div>
+
+                <div
+                  className={`col-span-12 sm:col-span-8 sm:row-start-2 ${
+                    reversed ? "sm:col-start-1" : "sm:col-start-4"
+                  }`}
+                >
+                  <p className="max-w-xl text-pretty text-sm leading-relaxed text-fg-muted sm:text-base">
                     {service.description}
                   </p>
 
-                  <ul className="mt-5 grid gap-x-6 gap-y-2 sm:grid-cols-2">
+                  <ul
+                    className={`mt-5 grid max-w-xl gap-x-6 gap-y-2 sm:grid-cols-2 ${
+                      reversed ? "sm:ml-auto" : ""
+                    }`}
+                  >
                     {service.bullets.map((bullet) => (
-                      <li key={bullet} className="flex items-start gap-2 text-sm text-fg-muted">
-                        <Check className="mt-0.5 size-3.5 shrink-0 text-accent-2" aria-hidden="true" />
+                      <li
+                        key={bullet}
+                        className={`flex items-start gap-2 text-sm text-fg-muted ${
+                          reversed ? "sm:flex-row-reverse sm:text-right" : ""
+                        }`}
+                      >
+                        <span className="mt-2 h-px w-3 shrink-0 bg-border-strong" aria-hidden="true" />
                         {bullet}
                       </li>
                     ))}
                   </ul>
-                </div>
 
-                <div className="flex flex-wrap gap-1.5 sm:col-span-2 sm:pl-[calc(7rem_+_2.5rem)] lg:col-span-1 lg:content-start lg:justify-end lg:pl-0">
-                  {service.benefits.map((benefit) => (
-                    <span
-                      key={benefit}
-                      className="h-fit rounded-full bg-white/[0.03] px-2.5 py-1 text-[11px] font-medium text-fg-subtle"
-                    >
-                      {benefit}
-                    </span>
-                  ))}
+                  <div className={`mt-5 flex flex-wrap gap-x-4 gap-y-1.5 ${reversed ? "justify-end" : ""}`}>
+                    {service.benefits.map((benefit) => (
+                      <span
+                        key={benefit}
+                        className="font-mono text-[11px] uppercase tracking-[0.12em] text-fg-subtle"
+                      >
+                        {benefit}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </article>
             );

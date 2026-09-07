@@ -6,7 +6,6 @@ interface FooterProps {
   nav: NavItem[];
   socialLinks: SocialLink[];
   name: string;
-  monogram: string;
   title: string;
   tagline: string;
   email: string;
@@ -19,7 +18,6 @@ export function Footer({
   nav,
   socialLinks,
   name,
-  monogram,
   title,
   tagline,
   email,
@@ -31,16 +29,15 @@ export function Footer({
   const github = socialLinks.find((s) => s.label === "GitHub" && s.enabled);
 
   return (
-    <footer className="border-t border-border bg-navy/40">
+    <footer className="relative border-t border-border bg-navy/40">
+      <div
+        className="absolute inset-x-[10%] top-0 h-px bg-gradient-to-r from-transparent via-accent-2/40 to-transparent"
+        aria-hidden="true"
+      />
       <div className="mx-auto w-full max-w-6xl px-5 py-14 sm:px-8">
         <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-4">
           <div className="md:col-span-2">
-            <div className="flex items-center gap-2.5">
-              <span className="flex size-9 items-center justify-center rounded-lg border border-border-strong bg-surface font-mono text-sm font-bold tracking-tight text-fg">
-                {monogram}
-              </span>
-              <span className="text-sm font-medium tracking-tight text-fg">{name}</span>
-            </div>
+            <p className="font-serif text-3xl italic leading-none text-fg sm:text-4xl">{name}</p>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-fg-muted">
               {title}
               <br />

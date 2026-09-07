@@ -79,17 +79,22 @@ export default async function CaseStudyPage({
             <p className="mb-3 font-mono text-xs font-medium uppercase tracking-[0.18em] text-accent-2">
               {project.category}
             </p>
-            <h1 className="text-balance text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
+            <h1 className="text-balance font-serif text-4xl font-medium tracking-tight text-fg sm:text-5xl">
               {project.title}
             </h1>
-            <p className="mt-4 text-pretty text-lg leading-relaxed text-fg-muted">
+            <p className="mt-5 max-w-xl text-pretty font-serif text-xl italic leading-snug text-fg/90 sm:text-2xl">
               {caseStudy.heroSubtitle}
             </p>
-            <div className="mt-6 flex flex-wrap items-center gap-2">
+            <div className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-2">
               <Badge tone="accent">{project.statusLabel}</Badge>
-              {project.tags.map((tag) => (
-                <Badge key={tagLabel(tag)}>{tagLabel(tag)}</Badge>
-              ))}
+              <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-fg-subtle">
+                {project.tags.map(tagLabel).map((tag, i) => (
+                  <span key={tag}>
+                    {i > 0 ? <span className="text-border-strong"> / </span> : null}
+                    {tag}
+                  </span>
+                ))}
+              </p>
             </div>
           </div>
         </Container>
@@ -129,7 +134,7 @@ export default async function CaseStudyPage({
               )}
             </div>
 
-            <div className="rounded-2xl border border-border bg-surface/60 p-6">
+            <div className="corner-marks rounded-2xl border border-border bg-surface/60 p-6">
               <p className="text-sm font-medium text-fg">{copy.similarProjectTitle}</p>
               <p className="mt-1.5 text-sm text-fg-muted">{copy.similarProjectBody}</p>
               <div className="mt-4">
@@ -203,14 +208,14 @@ export default async function CaseStudyPage({
             {gallery.length > 0 ? (
               <section>
                 <h2 className="text-xl font-semibold tracking-tight text-fg">{copy.gallery}</h2>
-                <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                <div className="mt-4 grid gap-6 sm:grid-cols-2">
                   {gallery.map((item) => {
                     const isMobileShot = item.src.includes("mobile");
                     return (
                       <div
                         key={item.src}
-                        className={`relative overflow-hidden rounded-2xl border border-border bg-ink ${
-                          isMobileShot ? "aspect-[9/16] sm:mx-auto sm:w-2/3" : "aspect-[4/3]"
+                        className={`corner-marks relative overflow-hidden bg-ink ${
+                          isMobileShot ? "aspect-[9/16] sm:mx-auto sm:w-2/3" : "aspect-[3/4]"
                         }`}
                       >
                         <Image
@@ -227,11 +232,13 @@ export default async function CaseStudyPage({
               </section>
             ) : null}
 
-            <section className="rounded-2xl border border-border bg-surface/40 p-6">
+            <section className="border-l-2 border-gold/50 py-1 pl-6">
               <h2 className="font-mono text-xs font-medium uppercase tracking-wider text-fg-subtle">
                 {copy.result}
               </h2>
-              <p className="mt-3 text-pretty leading-relaxed text-fg-muted">{project.result}</p>
+              <p className="mt-3 text-pretty font-serif text-xl italic leading-snug text-fg">
+                {project.result}
+              </p>
             </section>
           </div>
         </div>

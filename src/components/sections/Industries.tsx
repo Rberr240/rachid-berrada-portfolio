@@ -20,32 +20,32 @@ export function Industries({ industries, copy }: IndustriesProps) {
           {copy.intro}
         </p>
 
-        <div className="mt-14 divide-y divide-border border-y border-border">
-          {industries.map((industry) => {
+        <div className="mt-14 grid gap-x-8 gap-y-0 border-t border-border sm:grid-cols-2">
+          {industries.map((industry, i) => {
             const Icon = industryIconMap[industry.icon];
+            const isLastOdd = i === industries.length - 1 && industries.length % 2 === 1;
             return (
               <article
                 key={industry.id}
-                className="group grid gap-4 py-7 sm:grid-cols-[minmax(0,14rem)_minmax(0,1fr)] sm:items-center sm:gap-8"
+                className={`group flex items-start gap-4 border-b border-border py-7 sm:py-8 ${
+                  isLastOdd ? "sm:col-span-2" : ""
+                }`}
               >
-                <div className="flex items-center gap-3">
-                  <div className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-border-strong bg-white/[0.03] text-accent-2 transition-colors duration-200 group-hover:border-accent-2/40">
-                    <Icon className="size-5" aria-hidden="true" />
-                  </div>
-                  <h3 className="text-base font-semibold tracking-tight text-fg">
-                    {industry.name}
-                  </h3>
+                <Icon
+                  className="mt-0.5 size-5 shrink-0 text-fg-subtle transition-colors duration-200 group-hover:text-accent-2"
+                  aria-hidden="true"
+                />
+                <div>
+                  <h3 className="text-base font-semibold tracking-tight text-fg">{industry.name}</h3>
+                  <ul className="mt-1.5 max-w-md text-pretty text-sm leading-relaxed text-fg-muted">
+                    {industry.items.map((item, itemIndex) => (
+                      <li key={item} className="inline">
+                        {item}
+                        {itemIndex < industry.items.length - 1 ? ", " : ""}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <ul className="flex flex-wrap gap-1.5">
-                  {industry.items.map((item) => (
-                    <li
-                      key={item}
-                      className="rounded-full border border-border px-3 py-1 text-xs text-fg-muted"
-                    >
-                      {item}
-                    </li>
-                  ))}
-                </ul>
               </article>
             );
           })}

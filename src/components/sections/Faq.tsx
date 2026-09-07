@@ -18,16 +18,23 @@ export function Faq({ faqs, copy }: FaqProps) {
         </h2>
 
         <div className="mt-10 max-w-3xl divide-y divide-border border-y border-border">
-          {faqs.map((faq) => (
-            <details key={faq.question} className="group py-5">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-base font-medium text-fg marker:content-none">
-                {faq.question}
+          {faqs.map((faq, i) => (
+            <details key={faq.question} className="group py-6">
+              <summary className="flex cursor-pointer list-none items-start gap-4 text-base font-medium text-fg marker:content-none">
+                <span className="mt-0.5 font-mono text-xs text-fg-subtle transition-colors duration-200 group-open:text-accent-2">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="flex-1 transition-colors duration-200 group-hover:text-fg group-open:text-accent-2">
+                  {faq.question}
+                </span>
                 <Plus
-                  className="size-4 shrink-0 text-fg-muted transition-transform duration-200 group-open:rotate-45"
+                  className="size-4 shrink-0 text-fg-muted transition-transform duration-200 group-open:rotate-45 group-open:text-accent-2"
                   aria-hidden="true"
                 />
               </summary>
-              <p className="mt-3 max-w-2xl text-sm leading-relaxed text-fg-muted">{faq.answer}</p>
+              <p className="motion-safe:animate-fade-in-up mt-3 max-w-2xl pl-[calc(0.75rem_+_1rem)] text-sm leading-relaxed text-fg-muted">
+                {faq.answer}
+              </p>
             </details>
           ))}
         </div>

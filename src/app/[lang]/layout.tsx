@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Fraunces } from "next/font/google";
 import "../globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -18,6 +18,13 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
+  subsets: ["latin"],
+  axes: ["opsz", "SOFT"],
+  style: ["normal", "italic"],
 });
 
 export function generateStaticParams() {
@@ -107,7 +114,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
     <html
       lang={lang}
       data-scroll-behavior="smooth"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-ink text-fg">
         <script
@@ -137,7 +144,6 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
           nav={nav}
           socialLinks={socialLinks}
           name={siteConfig.name}
-          monogram={siteConfig.monogram}
           title={siteConfig.title}
           tagline={siteConfig.tagline}
           email={siteConfig.email}

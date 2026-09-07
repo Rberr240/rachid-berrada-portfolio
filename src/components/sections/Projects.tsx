@@ -5,7 +5,6 @@ import type { LucideIcon } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { SectionIndex } from "@/components/ui/SectionIndex";
 import { Badge } from "@/components/ui/Badge";
-import { AbstractFigure } from "@/components/ui/AbstractFigure";
 import { tagLabel, type ProjectItem, type UiCopy } from "@/data/types";
 
 const fallbackIcons: Record<string, LucideIcon> = {
@@ -32,7 +31,7 @@ export function Projects({ projects, copy, caseStudyBasePath }: ProjectsProps) {
           {copy.intro}
         </p>
 
-        <div className="mt-16 space-y-20 sm:space-y-28">
+        <div className="mt-16 space-y-24 sm:space-y-32">
           {projects.map((project, index) => {
             const demoLink = project.links.find((l) => l.type === "demo");
             const repoLink = project.links.find((l) => l.type === "repo");
@@ -42,46 +41,64 @@ export function Projects({ projects, copy, caseStudyBasePath }: ProjectsProps) {
             return (
               <article
                 key={project.id}
-                className={`flex flex-col gap-8 lg:flex-row lg:items-center lg:gap-14 ${
+                className={`group flex flex-col gap-10 lg:flex-row lg:items-center lg:gap-16 ${
                   reversed ? "lg:flex-row-reverse" : ""
                 }`}
               >
-                <div className="relative aspect-[16/11] w-full overflow-hidden rounded-2xl border border-border bg-graphite lg:w-[58%]">
+                <div className="w-full lg:w-[56%]">
                   {project.image ? (
-                    <div className="absolute inset-0 flex items-center justify-center bg-dot-grid p-7 opacity-100 sm:p-10">
-                      {/* Les captures sont des sites mobile-first : un cadrage
-                          "appareil" portrait évite les larges marges vides que
-                          leur propre capture desktop laisserait dans un cadre
-                          16/11 plein cadre. */}
-                      <div className="relative h-full aspect-[9/17.5] overflow-hidden rounded-[1.4rem] border border-white/10 shadow-[0_30px_60px_-20px_rgba(0,0,0,0.7)] transition-transform duration-500 group-hover:scale-[1.02]">
-                        <Image
-                          src={project.image.mobile}
-                          alt={project.image.alt}
-                          fill
-                          sizes="(min-width: 1024px) 20vw, 45vw"
-                          className="object-cover object-top"
-                        />
+                    <div className="corner-marks relative aspect-[16/12] w-full overflow-hidden bg-graphite">
+                      <div className="absolute inset-0 flex items-center justify-center bg-dot-grid p-7 sm:p-10">
+                        {/* Les captures sont des sites mobile-first : un cadrage
+                            "appareil" portrait évite les larges marges vides que
+                            leur propre capture desktop laisserait dans un cadre
+                            plein cadre. */}
+                        <div className="relative h-full aspect-[9/17.5] overflow-hidden rounded-[1.4rem] border border-white/10 shadow-[0_30px_60px_-20px_rgba(0,0,0,0.7)] transition-transform duration-500 ease-out group-hover:-translate-y-1.5 group-hover:scale-[1.015]">
+                          <Image
+                            src={project.image.mobile}
+                            alt={project.image.alt}
+                            fill
+                            sizes="(min-width: 1024px) 20vw, 45vw"
+                            className="object-cover object-top"
+                          />
+                        </div>
                       </div>
+                      {project.placeholder ? (
+                        <span className="absolute right-3 top-3">
+                          <Badge tone="warning">{copy.placeholderBadge}</Badge>
+                        </span>
+                      ) : null}
                     </div>
                   ) : (
-                    <div className="relative flex h-full w-full items-center justify-center overflow-hidden bg-hero-glow">
-                      <AbstractFigure className="absolute inset-[-20%]" animated={false} />
+                    <div className="corner-marks bg-hatch relative aspect-[16/12] w-full overflow-hidden border border-border bg-surface">
+                      <span
+                        aria-hidden="true"
+                        className="pointer-events-none absolute -bottom-6 left-1/2 -translate-x-1/2 select-none font-serif text-[9rem] leading-none text-white/[0.05] sm:text-[11rem]"
+                      >
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <div className="absolute left-6 top-6 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.16em] text-fg-subtle">
+                        <span className="size-1.5 rounded-full bg-accent-2" aria-hidden="true" />
+                        {project.statusLabel}
+                      </div>
                       {FallbackIcon ? (
-                        <FallbackIcon className="relative size-12 text-fg-subtle" aria-hidden="true" />
+                        <FallbackIcon
+                          className="absolute bottom-6 right-6 size-6 text-fg-subtle transition-colors duration-300 group-hover:text-accent-2"
+                          aria-hidden="true"
+                        />
                       ) : null}
                     </div>
                   )}
-                  {project.placeholder ? (
-                    <span className="absolute right-3 top-3">
-                      <Badge tone="warning">{copy.placeholderBadge}</Badge>
-                    </span>
-                  ) : null}
                 </div>
 
-                <div className="lg:w-[42%]">
-                  <div className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.2em] text-fg-subtle">
-                    <span className="text-accent-2">{String(index + 1).padStart(2, "0")}</span>
-                    <span>{project.category}</span>
+                <div className="lg:w-[44%]">
+                  <div className="flex items-baseline gap-3">
+                    <span className="font-serif text-2xl italic text-accent-2">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <span className="font-mono text-xs uppercase tracking-[0.2em] text-fg-subtle">
+                      {project.category}
+                    </span>
                   </div>
 
                   <h3 className="mt-4 text-2xl font-semibold tracking-tight text-fg sm:text-3xl">
@@ -96,16 +113,14 @@ export function Projects({ projects, copy, caseStudyBasePath }: ProjectsProps) {
                     {project.summary}
                   </p>
 
-                  <div className="mt-5 flex flex-wrap gap-1.5">
-                    {project.tags.map((tag) => (
-                      <span
-                        key={tagLabel(tag)}
-                        className="rounded-full bg-white/[0.03] px-2.5 py-1 text-[11px] font-medium text-fg-subtle"
-                      >
-                        {tagLabel(tag)}
+                  <p className="mt-5 font-mono text-[11px] uppercase tracking-[0.12em] text-fg-subtle">
+                    {project.tags.map(tagLabel).map((tag, i) => (
+                      <span key={tag}>
+                        {i > 0 ? <span className="text-border-strong"> / </span> : null}
+                        {tag}
                       </span>
                     ))}
-                  </div>
+                  </p>
 
                   <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-border pt-6">
                     {project.caseStudy ? (

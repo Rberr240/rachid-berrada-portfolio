@@ -35,8 +35,9 @@ export function CapabilityStrip({ copy, projects }: CapabilityStripProps) {
   return (
     <div className="border-t border-border py-7 sm:py-8">
       <Container>
-        <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-baseline sm:gap-x-8 sm:gap-y-3">
-          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-fg-subtle">
+        <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-baseline sm:gap-x-10 sm:gap-y-3">
+          <p className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-fg-subtle">
+            <span className="h-px w-6 shrink-0 bg-accent-2" aria-hidden="true" />
             {copy.intro}
           </p>
           {copy.groups.map((group) => {
@@ -45,7 +46,7 @@ export function CapabilityStrip({ copy, projects }: CapabilityStripProps) {
             return (
               <div
                 key={group.id}
-                className="flex flex-wrap items-baseline gap-x-2 sm:border-l sm:border-border sm:pl-8"
+                className="flex flex-wrap items-baseline gap-x-2 sm:border-l sm:border-border sm:pl-10"
               >
                 <span className="font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-accent-2">
                   {group.label}
