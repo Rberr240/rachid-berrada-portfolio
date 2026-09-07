@@ -46,15 +46,23 @@ export function Projects({ projects, copy, caseStudyBasePath }: ProjectsProps) {
                   reversed ? "lg:flex-row-reverse" : ""
                 }`}
               >
-                <div className="relative aspect-[16/11] w-full overflow-hidden rounded-2xl border border-border bg-ink lg:w-[58%]">
+                <div className="relative aspect-[16/11] w-full overflow-hidden rounded-2xl border border-border bg-graphite lg:w-[58%]">
                   {project.image ? (
-                    <Image
-                      src={project.image.desktop}
-                      alt={project.image.alt}
-                      fill
-                      sizes="(min-width: 1024px) 55vw, 100vw"
-                      className="object-cover object-top transition-transform duration-500 hover:scale-[1.02]"
-                    />
+                    <div className="absolute inset-0 flex items-center justify-center bg-dot-grid p-7 opacity-100 sm:p-10">
+                      {/* Les captures sont des sites mobile-first : un cadrage
+                          "appareil" portrait évite les larges marges vides que
+                          leur propre capture desktop laisserait dans un cadre
+                          16/11 plein cadre. */}
+                      <div className="relative h-full aspect-[9/17.5] overflow-hidden rounded-[1.4rem] border border-white/10 shadow-[0_30px_60px_-20px_rgba(0,0,0,0.7)] transition-transform duration-500 group-hover:scale-[1.02]">
+                        <Image
+                          src={project.image.mobile}
+                          alt={project.image.alt}
+                          fill
+                          sizes="(min-width: 1024px) 20vw, 45vw"
+                          className="object-cover object-top"
+                        />
+                      </div>
+                    </div>
                   ) : (
                     <div className="relative flex h-full w-full items-center justify-center overflow-hidden bg-hero-glow">
                       <AbstractFigure className="absolute inset-[-20%]" animated={false} />
