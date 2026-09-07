@@ -93,7 +93,7 @@ function FocusIndex({ eyebrow, items }: { eyebrow: string; items: string[] }) {
 
 function QuoteBlock({ words }: { words: string[] }) {
   return (
-    <div className="border-l border-gold/50 py-1 pl-4">
+    <div className="border-s border-gold/50 py-1 ps-4">
       <p className="font-serif text-lg italic leading-snug text-fg/90">
         {words.map((word, i) => (
           <span key={word}>
@@ -138,7 +138,7 @@ export function Hero({ siteConfig, whatsappHref, copy }: HeroProps) {
       {/* Desktop : composition "poster" unifiée, tout en position absolue */}
       <div className="absolute inset-0 hidden lg:block">
         <div
-          className="absolute right-[-3%] top-[9%] h-[82%] w-[58%] transition-transform duration-150 ease-out"
+          className="absolute end-[-3%] top-[9%] h-[82%] w-[58%] transition-transform duration-150 ease-out"
           style={sculptureStyle}
         >
           <HeroSculpture className="h-full w-full" />
@@ -147,7 +147,7 @@ export function Hero({ siteConfig, whatsappHref, copy }: HeroProps) {
         {/* Colonne de métadonnées — index technique + signature, seule
             présence "sujet" de la composition après retrait du portrait */}
         <div
-          className="absolute right-[4%] top-[13%] flex h-[74%] w-[17%] flex-col justify-between transition-transform duration-150 ease-out"
+          className="absolute end-[4%] top-[13%] flex h-[74%] w-[17%] flex-col justify-between transition-transform duration-150 ease-out"
           style={railStyle}
         >
           <FocusIndex eyebrow={copy.focusEyebrow} items={siteConfig.knowsAbout} />

@@ -27,11 +27,11 @@ export function Method({ methodSteps, copy }: MethodProps) {
         </h2>
 
         {/* Mobile / tablette : rail vertical simple */}
-        <ol className="relative mt-14 space-y-9 border-l border-border-strong pl-7 sm:hidden">
+        <ol className="relative mt-14 space-y-9 border-s border-border-strong ps-7 sm:hidden">
           {methodSteps.map((step) => (
             <li key={step.number} className="relative">
               <span
-                className="absolute -left-[calc(1.75rem_+_4.5px)] top-1.5 size-[9px] rounded-full border-2 border-accent-2 bg-ink"
+                className="absolute -start-[calc(1.75rem_+_4.5px)] top-1.5 size-[9px] rounded-full border-2 border-accent-2 bg-ink"
                 aria-hidden="true"
               />
               <StepBody step={step} />
@@ -52,7 +52,7 @@ export function Method({ methodSteps, copy }: MethodProps) {
               <div className="relative flex items-center">
                 <span className="h-px w-full bg-border-strong" aria-hidden="true" />
                 <span
-                  className="absolute left-0 size-[9px] -translate-x-1/2 rounded-full border-2 border-accent-2 bg-ink"
+                  className="absolute start-0 size-[9px] rtl:translate-x-1/2 -translate-x-1/2 rounded-full border-2 border-accent-2 bg-ink"
                   aria-hidden="true"
                 />
               </div>

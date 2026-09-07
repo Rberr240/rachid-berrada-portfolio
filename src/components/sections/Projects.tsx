@@ -5,7 +5,7 @@ import type { LucideIcon } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { SectionIndex } from "@/components/ui/SectionIndex";
 import { Badge } from "@/components/ui/Badge";
-import { tagLabel, type ProjectItem, type UiCopy } from "@/data/types";
+import type { ProjectItem, UiCopy } from "@/data/types";
 
 const fallbackIcons: Record<string, LucideIcon> = {
   "residence-mirador": Building2,
@@ -64,7 +64,7 @@ export function Projects({ projects, copy, caseStudyBasePath }: ProjectsProps) {
                         </div>
                       </div>
                       {project.placeholder ? (
-                        <span className="absolute right-3 top-3">
+                        <span className="absolute end-3 top-3">
                           <Badge tone="warning">{copy.placeholderBadge}</Badge>
                         </span>
                       ) : null}
@@ -77,13 +77,13 @@ export function Projects({ projects, copy, caseStudyBasePath }: ProjectsProps) {
                       >
                         {String(index + 1).padStart(2, "0")}
                       </span>
-                      <div className="absolute left-6 top-6 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.16em] text-fg-subtle">
+                      <div className="absolute start-6 top-6 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.16em] text-fg-subtle">
                         <span className="size-1.5 rounded-full bg-accent-2" aria-hidden="true" />
                         {project.statusLabel}
                       </div>
                       {FallbackIcon ? (
                         <FallbackIcon
-                          className="absolute bottom-6 right-6 size-6 text-fg-subtle transition-colors duration-300 group-hover:text-accent-2"
+                          className="absolute bottom-6 end-6 size-6 text-fg-subtle transition-colors duration-300 group-hover:text-accent-2"
                           aria-hidden="true"
                         />
                       ) : null}
@@ -114,7 +114,7 @@ export function Projects({ projects, copy, caseStudyBasePath }: ProjectsProps) {
                   </p>
 
                   <p className="mt-5 font-mono text-[11px] uppercase tracking-[0.12em] text-fg-subtle">
-                    {project.tags.map(tagLabel).map((tag, i) => (
+                    {project.tags.map((tag, i) => (
                       <span key={tag}>
                         {i > 0 ? <span className="text-border-strong"> / </span> : null}
                         {tag}
@@ -130,7 +130,7 @@ export function Projects({ projects, copy, caseStudyBasePath }: ProjectsProps) {
                       >
                         {copy.viewProject}
                         <ArrowRight
-                          className="size-3.5 transition-transform duration-200 group-hover/link:translate-x-0.5"
+                          className="size-3.5 rtl:rotate-180 transition-transform duration-200 group-hover/link:translate-x-0.5"
                           aria-hidden="true"
                         />
                       </Link>

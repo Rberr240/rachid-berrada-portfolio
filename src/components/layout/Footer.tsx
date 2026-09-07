@@ -71,6 +71,7 @@ export function Footer({
               <li>
                 <a
                   href={`mailto:${email}`}
+                  dir="ltr"
                   className="flex items-center gap-2 text-sm text-fg-muted transition-colors hover:text-fg"
                 >
                   <Mail className="size-4 shrink-0" aria-hidden="true" />

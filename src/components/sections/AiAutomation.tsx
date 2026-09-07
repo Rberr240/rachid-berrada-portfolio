@@ -10,7 +10,7 @@ interface AiAutomationProps {
 
 function Node({ service, align }: { service: ServiceItem; align: "start" | "end" }) {
   return (
-    <div className={`rounded-2xl border border-border-strong bg-surface/70 px-6 py-5 ${align === "end" ? "sm:text-right" : ""}`}>
+    <div className={`rounded-2xl border border-border-strong bg-surface/70 px-6 py-5 ${align === "end" ? "sm:text-end" : ""}`}>
       <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-accent-2">{service.icon}</p>
       <h3 className="mt-1.5 text-lg font-semibold tracking-tight text-fg">{service.title}</h3>
       <p className="mt-2 text-sm leading-relaxed text-fg-muted">{service.description}</p>
@@ -44,7 +44,7 @@ export function AiAutomation({ services, copy }: AiAutomationProps) {
           <div className="flex h-10 items-center justify-center sm:h-auto sm:w-16 sm:flex-none">
             <ArrowDown className="size-4 text-accent-2 sm:hidden" aria-hidden="true" />
             <div className="hidden h-px w-full bg-gradient-to-r from-border-strong via-accent-2/50 to-border-strong sm:block" aria-hidden="true" />
-            <ArrowRight className="hidden size-4 shrink-0 text-accent-2 sm:block" aria-hidden="true" />
+            <ArrowRight className="hidden size-4 shrink-0 text-accent-2 rtl:rotate-180 sm:block" aria-hidden="true" />
           </div>
           <div className="sm:flex-1">
             <Node service={automation} align="end" />
@@ -59,7 +59,7 @@ export function AiAutomation({ services, copy }: AiAutomationProps) {
               </li>
             ))}
           </ul>
-          <ul className="space-y-2 sm:text-right">
+          <ul className="space-y-2 sm:text-end">
             {automation.bullets.map((bullet) => (
               <li key={bullet} className="text-sm leading-relaxed text-fg-muted">
                 {bullet}

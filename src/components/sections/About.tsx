@@ -22,7 +22,7 @@ export function About({ aboutText, socialLinks, copy }: AboutProps) {
 
             <div className="relative max-w-sm">
               <div
-                className="absolute -bottom-4 -right-4 aspect-[4/5] w-full rounded-tr-[2.75rem] rounded-bl-[2.75rem] rounded-tl-xl rounded-br-xl border border-gold/30"
+                className="absolute -bottom-4 -end-4 aspect-[4/5] w-full rounded-tr-[2.75rem] rounded-bl-[2.75rem] rounded-tl-xl rounded-br-xl border border-gold/30"
                 aria-hidden="true"
               />
               <div className="portrait-fade-edge relative aspect-[4/5] w-full overflow-hidden rounded-tr-[2.75rem] rounded-bl-[2.75rem] rounded-tl-xl rounded-br-xl border border-white/10">
@@ -74,7 +74,7 @@ export function About({ aboutText, socialLinks, copy }: AboutProps) {
               >
                 <GithubIcon className="size-4 shrink-0" />
                 {copy.githubCta}
-                <span className="text-fg-subtle transition-transform duration-200 group-hover:translate-x-0.5">
+                <span className="inline-block text-fg-subtle transition-transform duration-200 rtl:-scale-x-100 group-hover:translate-x-0.5">
                   →
                 </span>
               </a>

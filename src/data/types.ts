@@ -56,20 +56,6 @@ export interface CaseStudy {
   metaDescription: string;
 }
 
-/**
- * Un tag de projet est presque toujours une simple chaîne affichée telle
- * quelle (voir Projects.tsx / realisations/[slug]/page.tsx). Certains sont
- * en plus marqués `featured` : c'est le seul endroit où ce nom de
- * technologie est écrit — CapabilityStrip le lit ici, il ne le retape pas.
- * `order` ne fixe que le tri à l'intérieur d'un même groupe (pas de nom
- * dupliqué, seulement un entier), indépendamment de l'ordre des projets.
- */
-export type ProjectTag = string | { name: string; featured: CapabilityFamilyId; order: 1 | 2 };
-
-export function tagLabel(tag: ProjectTag): string {
-  return typeof tag === "string" ? tag : tag.name;
-}
-
 export interface ProjectItem {
   id: string;
   title: string;
@@ -77,7 +63,7 @@ export interface ProjectItem {
   statusLabel: string;
   summary: string;
   result: string;
-  tags: ProjectTag[];
+  tags: string[];
   technologies: string[];
   image?: ProjectImage;
   links: ProjectLink[];
@@ -103,25 +89,7 @@ export interface SocialLink {
   enabled: boolean;
 }
 
-export type Locale = "en" | "fr";
-
-/**
- * Familles techniques affichées dans CapabilityStrip. Les libellés sont
- * localisés dans UiCopy ; les technologies affichées viennent des tags
- * `featured` de projects[] (voir CapabilityStrip.tsx) — retirer un tag
- * `featured` retire silencieusement cet item du groupe, sans avertissement.
- */
-export type CapabilityFamilyId = "ai" | "web" | "backend" | "devops";
-
-/** Un groupe par famille, dans un ordre fixe — imposé par le tuple pour que
- * les deux locales ne puissent ni en omettre ni en dupliquer un sans erreur
- * TypeScript. */
-export type CapabilityGroups = [
-  { id: "ai"; label: string },
-  { id: "web"; label: string },
-  { id: "backend"; label: string },
-  { id: "devops"; label: string },
-];
+export type Locale = "en" | "fr" | "ar";
 
 /**
  * Toutes les chaînes d'interface qui ne proviennent pas d'un tableau de
@@ -153,10 +121,6 @@ export interface UiCopy {
     ctaSecondary: string;
     focusEyebrow: string;
     quoteWords: string[];
-  };
-  capabilities: {
-    intro: string;
-    groups: CapabilityGroups;
   };
   services: { eyebrow: string; title: string; intro: string };
   problems: { eyebrow: string; title: string };

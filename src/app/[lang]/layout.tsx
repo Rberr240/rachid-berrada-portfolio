@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
-import { Geist, Geist_Mono, Fraunces } from "next/font/google";
+import { Geist, Geist_Mono, Fraunces, Cairo } from "next/font/google";
 import "../globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -8,7 +8,7 @@ import { WhatsAppFloatingButton } from "@/components/layout/WhatsAppFloatingButt
 import { Analytics } from "@/components/layout/Analytics";
 import { getProfile, isLocale, locales } from "@/data/profile";
 import { getWhatsAppLink } from "@/lib/whatsapp";
-import type { Locale } from "@/data/types";
+import { localeHomeHref } from "@/lib/locale-path";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,14 +27,16 @@ const fraunces = Fraunces({
   style: ["normal", "italic"],
 });
 
+// Fraunces/Geist ne couvrent pas l'arabe : Cairo (latin + arabic) prend le
+// relais pour /ar uniquement, voir l'override `html[lang="ar"]` dans
+// globals.css qui redirige --font-sans/--font-serif/--font-mono vers elle.
+const cairo = Cairo({
+  variable: "--font-cairo",
+  subsets: ["latin", "arabic"],
+});
+
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
-}
-
-// L'anglais est servi à la racine "/" via une réécriture (next.config.ts) :
-// c'est l'URL publique canonique, même si la route interne est "/en".
-function publicHomeHref(lang: Locale) {
-  return lang === "en" ? "/" : "/fr";
 }
 
 export async function generateMetadata({
@@ -43,7 +45,7 @@ export async function generateMetadata({
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
   const { siteConfig } = getProfile(lang);
-  const home = publicHomeHref(lang);
+  const home = localeHomeHref(lang);
   const title = `${siteConfig.name} | ${siteConfig.title}`;
 
   return {
@@ -55,7 +57,7 @@ export async function generateMetadata({
     creator: siteConfig.name,
     alternates: {
       canonical: home,
-      languages: { en: "/", fr: "/fr" },
+      languages: { en: "/", fr: "/fr", ar: "/ar", "x-default": "/" },
     },
     openGraph: {
       type: "website",
@@ -89,11 +91,11 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
 
   const enabledSocials = socialLinks.filter((s) => s.enabled).map((s) => s.href);
   const whatsappHref = getWhatsAppLink(siteConfig.whatsappNumber, siteConfig.whatsappDefaultMessage);
-  const otherLang: Locale = lang === "en" ? "fr" : "en";
-  const localeSwitch = {
-    href: publicHomeHref(otherLang),
-    label: otherLang.toUpperCase(),
-  };
+  const localeLinks = locales.map((code) => ({
+    code,
+    href: localeHomeHref(code),
+    label: code.toUpperCase(),
+  }));
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -113,8 +115,9 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   return (
     <html
       lang={lang}
+      dir={lang === "ar" ? "rtl" : "ltr"}
       data-scroll-behavior="smooth"
-      className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} ${lang === "ar" ? cairo.variable : ""} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-ink text-fg">
         <script
@@ -123,7 +126,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
         />
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-accent focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-white"
+          className="sr-only focus:not-sr-only focus:absolute focus:start-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-accent focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-white"
         >
           {ui.skipToContent}
         </a>
@@ -135,7 +138,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
           email={siteConfig.email}
           copy={ui.nav}
           lang={lang}
-          localeSwitch={localeSwitch}
+          localeLinks={localeLinks}
         />
         <main id="main-content" className="flex-1">
           {children}

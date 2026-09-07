@@ -1,33 +1,38 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { Locale, NavItem, UiCopy } from "@/data/types";
 import { useHeroScrollProgress, lerp } from "@/lib/useHeroScrollProgress";
+import { caseStudyBasePath } from "@/lib/locale-path";
 import { MobileNav } from "./MobileNav";
 
-const CASE_STUDY_PATH = /^\/(?:fr\/)?realisations\/([^/]+)\/?$/;
+const CASE_STUDY_PATH = /^\/(?:(fr|ar)\/)?realisations\/([^/]+)\/?$/;
+
+export interface LocaleLink {
+  code: Locale;
+  href: string;
+  label: string;
+}
 
 /**
- * Le localeSwitch reçu du layout ne connaît que le fallback "page d'accueil"
+ * Les liens reçus du layout ne connaissent que le fallback "page d'accueil"
  * (calculé côté serveur, sans le pathname). Sur une case-study, on préfère
- * rester sur le même projet plutôt que renvoyer vers l'accueil de l'autre
- * langue — les 4 case studies existent dans les deux locales avec le même id.
+ * rester sur le même projet plutôt que renvoyer vers l'accueil des autres
+ * langues — les case studies existent dans les 3 locales avec le même id.
  */
-function useResolvedLocaleSwitch(
-  lang: Locale,
-  localeSwitch: { href: string; label: string },
-) {
+function useResolvedLocaleLinks(localeLinks: LocaleLink[]) {
   const pathname = usePathname();
   return useMemo(() => {
     const match = pathname.match(CASE_STUDY_PATH);
-    if (!match) return localeSwitch;
-    const slug = match[1];
-    const targetLang: Locale = lang === "en" ? "fr" : "en";
-    const href = targetLang === "en" ? `/realisations/${slug}` : `/fr/realisations/${slug}`;
-    return { href, label: localeSwitch.label };
-  }, [pathname, lang, localeSwitch]);
+    if (!match) return localeLinks;
+    const slug = match[2];
+    return localeLinks.map((link) => ({
+      ...link,
+      href: `${caseStudyBasePath(link.code)}/${slug}`,
+    }));
+  }, [pathname, localeLinks]);
 }
 
 function useActiveSection(nav: NavItem[]) {
@@ -66,13 +71,13 @@ interface HeaderProps {
   email: string;
   copy: UiCopy["nav"];
   lang: Locale;
-  localeSwitch: { href: string; label: string };
+  localeLinks: LocaleLink[];
 }
 
-export function Header({ nav, monogram, name, whatsappHref, email, copy, lang, localeSwitch }: HeaderProps) {
+export function Header({ nav, monogram, name, whatsappHref, email, copy, lang, localeLinks }: HeaderProps) {
   const progress = useHeroScrollProgress();
   const active = useActiveSection(nav);
-  const resolvedLocaleSwitch = useResolvedLocaleSwitch(lang, localeSwitch);
+  const resolvedLocaleLinks = useResolvedLocaleLinks(localeLinks);
 
   const outerPadTop = lerp(0, 12, progress);
   const barMaxWidth = lerp(1152, 880, progress);
@@ -158,12 +163,20 @@ export function Header({ nav, monogram, name, whatsappHref, email, copy, lang, l
           </nav>
 
           <div className="flex items-center gap-3">
-            <Link
-              href={resolvedLocaleSwitch.href}
-              className="hidden rounded-full border border-border-strong px-3 py-1.5 font-mono text-xs font-medium uppercase tracking-wider text-fg-subtle transition-colors hover:text-fg lg:inline-flex"
-            >
-              {resolvedLocaleSwitch.label}
-            </Link>
+            <div className="hidden items-center gap-1 rounded-full border border-border-strong px-1 py-1 lg:flex">
+              {resolvedLocaleLinks.map((link) => (
+                <Link
+                  key={link.code}
+                  href={link.href}
+                  aria-current={link.code === lang ? "true" : undefined}
+                  className={`rounded-full px-2.5 py-1 font-mono text-xs font-medium uppercase tracking-wider transition-colors ${
+                    link.code === lang ? "bg-white/[0.06] text-fg" : "text-fg-subtle hover:text-fg"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
             <a
               href={whatsappHref}
               target="_blank"
@@ -172,7 +185,7 @@ export function Header({ nav, monogram, name, whatsappHref, email, copy, lang, l
             >
               {copy.ctaLabel}
             </a>
-            <MobileNav nav={nav} whatsappHref={whatsappHref} email={email} copy={copy} localeSwitch={resolvedLocaleSwitch} />
+            <MobileNav nav={nav} whatsappHref={whatsappHref} email={email} copy={copy} lang={lang} localeLinks={resolvedLocaleLinks} />
           </div>
         </div>
       </header>

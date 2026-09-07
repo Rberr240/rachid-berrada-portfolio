@@ -32,7 +32,7 @@ export function Faq({ faqs, copy }: FaqProps) {
                   aria-hidden="true"
                 />
               </summary>
-              <p className="motion-safe:animate-fade-in-up mt-3 max-w-2xl pl-[calc(0.75rem_+_1rem)] text-sm leading-relaxed text-fg-muted">
+              <p className="motion-safe:animate-fade-in-up mt-3 max-w-2xl ps-[calc(0.75rem_+_1rem)] text-sm leading-relaxed text-fg-muted">
                 {faq.answer}
               </p>
             </details>

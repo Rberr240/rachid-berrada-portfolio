@@ -35,7 +35,7 @@ export function CtaLink({
       {children}
       {icon ? (
         <ArrowRight
-          className="size-4 shrink-0 transition-transform duration-200 group-hover:translate-x-0.5"
+          className="size-4 shrink-0 rtl:rotate-180 transition-transform duration-200 group-hover:translate-x-0.5"
           aria-hidden="true"
         />
       ) : null}

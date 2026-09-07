@@ -52,6 +52,9 @@ export default function GlobalNotFound() {
           <Link href="/fr" className="text-accent-2 hover:text-fg">
             Accueil (Français)
           </Link>
+          <Link href="/ar" className="text-accent-2 hover:text-fg">
+            الرئيسية (العربية)
+          </Link>
         </div>
       </body>
     </html>

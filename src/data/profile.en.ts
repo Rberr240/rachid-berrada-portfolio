@@ -308,7 +308,7 @@ export const profileEn: Profile = {
       summary:
         "A mobile-first site designed to be discovered by QR code: calling, WhatsApp and Instagram all one tap away from a physical card.",
       result: "Live, functioning site linked to a physical card via QR code.",
-      tags: ["Web", "Mobile First", "QR Code", { name: "GitHub Pages", featured: "web", order: 2 }],
+      tags: ["Web", "Mobile First", "QR Code", "GitHub Pages"],
       technologies: ["HTML", "CSS", "JavaScript", "GitHub Pages"],
       image: {
         desktop: "/portfolio/gold-fitness/desktop.webp",
@@ -418,7 +418,7 @@ export const profileEn: Profile = {
         "A secure registration flow letting owners identify themselves with an access code and submit their availability for co-ownership meetings.",
       result:
         "A working registration and data-collection flow, with access-code verification and secure server-side storage.",
-      tags: ["Web", { name: "Supabase", featured: "backend", order: 2 }, "Security"],
+      tags: ["Web", "Supabase", "Security"],
       technologies: ["HTML", "CSS", "JavaScript", "Supabase (PostgreSQL)", "Edge Functions (Deno)"],
       links: [],
       placeholder: false,
@@ -455,12 +455,7 @@ export const profileEn: Profile = {
       summary:
         "Centralized certificate management for students, teachers and interns, with authentication and PDF generation, containerized and wired into CI/CD.",
       result: "A working application with a continuous-integration pipeline (tests and Docker image build on every push).",
-      tags: [
-        { name: "React", featured: "web", order: 1 },
-        { name: "Laravel", featured: "backend", order: 1 },
-        { name: "Docker", featured: "devops", order: 1 },
-        { name: "CI/CD", featured: "devops", order: 2 },
-      ],
+      tags: ["React", "Laravel", "Docker", "CI/CD"],
       technologies: ["React", "Vite", "Chakra UI", "Laravel 12", "PHP 8.2", "Sanctum / JWT", "Docker", "GitHub Actions"],
       links: [{ label: "View the repository", href: "https://github.com/Rberr240/gestion-attestations", type: "repo" }],
       placeholder: false,
@@ -500,12 +495,7 @@ export const profileEn: Profile = {
         "A personal research project building a multi-model AI orchestrator with vector memory and voice/vision pipelines.",
       result:
         "A working, documented codebase, frozen as a stable base ahead of a new iteration currently in private development.",
-      tags: [
-        "Node.js",
-        { name: "LangGraph", featured: "ai", order: 1 },
-        { name: "RAG", featured: "ai", order: 2 },
-        "R&D",
-      ],
+      tags: ["Node.js", "LangGraph", "RAG", "R&D"],
       technologies: ["Node.js", "LangChain / LangGraph", "Multi-provider LLMs", "Qdrant", "SQLite"],
       links: [{ label: "View the repository", href: "https://github.com/Rberr240/JARVIS-V2", type: "repo" }],
       placeholder: false,
@@ -603,15 +593,6 @@ export const profileEn: Profile = {
       ctaSecondary: "View my work",
       focusEyebrow: "Focus",
       quoteWords: ["Build.", "Automate.", "Innovate."],
-    },
-    capabilities: {
-      intro: "Engineering across projects",
-      groups: [
-        { id: "ai", label: "AI Systems" },
-        { id: "web", label: "Web Platforms" },
-        { id: "backend", label: "Backend & APIs" },
-        { id: "devops", label: "DevOps & Delivery" },
-      ],
     },
     services: {
       eyebrow: "What I build",

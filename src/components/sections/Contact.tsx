@@ -59,17 +59,17 @@ export function Contact({ siteConfig, whatsappHref, copy, formCopy, projectTypes
 
             <div className="mt-10 space-y-5 border-t border-border pt-8">
               <ContactRow icon={MessageCircle} label={copy.rowWhatsapp}>
-                <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="hover:text-fg">
+                <a href={whatsappHref} target="_blank" rel="noopener noreferrer" dir="ltr" className="hover:text-fg">
                   {siteConfig.phoneDisplay}
                 </a>
               </ContactRow>
               <ContactRow icon={Phone} label={copy.rowPhone}>
-                <a href={phoneHref} className="hover:text-fg">
+                <a href={phoneHref} dir="ltr" className="hover:text-fg">
                   {siteConfig.phoneDisplay}
                 </a>
               </ContactRow>
               <ContactRow icon={Mail} label={copy.rowEmail}>
-                <a href={`mailto:${siteConfig.email}`} className="hover:text-fg">
+                <a href={`mailto:${siteConfig.email}`} dir="ltr" className="hover:text-fg">
                   {siteConfig.email}
                 </a>
               </ContactRow>
@@ -80,7 +80,7 @@ export function Contact({ siteConfig, whatsappHref, copy, formCopy, projectTypes
               ) : null}
               {siteConfig.hasConfirmedDomain ? (
                 <ContactRow icon={Globe} label={copy.rowSite}>
-                  {siteConfig.website.replace(/^https?:\/\//, "")}
+                  <span dir="ltr">{siteConfig.website.replace(/^https?:\/\//, "")}</span>
                 </ContactRow>
               ) : null}
             </div>

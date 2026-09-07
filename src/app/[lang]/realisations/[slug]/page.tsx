@@ -9,8 +9,7 @@ import { CtaLink } from "@/components/ui/CtaLink";
 import { getCaseStudyProjects, getProject, publicAssetExists } from "@/lib/portfolio";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 import { getProfile, isLocale } from "@/data/profile";
-import { tagLabel } from "@/data/types";
-
+import { caseStudyBasePath, localeHomeHref } from "@/lib/locale-path";
 export function generateStaticParams({ params }: { params: { lang: string } }) {
   const lang = isLocale(params.lang) ? params.lang : "en";
   const { projects } = getProfile(lang);
@@ -26,7 +25,7 @@ export async function generateMetadata({
   const project = getProject(projects, slug);
   if (!project?.caseStudy) return {};
 
-  const basePath = lang === "en" ? "/realisations" : "/fr/realisations";
+  const basePath = caseStudyBasePath(lang);
 
   return {
     title: `${project.title} — ${ui.caseStudy.titleSuffix}`,
@@ -51,7 +50,7 @@ export default async function CaseStudyPage({
   const { caseStudy } = project;
   const copy = ui.caseStudy;
   const whatsappHref = getWhatsAppLink(siteConfig.whatsappNumber, siteConfig.whatsappDefaultMessage);
-  const backHref = lang === "en" ? "/#realisations" : "/fr#realisations";
+  const backHref = `${localeHomeHref(lang)}#realisations`;
 
   const physicalCardPath = "/portfolio/gold-fitness/card-real.jpg";
   const hasPhysicalCard = project.id === "gold-fitness" && publicAssetExists(physicalCardPath);
@@ -71,7 +70,7 @@ export default async function CaseStudyPage({
             href={backHref}
             className="mb-8 inline-flex items-center gap-1.5 text-sm font-medium text-fg-muted transition-colors hover:text-fg"
           >
-            <ArrowLeft className="size-4" aria-hidden="true" />
+            <ArrowLeft className="size-4 rtl:rotate-180" aria-hidden="true" />
             {copy.back}
           </Link>
 
@@ -88,7 +87,7 @@ export default async function CaseStudyPage({
             <div className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-2">
               <Badge tone="accent">{project.statusLabel}</Badge>
               <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-fg-subtle">
-                {project.tags.map(tagLabel).map((tag, i) => (
+                {project.tags.map((tag, i) => (
                   <span key={tag}>
                     {i > 0 ? <span className="text-border-strong"> / </span> : null}
                     {tag}
@@ -195,7 +194,7 @@ export default async function CaseStudyPage({
                               {step}
                             </span>
                             {i < arr.length - 1 ? (
-                              <ArrowRight className="size-4 text-accent-2" aria-hidden="true" />
+                              <ArrowRight className="size-4 text-accent-2 rtl:rotate-180" aria-hidden="true" />
                             ) : null}
                           </span>
                         ))}
@@ -232,7 +231,7 @@ export default async function CaseStudyPage({
               </section>
             ) : null}
 
-            <section className="border-l-2 border-gold/50 py-1 pl-6">
+            <section className="border-s-2 border-gold/50 py-1 ps-6">
               <h2 className="font-mono text-xs font-medium uppercase tracking-wider text-fg-subtle">
                 {copy.result}
               </h2>

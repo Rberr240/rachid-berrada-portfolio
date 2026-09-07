@@ -77,6 +77,19 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Fraunces/Geist ne couvrent pas l'arabe : /ar charge Cairo (voir
+   [lang]/layout.tsx). "@theme inline" inline les variables --font-geist-sans,
+   --font-geist-mono et --font-fraunces directement dans les utilitaires
+   Tailwind au moment de la generation : ce sont donc CES variables (pas les
+   alias --font-sans / --font-serif / --font-mono) qu'il faut rediriger pour
+   que font-sans/font-serif/font-mono utilisent Cairo sur /ar, sans retoucher
+   chaque className. */
+html[lang="ar"] {
+  --font-geist-sans: var(--font-cairo);
+  --font-fraunces: var(--font-cairo);
+  --font-geist-mono: var(--font-cairo);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

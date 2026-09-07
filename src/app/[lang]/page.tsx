@@ -1,5 +1,4 @@
 import { Hero } from "@/components/sections/Hero";
-import { CapabilityStrip } from "@/components/sections/CapabilityStrip";
 import { Services } from "@/components/sections/Services";
 import { Problems } from "@/components/sections/Problems";
 import { Industries } from "@/components/sections/Industries";
@@ -13,6 +12,7 @@ import { Contact } from "@/components/sections/Contact";
 import { notFound } from "next/navigation";
 import { getProfile, isLocale } from "@/data/profile";
 import { getWhatsAppLink } from "@/lib/whatsapp";
+import { caseStudyBasePath } from "@/lib/locale-path";
 
 export default async function Home({ params }: PageProps<"/[lang]">) {
   const { lang } = await params;
@@ -21,16 +21,14 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
     getProfile(lang);
 
   const whatsappHref = getWhatsAppLink(siteConfig.whatsappNumber, siteConfig.whatsappDefaultMessage);
-  const caseStudyBasePath = lang === "en" ? "/realisations" : "/fr/realisations";
 
   return (
     <>
       <Hero siteConfig={siteConfig} whatsappHref={whatsappHref} copy={ui.hero} />
-      <CapabilityStrip copy={ui.capabilities} projects={projects} />
       <Services services={services} copy={ui.services} />
       <Problems problems={problems} copy={ui.problems} />
       <Industries industries={industries} copy={ui.industries} />
-      <Projects projects={projects} copy={ui.projects} caseStudyBasePath={caseStudyBasePath} />
+      <Projects projects={projects} copy={ui.projects} caseStudyBasePath={caseStudyBasePath(lang)} />
       <AiAutomation services={services} copy={ui.aiAutomation} />
       <Method methodSteps={methodSteps} copy={ui.method} />
       <About aboutText={siteConfig.aboutText} socialLinks={socialLinks} copy={ui.about} />
