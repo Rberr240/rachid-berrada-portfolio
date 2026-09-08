@@ -593,7 +593,6 @@ export const profileFr: Profile = {
     hero: {
       ctaPrimary: "Discuter de mon projet",
       ctaSecondary: "Voir mes réalisations",
-      focusEyebrow: "Domaines",
       quoteWords: ["Concevoir.", "Automatiser.", "Innover."],
     },
     services: {

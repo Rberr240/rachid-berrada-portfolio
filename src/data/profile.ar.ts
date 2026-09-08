@@ -586,7 +586,6 @@ export const profileAr: Profile = {
     hero: {
       ctaPrimary: "ابدأ مشروعاً",
       ctaSecondary: "شاهد أعمالي",
-      focusEyebrow: "التخصصات",
       quoteWords: ["ابتكر.", "أتمتة.", "طوّر."],
     },
     services: {

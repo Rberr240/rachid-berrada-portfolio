@@ -72,25 +72,6 @@ function CtaRow({ whatsappHref, copy }: { whatsappHref: string; copy: UiCopy["he
   );
 }
 
-/** Panneau vertical "index" — remplace, en documentation technique, l'espace
- * laissé vacant par le retrait du portrait : les domaines réels (siteConfig)
- * plutôt qu'une statistique inventée. */
-function FocusIndex({ eyebrow, items }: { eyebrow: string; items: string[] }) {
-  return (
-    <div className="space-y-3">
-      <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-fg-subtle">{eyebrow}</p>
-      <ul className="space-y-2">
-        {items.map((item) => (
-          <li key={item} className="flex items-baseline gap-2.5 text-sm leading-snug text-fg-muted">
-            <span className="h-px w-3 shrink-0 translate-y-[-0.3em] bg-accent-2/50" aria-hidden="true" />
-            {item}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
 function QuoteBlock({ words }: { words: string[] }) {
   return (
     <div className="border-s border-gold/50 py-1 ps-4">
@@ -144,13 +125,12 @@ export function Hero({ siteConfig, whatsappHref, copy }: HeroProps) {
           <HeroSculpture className="h-full w-full" />
         </div>
 
-        {/* Colonne de métadonnées — index technique + signature, seule
-            présence "sujet" de la composition après retrait du portrait */}
+        {/* Colonne de signature — seule présence "sujet" de la composition
+            après retrait du portrait, ancrée en bas de la colonne. */}
         <div
-          className="absolute end-[4%] top-[13%] flex h-[74%] w-[17%] flex-col justify-between transition-transform duration-150 ease-out"
+          className="absolute end-[4%] top-[13%] flex h-[74%] w-[17%] flex-col justify-end transition-transform duration-150 ease-out"
           style={railStyle}
         >
-          <FocusIndex eyebrow={copy.focusEyebrow} items={siteConfig.knowsAbout} />
           <QuoteBlock words={copy.quoteWords} />
         </div>
 
@@ -209,7 +189,6 @@ export function Hero({ siteConfig, whatsappHref, copy }: HeroProps) {
           <div className="relative aspect-square w-full max-w-[240px] sm:max-w-[260px]">
             <HeroSculpture className="h-full w-full" animated={false} />
           </div>
-          <TagRow tagline={siteConfig.knowsAbout.join(" • ")} />
         </div>
       </Container>
     </section>

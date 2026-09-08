@@ -119,7 +119,6 @@ export interface UiCopy {
   hero: {
     ctaPrimary: string;
     ctaSecondary: string;
-    focusEyebrow: string;
     quoteWords: string[];
   };
   services: { eyebrow: string; title: string; intro: string };

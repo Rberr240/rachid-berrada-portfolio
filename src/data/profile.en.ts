@@ -591,7 +591,6 @@ export const profileEn: Profile = {
     hero: {
       ctaPrimary: "Start a project",
       ctaSecondary: "View my work",
-      focusEyebrow: "Focus",
       quoteWords: ["Build.", "Automate.", "Innovate."],
     },
     services: {
