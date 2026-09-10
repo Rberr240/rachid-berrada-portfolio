@@ -1,7 +1,8 @@
 import type { MetadataRoute } from "next";
-import { siteConfig } from "@/data/profile";
+import { getProfile } from "@/data/profile";
 
 export default function robots(): MetadataRoute.Robots {
+  const { siteConfig } = getProfile("en");
   return {
     rules: {
       userAgent: "*",

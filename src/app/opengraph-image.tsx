@@ -1,10 +1,11 @@
 import { ImageResponse } from "next/og";
-import { siteConfig } from "@/data/profile";
+import { getProfile } from "@/data/profile";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default function OpengraphImage() {
+  const { siteConfig } = getProfile("en");
   return new ImageResponse(
     (
       <div

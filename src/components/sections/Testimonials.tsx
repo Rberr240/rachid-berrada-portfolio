@@ -1,25 +1,27 @@
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { testimonials } from "@/data/profile";
+import type { Testimonial, UiCopy } from "@/data/types";
+
+interface TestimonialsProps {
+  testimonials: Testimonial[];
+  copy: UiCopy["testimonials"];
+}
 
 /**
- * Section masquée tant qu'aucun témoignage réel n'est renseigné dans
- * src/data/profile.ts (aucun témoignage n'est inventé).
+ * Section masquée tant qu'aucun témoignage réel n'est renseigné dans les
+ * données localisées (aucun témoignage n'est inventé).
  */
-export function Testimonials() {
+export function Testimonials({ testimonials, copy }: TestimonialsProps) {
   if (testimonials.length === 0) return null;
 
   return (
     <section className="border-t border-border py-20 sm:py-28">
       <Container>
-        <SectionHeading eyebrow="Témoignages" title="Ce que mes clients en disent" />
+        <SectionHeading eyebrow={copy.eyebrow} title={copy.title} />
 
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {testimonials.map((t) => (
-            <blockquote
-              key={t.name}
-              className="rounded-2xl border border-border bg-surface/60 p-7"
-            >
+            <blockquote key={t.name} className="rounded-2xl border border-border bg-surface/60 p-7">
               <p className="text-sm leading-relaxed text-fg-muted">&ldquo;{t.quote}&rdquo;</p>
               <footer className="mt-5 text-sm font-medium text-fg">
                 {t.name}

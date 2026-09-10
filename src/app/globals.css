@@ -16,6 +16,7 @@
   --color-accent-2: #6f8dff;
   --color-accent-soft: rgba(61, 99, 255, 0.14);
   --color-gold: #c9a96a;
+  --color-gold-soft: rgba(201, 169, 106, 0.12);
 }
 
 @theme inline {
@@ -34,8 +35,10 @@
   --color-accent-2: var(--color-accent-2);
   --color-accent-soft: var(--color-accent-soft);
   --color-gold: var(--color-gold);
+  --color-gold-soft: var(--color-gold-soft);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-fraunces);
   --animate-fade-in-up: fade-in-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
   --animate-fade-in: fade-in 0.8s ease both;
   --animate-float-slow: float-slow 9s ease-in-out infinite;
@@ -72,6 +75,19 @@
 
 html {
   scroll-behavior: smooth;
+}
+
+/* Fraunces/Geist ne couvrent pas l'arabe : /ar charge Cairo (voir
+   [lang]/layout.tsx). "@theme inline" inline les variables --font-geist-sans,
+   --font-geist-mono et --font-fraunces directement dans les utilitaires
+   Tailwind au moment de la generation : ce sont donc CES variables (pas les
+   alias --font-sans / --font-serif / --font-mono) qu'il faut rediriger pour
+   que font-sans/font-serif/font-mono utilisent Cairo sur /ar, sans retoucher
+   chaque className. */
+html[lang="ar"] {
+  --font-geist-sans: var(--font-cairo);
+  --font-fraunces: var(--font-cairo);
+  --font-geist-mono: var(--font-cairo);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -117,16 +133,6 @@ body {
   background-size: 22px 22px;
 }
 
-/*
- * Correction de la dominante orange/rouge des photos prises en éclairage
- * artificiel chaud (lampadaire/façade) : on désature légèrement, on repousse
- * la teinte vers le froid et on resserre le contraste pour un rendu premium
- * cohérent avec la palette graphite/bleu électrique du site.
- */
-.portrait-treatment {
-  filter: saturate(0.82) contrast(1.08) brightness(0.96) hue-rotate(-6deg);
-}
-
 .portrait-fade-edge {
   -webkit-mask-image: linear-gradient(
     to bottom,
@@ -164,4 +170,43 @@ body {
     transparent 72%
   );
   border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%;
+}
+
+/* Repères d'angle — cadrage "instrument technique" pour le portrait About et
+   les visuels sans capture réelle. Remplace l'idée de carte/ombre par un
+   marquage de coordonnées, cohérent avec le vocabulaire grille/plan du site. */
+.corner-marks {
+  position: relative;
+}
+.corner-marks::before,
+.corner-marks::after {
+  content: "";
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  pointer-events: none;
+}
+.corner-marks::before {
+  top: 0;
+  left: 0;
+  border-top: 1px solid var(--color-gold);
+  border-left: 1px solid var(--color-gold);
+}
+.corner-marks::after {
+  bottom: 0;
+  right: 0;
+  border-bottom: 1px solid var(--color-gold);
+  border-right: 1px solid var(--color-gold);
+}
+
+/* Trame diagonale sobre pour les visuels sans asset réel — un motif
+   d'ingénierie plutôt qu'un faux écran ou une icône centrée seule. */
+.bg-hatch {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(255, 255, 255, 0.05) 0px,
+    rgba(255, 255, 255, 0.05) 1px,
+    transparent 1px,
+    transparent 10px
+  );
 }

@@ -1,47 +1,51 @@
 import { Container } from "@/components/ui/Container";
 import { SectionIndex } from "@/components/ui/SectionIndex";
 import { industryIconMap } from "@/components/ui/icon-map";
-import { industries } from "@/data/profile";
+import type { IndustryItem, UiCopy } from "@/data/types";
 
-export function Industries() {
+interface IndustriesProps {
+  industries: IndustryItem[];
+  copy: UiCopy["industries"];
+}
+
+export function Industries({ industries, copy }: IndustriesProps) {
   return (
     <section id="solutions" className="scroll-mt-[68px] border-t border-border py-20 sm:py-28">
       <Container>
-        <SectionIndex number="04" label="Solutions par métier" />
+        <SectionIndex number="04" label={copy.eyebrow} />
         <h2 className="max-w-2xl text-balance text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
-          Exemples de solutions que je peux concevoir
+          {copy.title}
         </h2>
         <p className="mt-4 max-w-2xl text-pretty text-base leading-relaxed text-fg-muted sm:text-lg">
-          Chaque secteur a ses propres contraintes. Voici des pistes concrètes selon votre
-          activité — adaptées ensuite à votre réalité.
+          {copy.intro}
         </p>
 
-        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {industries.map((industry) => {
+        <div className="mt-14 grid gap-x-8 gap-y-0 border-t border-border sm:grid-cols-2">
+          {industries.map((industry, i) => {
             const Icon = industryIconMap[industry.icon];
+            const isLastOdd = i === industries.length - 1 && industries.length % 2 === 1;
             return (
               <article
                 key={industry.id}
-                className="rounded-2xl border border-border bg-surface/60 p-7"
+                className={`group flex items-start gap-4 border-b border-border py-7 sm:py-8 ${
+                  isLastOdd ? "sm:col-span-2" : ""
+                }`}
               >
-                <div className="flex items-center gap-3">
-                  <div className="flex size-10 items-center justify-center rounded-xl border border-border-strong bg-white/[0.03] text-accent-2">
-                    <Icon className="size-5" aria-hidden="true" />
-                  </div>
-                  <h3 className="text-base font-semibold tracking-tight text-fg">
-                    {industry.name}
-                  </h3>
+                <Icon
+                  className="mt-0.5 size-5 shrink-0 text-fg-subtle transition-colors duration-200 group-hover:text-accent-2"
+                  aria-hidden="true"
+                />
+                <div>
+                  <h3 className="text-base font-semibold tracking-tight text-fg">{industry.name}</h3>
+                  <ul className="mt-1.5 max-w-md text-pretty text-sm leading-relaxed text-fg-muted">
+                    {industry.items.map((item, itemIndex) => (
+                      <li key={item} className="inline">
+                        {item}
+                        {itemIndex < industry.items.length - 1 ? ", " : ""}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <ul className="mt-5 flex flex-wrap gap-1.5">
-                  {industry.items.map((item) => (
-                    <li
-                      key={item}
-                      className="rounded-full border border-border px-3 py-1 text-xs text-fg-muted"
-                    >
-                      {item}
-                    </li>
-                  ))}
-                </ul>
               </article>
             );
           })}

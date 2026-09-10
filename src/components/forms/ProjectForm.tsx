@@ -2,7 +2,7 @@
 
 import { useId, useState, type FormEvent } from "react";
 import { Loader2, CheckCircle2 } from "lucide-react";
-import { projectTypes } from "@/data/profile";
+import type { UiCopy } from "@/data/types";
 
 const FORM_NAME = "contact";
 
@@ -18,16 +18,6 @@ interface FormState {
   botField: string;
 }
 
-const initialState: FormState = {
-  name: "",
-  company: "",
-  phone: "",
-  email: "",
-  projectType: projectTypes[0],
-  message: "",
-  botField: "",
-};
-
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function encodeForm(data: Record<string, string>): string {
@@ -36,8 +26,22 @@ function encodeForm(data: Record<string, string>): string {
     .join("&");
 }
 
-export function ProjectForm() {
+interface ProjectFormProps {
+  projectTypes: readonly string[];
+  copy: UiCopy["form"];
+}
+
+export function ProjectForm({ projectTypes, copy }: ProjectFormProps) {
   const formId = useId();
+  const initialState: FormState = {
+    name: "",
+    company: "",
+    phone: "",
+    email: "",
+    projectType: projectTypes[0],
+    message: "",
+    botField: "",
+  };
   const [values, setValues] = useState<FormState>(initialState);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const [status, setStatus] = useState<Status>("idle");
@@ -48,13 +52,13 @@ export function ProjectForm() {
 
   function validate(): boolean {
     const next: Partial<Record<keyof FormState, string>> = {};
-    if (!values.name.trim()) next.name = "Merci d'indiquer votre nom.";
+    if (!values.name.trim()) next.name = copy.nameRequired;
     if (!values.email.trim()) {
-      next.email = "Merci d'indiquer votre email.";
+      next.email = copy.emailRequired;
     } else if (!EMAIL_REGEX.test(values.email)) {
-      next.email = "Le format de l'email semble invalide.";
+      next.email = copy.emailInvalid;
     }
-    if (!values.message.trim()) next.message = "Décrivez brièvement votre projet.";
+    if (!values.message.trim()) next.message = copy.messageRequired;
     setErrors(next);
     return Object.keys(next).length === 0;
   }
@@ -98,29 +102,21 @@ export function ProjectForm() {
         className="flex flex-col items-start gap-3 rounded-2xl border border-border-strong bg-surface/60 p-8"
       >
         <CheckCircle2 className="size-8 text-accent-2" aria-hidden="true" />
-        <p className="text-base font-medium text-fg">Message envoyé, merci !</p>
-        <p className="text-sm leading-relaxed text-fg-muted">
-          Je reviens vers vous rapidement. Pour aller plus vite, vous pouvez aussi me
-          contacter directement sur WhatsApp.
-        </p>
+        <p className="text-base font-medium text-fg">{copy.successTitle}</p>
+        <p className="text-sm leading-relaxed text-fg-muted">{copy.successBody}</p>
       </div>
     );
   }
 
   return (
-    <form
-      name={FORM_NAME}
-      onSubmit={handleSubmit}
-      noValidate
-      className="space-y-5"
-    >
+    <form name={FORM_NAME} onSubmit={handleSubmit} noValidate className="space-y-5">
       {/* Champ requis par Netlify Forms pour associer la soumission au formulaire */}
       <input type="hidden" name="form-name" value={FORM_NAME} />
 
       {/* Honeypot anti-spam : positionné hors écran, jamais rempli par un humain */}
       <p className="absolute -left-[9999px]" aria-hidden="true">
         <label>
-          Ne pas remplir si vous êtes humain
+          {copy.honeypotLabel}
           <input
             type="text"
             name="bot-field"
@@ -136,7 +132,7 @@ export function ProjectForm() {
         <Field
           id={`${formId}-name`}
           name="name"
-          label="Nom"
+          label={copy.nameLabel}
           required
           autoComplete="name"
           value={values.name}
@@ -146,7 +142,7 @@ export function ProjectForm() {
         <Field
           id={`${formId}-company`}
           name="company"
-          label="Entreprise"
+          label={copy.companyLabel}
           autoComplete="organization"
           value={values.company}
           onChange={(v) => update("company", v)}
@@ -154,7 +150,7 @@ export function ProjectForm() {
         <Field
           id={`${formId}-phone`}
           name="phone"
-          label="Téléphone / WhatsApp (facultatif)"
+          label={copy.phoneLabel}
           type="tel"
           autoComplete="tel"
           value={values.phone}
@@ -164,7 +160,7 @@ export function ProjectForm() {
         <Field
           id={`${formId}-email`}
           name="email"
-          label="Email"
+          label={copy.emailLabel}
           required
           type="email"
           autoComplete="email"
@@ -175,11 +171,8 @@ export function ProjectForm() {
       </div>
 
       <div>
-        <label
-          htmlFor={`${formId}-type`}
-          className="mb-1.5 block text-sm font-medium text-fg"
-        >
-          Type de projet
+        <label htmlFor={`${formId}-type`} className="mb-1.5 block text-sm font-medium text-fg">
+          {copy.projectTypeLabel}
         </label>
         <select
           id={`${formId}-type`}
@@ -197,11 +190,8 @@ export function ProjectForm() {
       </div>
 
       <div>
-        <label
-          htmlFor={`${formId}-message`}
-          className="mb-1.5 block text-sm font-medium text-fg"
-        >
-          Message <span className="text-accent-2">*</span>
+        <label htmlFor={`${formId}-message`} className="mb-1.5 block text-sm font-medium text-fg">
+          {copy.messageLabel} <span className="text-accent-2">*</span>
         </label>
         <textarea
           id={`${formId}-message`}
@@ -212,7 +202,7 @@ export function ProjectForm() {
           onChange={(e) => update("message", e.target.value)}
           aria-invalid={Boolean(errors.message)}
           aria-describedby={errors.message ? `${formId}-message-error` : undefined}
-          placeholder="Parlez-moi de votre projet, de votre activité et du besoin à résoudre."
+          placeholder={copy.messagePlaceholder}
           className="w-full resize-none rounded-xl border border-border-strong bg-surface px-4 py-3 text-sm text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-accent-2"
           suppressHydrationWarning
         />
@@ -225,8 +215,7 @@ export function ProjectForm() {
 
       {status === "error" ? (
         <p role="alert" className="text-sm text-red-400">
-          Une erreur est survenue lors de l&apos;envoi. Merci de réessayer ou de me
-          contacter directement via WhatsApp.
+          {copy.errorBody}
         </p>
       ) : null}
 
@@ -235,10 +224,8 @@ export function ProjectForm() {
         disabled={status === "submitting"}
         className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent px-6 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:bg-accent-2 disabled:cursor-not-allowed disabled:opacity-40 sm:w-auto"
       >
-        {status === "submitting" ? (
-          <Loader2 className="size-4 animate-spin" aria-hidden="true" />
-        ) : null}
-        Envoyer ma demande
+        {status === "submitting" ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : null}
+        {copy.submit}
       </button>
     </form>
   );
