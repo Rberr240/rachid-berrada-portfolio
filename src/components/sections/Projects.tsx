@@ -48,21 +48,35 @@ export function Projects({ projects, copy, caseStudyBasePath }: ProjectsProps) {
                 <div className="w-full lg:w-[56%]">
                   {project.image ? (
                     <div className="corner-marks relative aspect-[16/12] w-full overflow-hidden bg-graphite">
-                      <div className="absolute inset-0 flex items-center justify-center bg-dot-grid p-7 sm:p-10">
-                        {/* Les captures sont des sites mobile-first : un cadrage
-                            "appareil" portrait évite les larges marges vides que
-                            leur propre capture desktop laisserait dans un cadre
-                            plein cadre. */}
-                        <div className="relative h-full aspect-[9/17.5] overflow-hidden rounded-[1.4rem] border border-white/10 shadow-[0_30px_60px_-20px_rgba(0,0,0,0.7)] transition-transform duration-500 ease-out group-hover:-translate-y-1.5 group-hover:scale-[1.015]">
-                          <Image
-                            src={project.image.mobile}
-                            alt={project.image.alt}
-                            fill
-                            sizes="(min-width: 1024px) 20vw, 45vw"
-                            className="object-cover object-top"
-                          />
+                      {project.image.layout === "desktop" ? (
+                        <div className="absolute inset-0 flex items-center justify-center bg-dot-grid p-4 sm:p-6">
+                          <div className="relative w-full aspect-[16/10] overflow-hidden rounded-xl border border-white/10 bg-ink shadow-[0_30px_60px_-20px_rgba(0,0,0,0.7)] transition-transform duration-500 ease-out group-hover:-translate-y-1 group-hover:scale-[1.01]">
+                            <Image
+                              src={project.image.desktop}
+                              alt={project.image.alt}
+                              fill
+                              sizes="(min-width: 1024px) 50vw, 100vw"
+                              className="object-contain object-top"
+                            />
+                          </div>
                         </div>
-                      </div>
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center bg-dot-grid p-7 sm:p-10">
+                          {/* Les captures sont des sites mobile-first : un cadrage
+                              "appareil" portrait évite les larges marges vides que
+                              leur propre capture desktop laisserait dans un cadre
+                              plein cadre. */}
+                          <div className="relative h-full aspect-[9/17.5] overflow-hidden rounded-[1.4rem] border border-white/10 shadow-[0_30px_60px_-20px_rgba(0,0,0,0.7)] transition-transform duration-500 ease-out group-hover:-translate-y-1.5 group-hover:scale-[1.015]">
+                            <Image
+                              src={project.image.mobile}
+                              alt={project.image.alt}
+                              fill
+                              sizes="(min-width: 1024px) 20vw, 45vw"
+                              className="object-cover object-top"
+                            />
+                          </div>
+                        </div>
+                      )}
                       {project.placeholder ? (
                         <span className="absolute end-3 top-3">
                           <Badge tone="warning">{copy.placeholderBadge}</Badge>

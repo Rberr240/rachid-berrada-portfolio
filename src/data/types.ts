@@ -43,6 +43,9 @@ export interface ProjectImage {
   desktop: string;
   mobile: string;
   alt: string;
+  // Absent (ou "mobile") = cadrage appareil portrait existant. "desktop" bascule
+  // Projects/case-study vers une présentation paysage pour les visuels dashboard.
+  layout?: "mobile" | "desktop";
 }
 
 export interface CaseStudy {

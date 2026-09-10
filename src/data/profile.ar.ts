@@ -416,7 +416,15 @@ export const profileAr: Profile = {
       result: "مسار تسجيل وجمع بيانات فعّال، مع التحقق من رمز الوصول وتخزين آمن على الخادم.",
       tags: ["ويب", "Supabase", "الأمان"],
       technologies: ["HTML", "CSS", "JavaScript", "Supabase (PostgreSQL)", "Edge Functions (Deno)"],
-      links: [],
+      image: {
+        desktop: "/portfolio/residence-mirador/dashbord.png",
+        mobile: "/portfolio/residence-mirador/dashbord.png",
+        alt: "مفهوم واجهة بوابة ملاك إقامة Mirador Golf",
+        layout: "desktop",
+      },
+      links: [
+        { label: "زيارة الموقع", href: "https://rberr240.github.io/mirador-golf-demo/", type: "demo" },
+      ],
       placeholder: false,
       caseStudy: {
         heroSubtitle: "نظام آمن لتسجيل الملاك وتنسيق الاجتماعات لإقامة سكنية.",
@@ -439,6 +447,12 @@ export const profileAr: Profile = {
           { name: "Row Level Security" },
           { name: "رموز وصول موقّعة بـ HMAC" },
         ],
+        gallery: [
+          {
+            src: "/portfolio/residence-mirador/dashbord.png",
+            alt: "مفهوم واجهة بوابة ملاك إقامة Mirador Golf",
+          },
+        ],
         metaDescription:
           "دراسة حالة: نظام آمن لتسجيل ملاك إقامة سكنية وتنسيق اجتماعاتهم، مع التحقق من رمز الوصول على Supabase.",
       },
@@ -453,6 +467,12 @@ export const profileAr: Profile = {
       result: "تطبيق فعّال مع خط تكامل مستمر (اختبارات وبناء صورة Docker مع كل دفعة).",
       tags: ["React", "Laravel", "Docker", "CI/CD"],
       technologies: ["React", "Vite", "Chakra UI", "Laravel 12", "PHP 8.2", "Sanctum / JWT", "Docker", "GitHub Actions"],
+      image: {
+        desktop: "/portfolio/gestion-attestations/dashbord.png",
+        mobile: "/portfolio/gestion-attestations/dashbord.png",
+        alt: "مفهوم واجهة لوحة تحكم نظام إدارة الشهادات",
+        layout: "desktop",
+      },
       links: [{ label: "زيارة المستودع", href: "https://github.com/Rberr240/gestion-attestations", type: "repo" }],
       placeholder: false,
       caseStudy: {
@@ -478,6 +498,12 @@ export const profileAr: Profile = {
           { name: "Docker" },
           { name: "GitHub Actions", note: "CI/CD" },
         ],
+        gallery: [
+          {
+            src: "/portfolio/gestion-attestations/dashbord.png",
+            alt: "مفهوم واجهة لوحة تحكم نظام إدارة الشهادات",
+          },
+        ],
         metaDescription:
           "دراسة حالة: تطبيق متكامل React + Laravel لإدارة الشهادات، مع Docker وخط CI/CD.",
       },
@@ -492,6 +518,12 @@ export const profileAr: Profile = {
       result: "قاعدة كود فعّالة وموثّقة، مُجمَّدة كأساس مستقر قبل تكرار جديد قيد التطوير الخاص حالياً.",
       tags: ["Node.js", "LangGraph", "RAG", "بحث وتطوير"],
       technologies: ["Node.js", "LangChain / LangGraph", "مزودو LLM متعددون", "Qdrant", "SQLite"],
+      image: {
+        desktop: "/portfolio/jarvis/dashbord.png",
+        mobile: "/portfolio/jarvis/dashbord.png",
+        alt: "مفهوم لوحة تحكم تنسيق الذكاء الاصطناعي JARVIS",
+        layout: "desktop",
+      },
       links: [{ label: "زيارة المستودع", href: "https://github.com/Rberr240/JARVIS-V2", type: "repo" }],
       placeholder: false,
       caseStudy: {
@@ -518,6 +550,12 @@ export const profileAr: Profile = {
           { name: "نماذج متعددة", note: "Anthropic، Google، Groq، OpenAI" },
           { name: "Qdrant", note: "ذاكرة متجهية / RAG" },
           { name: "SQLite" },
+        ],
+        gallery: [
+          {
+            src: "/portfolio/jarvis/dashbord.png",
+            alt: "مفهوم لوحة تحكم تنسيق الذكاء الاصطناعي JARVIS",
+          },
         ],
         metaDescription:
           "دراسة حالة: JARVIS، مشروع بحث وتطوير شخصي في الذكاء الاصطناعي — تنسيق متعدد النماذج، ذاكرة متجهية وRAG.",

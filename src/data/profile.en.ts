@@ -420,7 +420,15 @@ export const profileEn: Profile = {
         "A working registration and data-collection flow, with access-code verification and secure server-side storage.",
       tags: ["Web", "Supabase", "Security"],
       technologies: ["HTML", "CSS", "JavaScript", "Supabase (PostgreSQL)", "Edge Functions (Deno)"],
-      links: [],
+      image: {
+        desktop: "/portfolio/residence-mirador/dashbord.png",
+        mobile: "/portfolio/residence-mirador/dashbord.png",
+        alt: "Mirador Golf residence owner portal interface concept",
+        layout: "desktop",
+      },
+      links: [
+        { label: "View the site", href: "https://rberr240.github.io/mirador-golf-demo/", type: "demo" },
+      ],
       placeholder: false,
       caseStudy: {
         heroSubtitle: "A secure owner registration and meeting-coordination system for a residence.",
@@ -443,6 +451,12 @@ export const profileEn: Profile = {
           { name: "Row Level Security" },
           { name: "HMAC-signed access codes" },
         ],
+        gallery: [
+          {
+            src: "/portfolio/residence-mirador/dashbord.png",
+            alt: "Mirador Golf residence owner portal interface concept",
+          },
+        ],
         metaDescription:
           "Case study: a secure owner registration and meeting-coordination system for a residence, with access-code verification on Supabase.",
       },
@@ -457,6 +471,12 @@ export const profileEn: Profile = {
       result: "A working application with a continuous-integration pipeline (tests and Docker image build on every push).",
       tags: ["React", "Laravel", "Docker", "CI/CD"],
       technologies: ["React", "Vite", "Chakra UI", "Laravel 12", "PHP 8.2", "Sanctum / JWT", "Docker", "GitHub Actions"],
+      image: {
+        desktop: "/portfolio/gestion-attestations/dashbord.png",
+        mobile: "/portfolio/gestion-attestations/dashbord.png",
+        alt: "Certificate management system dashboard interface concept",
+        layout: "desktop",
+      },
       links: [{ label: "View the repository", href: "https://github.com/Rberr240/gestion-attestations", type: "repo" }],
       placeholder: false,
       caseStudy: {
@@ -482,6 +502,12 @@ export const profileEn: Profile = {
           { name: "Docker" },
           { name: "GitHub Actions", note: "CI/CD" },
         ],
+        gallery: [
+          {
+            src: "/portfolio/gestion-attestations/dashbord.png",
+            alt: "Certificate management system dashboard interface concept",
+          },
+        ],
         metaDescription:
           "Case study: a full-stack React + Laravel application for certificate management, with Docker and a CI/CD pipeline.",
       },
@@ -497,6 +523,12 @@ export const profileEn: Profile = {
         "A working, documented codebase, frozen as a stable base ahead of a new iteration currently in private development.",
       tags: ["Node.js", "LangGraph", "RAG", "R&D"],
       technologies: ["Node.js", "LangChain / LangGraph", "Multi-provider LLMs", "Qdrant", "SQLite"],
+      image: {
+        desktop: "/portfolio/jarvis/dashbord.png",
+        mobile: "/portfolio/jarvis/dashbord.png",
+        alt: "JARVIS AI orchestration dashboard concept",
+        layout: "desktop",
+      },
       links: [{ label: "View the repository", href: "https://github.com/Rberr240/JARVIS-V2", type: "repo" }],
       placeholder: false,
       caseStudy: {
@@ -523,6 +555,12 @@ export const profileEn: Profile = {
           { name: "Multi-LLM", note: "Anthropic, Google, Groq, OpenAI" },
           { name: "Qdrant", note: "vector memory / RAG" },
           { name: "SQLite" },
+        ],
+        gallery: [
+          {
+            src: "/portfolio/jarvis/dashbord.png",
+            alt: "JARVIS AI orchestration dashboard concept",
+          },
         ],
         metaDescription:
           "Case study: JARVIS, a personal AI R&D project — multi-model orchestration, vector memory and RAG.",

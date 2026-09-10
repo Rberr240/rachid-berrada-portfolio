@@ -210,19 +210,24 @@ export default async function CaseStudyPage({
                 <div className="mt-4 grid gap-6 sm:grid-cols-2">
                   {gallery.map((item) => {
                     const isMobileShot = item.src.includes("mobile");
+                    const isLandscapeShot = item.src.includes("dashbord");
                     return (
                       <div
                         key={item.src}
                         className={`corner-marks relative overflow-hidden bg-ink ${
-                          isMobileShot ? "aspect-[9/16] sm:mx-auto sm:w-2/3" : "aspect-[3/4]"
+                          isMobileShot
+                            ? "aspect-[9/16] sm:mx-auto sm:w-2/3"
+                            : isLandscapeShot
+                              ? "aspect-[16/10] sm:col-span-2"
+                              : "aspect-[3/4]"
                         }`}
                       >
                         <Image
                           src={item.src}
                           alt={item.alt}
                           fill
-                          className="object-cover object-top"
-                          sizes="(min-width: 640px) 33vw, 100vw"
+                          className={`object-top ${isLandscapeShot ? "object-contain" : "object-cover"}`}
+                          sizes={isLandscapeShot ? "(min-width: 1024px) 60vw, 100vw" : "(min-width: 640px) 33vw, 100vw"}
                         />
                       </div>
                     );

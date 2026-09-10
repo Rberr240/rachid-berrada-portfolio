@@ -422,7 +422,15 @@ export const profileFr: Profile = {
         "Parcours d'inscription et de collecte fonctionnel, avec vérification de code d'accès et enregistrement sécurisé côté serveur.",
       tags: ["Web", "Supabase", "Sécurité"],
       technologies: ["HTML", "CSS", "JavaScript", "Supabase (PostgreSQL)", "Edge Functions (Deno)"],
-      links: [],
+      image: {
+        desktop: "/portfolio/residence-mirador/dashbord.png",
+        mobile: "/portfolio/residence-mirador/dashbord.png",
+        alt: "Concept d'interface de l'espace propriétaires de la Résidence Mirador Golf",
+        layout: "desktop",
+      },
+      links: [
+        { label: "Voir le site", href: "https://rberr240.github.io/mirador-golf-demo/", type: "demo" },
+      ],
       placeholder: false,
       caseStudy: {
         heroSubtitle: "Un parcours d'inscription sécurisé pour les propriétaires d'une résidence.",
@@ -445,6 +453,12 @@ export const profileFr: Profile = {
           { name: "Row Level Security" },
           { name: "Signature HMAC des codes d'accès" },
         ],
+        gallery: [
+          {
+            src: "/portfolio/residence-mirador/dashbord.png",
+            alt: "Concept d'interface de l'espace propriétaires de la Résidence Mirador Golf",
+          },
+        ],
         metaDescription:
           "Case study : plateforme d'inscription sécurisée pour les propriétaires d'une résidence, avec validation par code d'accès et infrastructure Supabase.",
       },
@@ -459,6 +473,12 @@ export const profileFr: Profile = {
       result: "Application fonctionnelle avec pipeline d'intégration continue (tests et build de l'image Docker à chaque envoi).",
       tags: ["React", "Laravel", "Docker", "CI/CD"],
       technologies: ["React", "Vite", "Chakra UI", "Laravel 12", "PHP 8.2", "Sanctum / JWT", "Docker", "GitHub Actions"],
+      image: {
+        desktop: "/portfolio/gestion-attestations/dashbord.png",
+        mobile: "/portfolio/gestion-attestations/dashbord.png",
+        alt: "Concept d'interface du tableau de bord du système de gestion des attestations",
+        layout: "desktop",
+      },
       links: [{ label: "Voir le repository", href: "https://github.com/Rberr240/gestion-attestations", type: "repo" }],
       placeholder: false,
       caseStudy: {
@@ -484,6 +504,12 @@ export const profileFr: Profile = {
           { name: "Docker" },
           { name: "GitHub Actions", note: "CI/CD" },
         ],
+        gallery: [
+          {
+            src: "/portfolio/gestion-attestations/dashbord.png",
+            alt: "Concept d'interface du tableau de bord du système de gestion des attestations",
+          },
+        ],
         metaDescription:
           "Case study : application full-stack React + Laravel pour la gestion d'attestations, avec Docker et pipeline CI/CD.",
       },
@@ -499,6 +525,12 @@ export const profileFr: Profile = {
         "Base de code fonctionnelle et documentée, gelée comme socle avant une nouvelle itération actuellement en développement privé.",
       tags: ["Node.js", "LangGraph", "RAG", "R&D"],
       technologies: ["Node.js", "LangChain / LangGraph", "Multi-fournisseurs LLM", "Qdrant", "SQLite"],
+      image: {
+        desktop: "/portfolio/jarvis/dashbord.png",
+        mobile: "/portfolio/jarvis/dashbord.png",
+        alt: "Concept d'interface du tableau de bord d'orchestration IA JARVIS",
+        layout: "desktop",
+      },
       links: [{ label: "Voir le repository", href: "https://github.com/Rberr240/JARVIS-V2", type: "repo" }],
       placeholder: false,
       caseStudy: {
@@ -525,6 +557,12 @@ export const profileFr: Profile = {
           { name: "Multi-LLM", note: "Anthropic, Google, Groq, OpenAI" },
           { name: "Qdrant", note: "mémoire vectorielle / RAG" },
           { name: "SQLite" },
+        ],
+        gallery: [
+          {
+            src: "/portfolio/jarvis/dashbord.png",
+            alt: "Concept d'interface du tableau de bord d'orchestration IA JARVIS",
+          },
         ],
         metaDescription:
           "Case study : JARVIS, projet personnel de R&D en intelligence artificielle — orchestration multi-modèles, mémoire vectorielle et RAG.",
