@@ -1,12 +1,30 @@
 # Netlify détecte Next.js automatiquement et applique son adapter moderne
-# (Next Runtime, basé sur OpenNext) sans déclaration explicite de plugin —
-# App Router, SSG, routes dynamiques /realisations/[slug], sitemap/robots/OG
-# générés sont tous pris en charge nativement. Ne pas ajouter manuellement
-# [[plugins]] package = "@netlify/plugin-nextjs" : cette déclaration explicite
-# est l'ancienne méthode, inutile ici et pouvant figer un comportement moins
-# à jour que la détection automatique.
+# (Next Runtime, basé sur OpenNext) sans déclaration explicite de plugin.
+# Ne pas ajouter manuellement [[plugins]] package = "@netlify/plugin-nextjs".
+#
+# Routage par pays : netlify/edge-functions/locale-redirect.ts (config inline,
+# path "/" uniquement). Le projet n'a volontairement AUCUN middleware/proxy
+# Next.js : l'adapter ne génère donc aucune edge function concurrente.
+# Voir docs/PORTFOLIO_V2/03_GEOIP_AND_I18N.md.
 [build]
   command = "npm run build"
 
 [build.environment]
-  NODE_VERSION = "20"
+  # Aligné sur la version locale (Node 24 LTS).
+  NODE_VERSION = "24"
+
+# En-têtes de sécurité appliqués à toutes les réponses (pages, assets,
+# vCard). HSTS est déjà ajouté par Netlify sur le domaine personnalisé.
+# 'unsafe-inline' (scripts) est requis par les scripts d'hydratation inline
+# de Next.js sur des pages statiques (les nonces imposeraient un rendu
+# dynamique). Activer un outil d'analytics impose d'ajouter son domaine à
+# script-src et connect-src — voir docs/PORTFOLIO_V2/08_SECURITY_AUDIT.md.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+    Cross-Origin-Opener-Policy = "same-origin"
