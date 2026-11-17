@@ -16,7 +16,7 @@ export function About({ t }: { t: Dictionary }) {
               src={person.portraits.about}
               alt={t.person.aboutPortraitAlt}
               fill
-              sizes="(min-width: 768px) 30vw, 75vw"
+              sizes="(min-width: 768px) 360px, 75vw"
               className="object-cover"
             />
           </div>

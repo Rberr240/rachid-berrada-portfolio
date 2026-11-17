@@ -9,7 +9,7 @@ import { StatusBadge } from "@/components/project/StatusBadge";
 import { PhoneShot } from "@/components/project/PhoneShot";
 import { SectionHead } from "./SectionHead";
 
-const secondaryLink = "text-fg-muted underline decoration-line-strong underline-offset-4 hover:text-fg";
+const secondaryLink = "inline-flex min-h-11 items-center text-fg-muted underline decoration-line-strong underline-offset-4 hover:text-fg";
 
 /**
  * Hiérarchie de preuve : les projets avec captures réelles en grand,

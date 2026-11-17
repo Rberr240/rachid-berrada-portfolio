@@ -14,7 +14,7 @@ export function Problems({ t }: { t: Dictionary }) {
               key={item.situation}
               className="grid gap-3 border-t border-line py-7 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-12"
             >
-              <p className="font-serif text-xl italic leading-snug text-fg sm:text-2xl">{item.situation}</p>
+              <p className="font-serif text-xl leading-snug text-fg sm:text-2xl">{item.situation}</p>
               <div>
                 <p className="text-pretty leading-relaxed text-fg-muted">{item.solution}</p>
                 <p className="mt-2 text-sm font-medium text-gold">{t.services.items[item.service].title}</p>

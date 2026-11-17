@@ -15,6 +15,10 @@ const nextConfig: NextConfig = {
     ];
   },
   experimental: {
+    // Les visiteurs du QR code arrivent pour la première fois, sur mobile :
+    // le CSS Tailwind (~8 Ko gzip) est inliné pour supprimer la requête
+    // bloquante avant le premier rendu.
+    inlineCss: true,
     // Layout racine sous un segment dynamique ([lang]) : nécessaire pour
     // servir app/global-not-found.tsx sur les URL inconnues.
     globalNotFound: true,

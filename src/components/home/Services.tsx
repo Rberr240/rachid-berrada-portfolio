@@ -56,7 +56,7 @@ export function Services({ lang, t }: { lang: Locale; t: Dictionary }) {
                   {proof ? (
                     <Link
                       href={paths.project(lang, proof.id)}
-                      className="text-fg-muted underline decoration-line-strong underline-offset-4 hover:text-fg"
+                      className="inline-flex min-h-11 items-center text-fg-muted underline decoration-line-strong underline-offset-4 hover:text-fg"
                     >
                       {s.proofLabel} {t.projects[proof.id].title}
                     </Link>

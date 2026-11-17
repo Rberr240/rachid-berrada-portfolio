@@ -5,7 +5,7 @@ import { LOCALES, LOCALE_META, type Locale } from "@/lib/i18n";
 import { paths } from "@/lib/paths";
 import { Container } from "@/components/ui/Container";
 
-const link = "text-fg-muted transition-colors hover:text-fg";
+const link = "inline-flex min-h-8 items-center text-fg-muted transition-colors hover:text-fg";
 
 export function Footer({ lang, t }: { lang: Locale; t: Dictionary }) {
   const sections = [
@@ -22,7 +22,7 @@ export function Footer({ lang, t }: { lang: Locale; t: Dictionary }) {
         <div>
           <p className="display text-3xl text-fg">{person.name}</p>
           <p className="mt-2 text-fg-muted">{t.person.title}</p>
-          <ul className="mt-6 space-y-2 text-[0.95rem]">
+          <ul className="mt-5 space-y-1 text-[0.95rem]">
             <li>
               <a href={`tel:${person.phoneE164}`} dir="ltr" className={link}>
                 {person.phoneDisplay}
@@ -42,7 +42,7 @@ export function Footer({ lang, t }: { lang: Locale; t: Dictionary }) {
           </ul>
         </div>
 
-        <ul className="space-y-2 text-[0.95rem]">
+        <ul className="space-y-1 text-[0.95rem]">
           {sections.map((s) => (
             <li key={s.id}>
               <a href={paths.section(lang, s.id)} className={link}>
@@ -70,7 +70,7 @@ export function Footer({ lang, t }: { lang: Locale; t: Dictionary }) {
               ))}
             </ul>
           </div>
-          <ul className="space-y-2">
+          <ul className="space-y-1">
             <li>
               <Link href={paths.legal(lang)} className={link}>
                 {t.footer.legal}

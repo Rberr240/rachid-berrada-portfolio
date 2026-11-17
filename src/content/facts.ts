@@ -22,6 +22,7 @@ export const person = {
   // hero-rachid.jpg : portrait web, avatar vCard, visuel Open Graph).
   portraits: {
     hero: "/images/rachid/portrait.jpg",
+    heroMobile: "/images/rachid/portrait-mobile.jpg",
     square: "/images/rachid/portrait-square.jpg",
     og: "/images/rachid/og-portrait.jpg",
     about: "/images/rachid/about-rachid.jpg",

@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { getImageProps } from "next/image";
 import type { Dictionary } from "@/content/types";
 import { person } from "@/content/facts";
 import type { Locale } from "@/lib/i18n";
@@ -6,6 +6,33 @@ import { paths } from "@/lib/paths";
 import { Container } from "@/components/ui/Container";
 import { ContactActions } from "@/components/card/ContactActions";
 import { ShareButton } from "@/components/card/ShareButton";
+
+/**
+ * Portrait = élément LCP. Direction artistique : recadrage paysage léger
+ * sur mobile (cadre bas et large), portrait 3:4 sur desktop. Priorité
+ * réseau haute, jamais de chargement différé.
+ */
+function HeroPortrait({ alt }: { alt: string }) {
+  const {
+    props: { srcSet: desktop },
+  } = getImageProps({ alt, src: person.portraits.hero, width: 1200, height: 1600, sizes: "40vw" });
+  const {
+    props: { srcSet: mobile, ...rest },
+  } = getImageProps({ alt, src: person.portraits.heroMobile, width: 1080, height: 831, sizes: "100vw" });
+  return (
+    <picture>
+      <source media="(min-width: 1024px)" srcSet={desktop} sizes="40vw" />
+      {/* eslint-disable-next-line jsx-a11y/alt-text -- alt fourni via rest */}
+      <img
+        {...rest}
+        srcSet={mobile}
+        fetchPriority="high"
+        loading="eager"
+        className="absolute inset-0 h-full w-full object-cover object-[50%_30%]"
+      />
+    </picture>
+  );
+}
 
 const quickLink =
   "inline-flex min-h-11 items-center gap-2 text-[0.95rem] font-medium text-fg-muted underline decoration-line-strong underline-offset-[6px] transition-colors hover:text-fg hover:decoration-fg-subtle";
@@ -27,14 +54,7 @@ export function Hero({ lang, t, compact = false }: { lang: Locale; t: Dictionary
         <div className="relative h-[clamp(14rem,36svh,26rem)] rounded-[1.75rem] [grid-area:media] lg:aspect-[4/5] lg:h-auto lg:self-start">
           <span className="card-edge hidden lg:block" aria-hidden="true" />
           <div className="relative h-full overflow-hidden rounded-[1.75rem] bg-surface">
-            <Image
-              src={person.portraits.hero}
-              alt={t.person.portraitAlt}
-              fill
-              preload
-              sizes="(min-width: 1024px) 40vw, 100vw"
-              className="object-cover object-[50%_24%]"
-            />
+            <HeroPortrait alt={t.person.portraitAlt} />
             <div
               className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-ink via-ink/55 to-transparent lg:hidden"
               aria-hidden="true"

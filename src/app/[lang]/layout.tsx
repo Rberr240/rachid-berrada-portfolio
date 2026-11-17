@@ -15,12 +15,9 @@ import { Analytics } from "@/components/site/Analytics";
 
 const geist = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
-  subsets: ["latin"],
-  axes: ["opsz", "SOFT"],
-  style: ["normal", "italic"],
-});
+// Instance statique (400, romain) : ~4x plus légère que la variable
+// opsz/SOFT + italique, préchargée en concurrence avec le portrait (LCP).
+const fraunces = Fraunces({ variable: "--font-fraunces", subsets: ["latin"], weight: "400" });
 
 // Geist et Fraunces ne couvrent pas l'arabe : Cairo prend le relais sur /ar
 // (voir l'override html[lang="ar"] dans globals.css).

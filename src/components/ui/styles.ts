@@ -8,4 +8,4 @@ export const button = {
 };
 
 export const textLink =
-  "font-medium text-accent-text underline decoration-accent-text/40 underline-offset-4 transition-colors hover:decoration-accent-text";
+  "inline-flex min-h-11 items-center font-medium text-accent-text underline decoration-accent-text/40 underline-offset-4 transition-colors hover:decoration-accent-text";

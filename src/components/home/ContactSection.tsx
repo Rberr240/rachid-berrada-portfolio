@@ -20,13 +20,13 @@ export function ContactSection({ lang, t }: { lang: Locale; t: Dictionary }) {
             <ContactActions lang={lang} t={t} />
           </div>
           <p className="mt-6 text-fg-muted">
-            <a href={`tel:${person.phoneE164}`} dir="ltr" className="hover:text-fg">
+            <a href={`tel:${person.phoneE164}`} dir="ltr" className="inline-flex min-h-11 items-center hover:text-fg">
               {person.phoneDisplay}
             </a>
             <span className="mx-3 text-line-strong" aria-hidden="true">
               |
             </span>
-            <a href={`mailto:${person.email}`} dir="ltr" className="break-all hover:text-fg">
+            <a href={`mailto:${person.email}`} dir="ltr" className="inline-flex min-h-11 items-center break-all hover:text-fg">
               {person.email}
             </a>
           </p>
