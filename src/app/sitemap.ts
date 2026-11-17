@@ -1,35 +1,29 @@
 import type { MetadataRoute } from "next";
-import { getProfile } from "@/data/profile";
-import { getCaseStudyProjects } from "@/lib/portfolio";
+import { getSiteUrl, projects } from "@/content/facts";
+import { LOCALES, LOCALE_META } from "@/lib/i18n";
 
+/**
+ * Toutes les pages indexables, dans les 4 langues, avec leurs alternatives
+ * hreflang. "/" (redirection par pays) et /[lang]/c (doublon noindex) sont exclus.
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
-  const en = getProfile("en");
-  const fr = getProfile("fr");
-  const ar = getProfile("ar");
-  const base = en.siteConfig.website;
-
-  return [
-    { url: base, lastModified: now, changeFrequency: "monthly", priority: 1 },
-    { url: `${base}/fr`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${base}/ar`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
-    ...getCaseStudyProjects(en.projects).map((project) => ({
-      url: `${base}/realisations/${project.id}`,
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
-    })),
-    ...getCaseStudyProjects(fr.projects).map((project) => ({
-      url: `${base}/fr/realisations/${project.id}`,
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: 0.6,
-    })),
-    ...getCaseStudyProjects(ar.projects).map((project) => ({
-      url: `${base}/ar/realisations/${project.id}`,
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: 0.6,
-    })),
+  const base = getSiteUrl();
+  const suffixes: { path: string; priority: number }[] = [
+    { path: "", priority: 1 },
+    { path: "/devis", priority: 0.8 },
+    ...projects.map((p) => ({ path: `/realisations/${p.id}`, priority: 0.7 })),
+    { path: "/confidentialite", priority: 0.2 },
+    { path: "/mentions-legales", priority: 0.2 },
   ];
+
+  return suffixes.flatMap(({ path, priority }) =>
+    LOCALES.map((lang) => ({
+      url: `${base}/${lang}${path}`,
+      changeFrequency: "monthly" as const,
+      priority,
+      alternates: {
+        languages: Object.fromEntries(LOCALES.map((l) => [LOCALE_META[l].htmlLang, `${base}/${l}${path}`])),
+      },
+    })),
+  );
 }

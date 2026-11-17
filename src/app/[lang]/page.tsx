@@ -1,46 +1,45 @@
-import { Hero } from "@/components/sections/Hero";
-import { Services } from "@/components/sections/Services";
-import { Problems } from "@/components/sections/Problems";
-import { Industries } from "@/components/sections/Industries";
-import { Projects } from "@/components/sections/Projects";
-import { AiAutomation } from "@/components/sections/AiAutomation";
-import { Method } from "@/components/sections/Method";
-import { About } from "@/components/sections/About";
-import { Testimonials } from "@/components/sections/Testimonials";
-import { Faq } from "@/components/sections/Faq";
-import { Contact } from "@/components/sections/Contact";
 import { notFound } from "next/navigation";
-import { getProfile, isLocale } from "@/data/profile";
-import { getWhatsAppLink } from "@/lib/whatsapp";
-import { caseStudyBasePath } from "@/lib/locale-path";
+import { getDictionary } from "@/content";
+import { getSiteUrl, person } from "@/content/facts";
+import { isLocale } from "@/lib/i18n";
+import { Hero } from "@/components/home/Hero";
+import { Services } from "@/components/home/Services";
+import { Problems } from "@/components/home/Problems";
+import { Work } from "@/components/home/Work";
+import { Method } from "@/components/home/Method";
+import { About } from "@/components/home/About";
+import { ContactSection } from "@/components/home/ContactSection";
 
 export default async function Home({ params }: PageProps<"/[lang]">) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
-  const { siteConfig, services, problems, industries, projects, methodSteps, testimonials, faqs, socialLinks, projectTypes, ui } =
-    getProfile(lang);
+  const t = getDictionary(lang);
+  const site = getSiteUrl();
 
-  const whatsappHref = getWhatsAppLink(siteConfig.whatsappNumber, siteConfig.whatsappDefaultMessage);
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: person.name,
+    jobTitle: t.person.title,
+    description: t.person.valueProp,
+    url: `${site}/${lang}`,
+    image: `${site}${person.portraits.square}`,
+    email: `mailto:${person.email}`,
+    telephone: person.phoneE164,
+    sameAs: [person.githubUrl, ...(person.linkedinUrl ? [person.linkedinUrl] : [])],
+    knowsAbout: t.meta.keywords.slice(1),
+  };
 
   return (
     <>
-      <Hero siteConfig={siteConfig} whatsappHref={whatsappHref} copy={ui.hero} />
-      <Services services={services} copy={ui.services} />
-      <Problems problems={problems} copy={ui.problems} />
-      <Industries industries={industries} copy={ui.industries} />
-      <Projects projects={projects} copy={ui.projects} caseStudyBasePath={caseStudyBasePath(lang)} />
-      <AiAutomation services={services} copy={ui.aiAutomation} />
-      <Method methodSteps={methodSteps} copy={ui.method} />
-      <About aboutText={siteConfig.aboutText} socialLinks={socialLinks} copy={ui.about} />
-      <Testimonials testimonials={testimonials} copy={ui.testimonials} />
-      <Faq faqs={faqs} copy={ui.faq} />
-      <Contact
-        siteConfig={siteConfig}
-        whatsappHref={whatsappHref}
-        copy={ui.contact}
-        formCopy={ui.form}
-        projectTypes={projectTypes}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <Hero lang={lang} t={t} />
+      <Services lang={lang} t={t} />
+      <Problems t={t} />
+      <Work lang={lang} t={t} />
+      <Method t={t} />
+      <About t={t} />
+      <ContactSection lang={lang} t={t} />
     </>
   );
 }
