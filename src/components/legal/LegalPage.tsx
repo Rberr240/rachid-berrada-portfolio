@@ -1,5 +1,22 @@
 import type { LegalDoc } from "@/content/types";
+import { person } from "@/content/facts";
 import { Container } from "@/components/ui/Container";
+
+// Les textes légaux citent {email} et {phone} : les valeurs viennent de
+// facts.ts, jamais recopiées dans les quatre dictionnaires.
+const tokens: Record<string, string> = { "{email}": person.email, "{phone}": person.phoneDisplay };
+
+function withContacts(text: string) {
+  return text.split(/(\{email\}|\{phone\})/).map((part, i) =>
+    tokens[part] ? (
+      <bdi key={i} dir="ltr">
+        {tokens[part]}
+      </bdi>
+    ) : (
+      part
+    ),
+  );
+}
 
 export function LegalPage({ doc }: { doc: LegalDoc }) {
   return (
@@ -12,8 +29,8 @@ export function LegalPage({ doc }: { doc: LegalDoc }) {
             <section key={section.heading} className="border-t border-line pt-6">
               <h2 className="text-xl font-semibold text-fg">{section.heading}</h2>
               <div className="mt-3 space-y-3 text-pretty leading-relaxed text-fg-muted">
-                {section.body.map((p) => (
-                  <p key={p}>{p}</p>
+                {section.body.map((p, i) => (
+                  <p key={i}>{withContacts(p)}</p>
                 ))}
               </div>
             </section>

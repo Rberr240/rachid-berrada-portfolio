@@ -200,43 +200,46 @@ export const fr: Dictionary = {
   projects: {
     "gold-fitness": {
       title: "Gold Fitness",
-      category: "Site mobile et QR code pour une salle de sport",
-      tagline: "Une page mobile reliée à la carte de visite de la salle par un QR code.",
-      summary:
-        "Site mobile-first pour une salle de sport de Martil : appel, WhatsApp, Instagram et itinéraire accessibles en un geste après avoir scanné la carte.",
-      context: "Projet réalisé pour Gold Fitness, salle de sport à Martil (Maroc). Le site est en ligne.",
-      role: "Conception, développement, mise en ligne et redirection du QR code.",
+      category: "Site mobile multi-salles et QR code pour une salle de sport",
+      tagline: "Un site mobile, relié aux cartes de visite de la salle par QR code, qui oriente chaque visiteur vers la bonne salle.",
+      summary: "Site mobile-first pour Gold Fitness (Martil et Chefchaouen) : le visiteur choisit sa ville et son espace (100 % femmes ou mixte), consulte les horaires, puis appelle, écrit sur WhatsApp ou lance l’itinéraire en un geste.",
+      context: "Réalisation client pour Gold Fitness, salles de sport à Martil et Chefchaouen (Maroc), présentée avec l’accord du client. Le site est en ligne.",
+      role: "Conception, développement, mise en ligne, évolutions et redirection du QR code.",
       problem: [
-        "La salle avait besoin d’un point de contact numérique simple, accessible directement depuis sa carte de visite physique.",
-        "Un visiteur qui scanne le QR code doit trouver immédiatement les informations utiles, sans navigation complexe.",
+        "La salle avait besoin d’un point de contact numérique simple, accessible directement depuis sa carte de visite imprimée.",
+        "Avec deux villes et des espaces 100 % femmes et mixtes, le visiteur doit trouver tout de suite la bonne salle, ses horaires et un moyen de la contacter.",
       ],
       solution: [
-        "Une page unique, pensée pour le mobile et hébergée sur GitHub Pages.",
-        "Les actions principales sont visibles dès l’arrivée : appeler, écrire sur WhatsApp, ouvrir l’itinéraire dans Google Maps.",
-        "Un second dépôt sert uniquement de redirection technique entre le QR code imprimé et la page : la carte n’a jamais besoin d’être réimprimée si la page évolue.",
+        "Une page unique pensée pour le mobile, hébergée sur GitHub Pages.",
+        "Un sélecteur « Trouver ma salle » (ville, puis type d’espace) mène à la fiche de la salle : adresse, horaires et statut d’ouverture du moment.",
+        "Une barre d’actions fixe en bas d’écran : appeler, écrire sur WhatsApp, ouvrir l’itinéraire.",
+        "Un second dépôt sert uniquement de redirection technique entre le QR code imprimé et le site : la carte n’a jamais besoin d’être réimprimée quand le site évolue.",
       ],
       features: [
-        "Boutons d’appel et de contact WhatsApp",
-        "Localisation Google Maps et réseaux sociaux",
-        "Galerie vidéo de la salle",
-        "Mise en page conçue pour une consultation juste après le scan",
+        "Sélecteur de salle par ville et par type d’espace (100 % femmes ou mixte)",
+        "Fiche par salle : adresse, horaires, lien Google Maps",
+        "Statut d’ouverture calculé selon l’heure (ouvert, fermé, prochaine ouverture)",
+        "Barre d’actions fixe : appel, WhatsApp, itinéraire",
+        "Lien Instagram et section vidéos",
       ],
       evidence: [
         "Site public en ligne",
-        "Code source public sur GitHub",
-        "Captures réalisées sur le site en ligne",
+        "Code source public sur GitHub ; évolutions récentes commitées par Rachid",
+        "Captures réalisées sur le site en ligne le 18 novembre 2026",
       ],
       limitations: [
+        "Aucune mesure d’audience : le nombre de visites, de scans ou d’appels générés n’est pas connu, donc rien n’est chiffré ici.",
+        "Certaines informations dépendent du client et sont indiquées « à confirmer » sur le site (horaires et téléphone d’une salle de Chefchaouen).",
         "Site statique : les contenus se mettent à jour en modifiant le code.",
-        "Aucune mesure d’audience n’est en place : l’impact commercial n’est pas chiffré.",
       ],
-      flow: ["Carte avec QR code", "Redirection", "Page mobile", "Appel, WhatsApp ou itinéraire"],
-      screenshotAlt: {
-        mobile: "Page mobile de Gold Fitness avec les boutons d’appel et de contact",
-        desktop: "Site de Gold Fitness affiché sur ordinateur",
-      },
-      metaDescription:
-        "Étude de cas : site mobile-first de la salle Gold Fitness, relié à sa carte de visite par un QR code.",
+      flow: [
+        "Carte avec QR code",
+        "Redirection",
+        "Choix de la salle",
+        "Appel, WhatsApp ou itinéraire",
+      ],
+      screenshotAlt: { mobile: "Accueil mobile de Gold Fitness avec le sélecteur « Trouver ma salle »", desktop: "Site de Gold Fitness affiché sur un écran d’ordinateur" },
+      metaDescription: "Étude de cas : site mobile multi-salles de Gold Fitness (Martil, Chefchaouen), relié aux cartes de visite par QR code.",
     },
     "menu-chez-bassou": {
       title: "Menu Chez Bassou",
@@ -516,7 +519,7 @@ export const fr: Dictionary = {
     featuresLabel: "Fonctionnalités implémentées",
     flowLabel: "Parcours",
     evidenceLabel: "Éléments vérifiables",
-    limitationsLabel: "Limites connues",
+    limitationsLabel: "Limites et points non vérifiés",
     stackLabel: "Technologies",
     linksLabel: "Liens",
     noLinks: "Aucun lien public pour ce projet.",
@@ -539,13 +542,13 @@ export const fr: Dictionary = {
     notice: {
       title: "Mentions légales",
       description: "Éditeur, hébergement et propriété du site rachidberrada.com.",
-      updated: "Mise à jour : 17 novembre 2026",
+      updated: "Mise à jour : 18 novembre 2026",
       sections: [
         {
           heading: "Éditeur du site",
           body: [
             "Le site rachidberrada.com est édité par Rachid Berrada, à titre personnel.",
-            "Contact : rachid.berrada20@gmail.com — +212 6 48 55 22 22.",
+            "Contact : {email} — {phone}.",
             "Les informations d’immatriculation professionnelle seront ajoutées sur cette page dès qu’elles seront disponibles.",
           ],
         },
@@ -574,12 +577,12 @@ export const fr: Dictionary = {
       title: "Politique de confidentialité",
       description:
         "Quelles données le site collecte, pourquoi, pendant combien de temps, et comment exercer vos droits.",
-      updated: "Mise à jour : 17 novembre 2026",
+      updated: "Mise à jour : 18 novembre 2026",
       sections: [
         {
           heading: "Responsable du traitement",
           body: [
-            "Rachid Berrada, joignable à l’adresse rachid.berrada20@gmail.com.",
+            "Rachid Berrada, joignable à l’adresse {email}.",
           ],
         },
         {
@@ -627,7 +630,7 @@ export const fr: Dictionary = {
         {
           heading: "Vos droits",
           body: [
-            "Vous pouvez demander l’accès, la rectification ou la suppression de vos données, et vous opposer à leur traitement, en écrivant à rachid.berrada20@gmail.com.",
+            "Vous pouvez demander l’accès, la rectification ou la suppression de vos données, et vous opposer à leur traitement, en écrivant à {email}.",
             "Ces droits s’appliquent notamment au titre de la loi marocaine n° 09-08 et, pour les personnes situées dans l’Union européenne, du Règlement général sur la protection des données (RGPD).",
             "Vous pouvez aussi adresser une réclamation à l’autorité compétente : la CNDP au Maroc, la CNIL en France ou la CNPD au Portugal.",
           ],

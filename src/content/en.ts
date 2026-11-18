@@ -197,39 +197,46 @@ export const en: Dictionary = {
   projects: {
     "gold-fitness": {
       title: "Gold Fitness",
-      category: "Mobile website and QR code for a gym",
-      tagline: "A mobile page linked to the gym’s business card through a QR code.",
-      summary:
-        "A mobile-first website for a gym in Martil: call, WhatsApp, Instagram and directions are one tap away after scanning the card.",
-      context: "Built for Gold Fitness, a gym in Martil, Morocco. The site is live.",
-      role: "Design, development, publishing and QR code redirect.",
+      category: "Multi-location mobile site and QR code for a gym",
+      tagline: "A mobile site, linked to the gym’s business cards by QR code, that sends each visitor to the right location.",
+      summary: "A mobile-first site for Gold Fitness (Martil and Chefchaouen): visitors pick their city and space (women-only or mixed), check opening hours, then call, message on WhatsApp or get directions in one tap.",
+      context: "Client project for Gold Fitness, gyms in Martil and Chefchaouen, Morocco, shown with the client’s permission. The site is live.",
+      role: "Design, development, publishing, ongoing updates and QR code redirect.",
       problem: [
         "The gym needed a simple digital point of contact, reachable straight from its printed business card.",
-        "Someone scanning the QR code should find the useful information immediately, without complicated navigation.",
+        "With two cities and both women-only and mixed spaces, visitors have to find the right gym, its hours and a way to contact it right away.",
       ],
       solution: [
         "A single mobile-first page hosted on GitHub Pages.",
-        "The main actions are visible on arrival: call, message on WhatsApp, open directions in Google Maps.",
-        "A second repository acts only as a technical redirect between the printed QR code and the page, so the card never needs reprinting when the page changes.",
+        "A gym finder (city, then type of space) leads to each location’s details: address, opening hours and current open or closed status.",
+        "A fixed action bar at the bottom of the screen: call, WhatsApp, directions.",
+        "A second repository acts only as a technical redirect between the printed QR code and the site, so the card never needs reprinting when the site changes.",
       ],
       features: [
-        "Call and WhatsApp buttons",
-        "Google Maps location and social links",
-        "Video gallery of the gym",
-        "Layout designed for viewing right after a scan",
+        "Gym finder by city and type of space (women-only or mixed)",
+        "Details per location: address, opening hours, Google Maps link",
+        "Open or closed status computed from the current time",
+        "Fixed action bar: call, WhatsApp, directions",
+        "Instagram link and video section",
       ],
-      evidence: ["Public live website", "Public source code on GitHub", "Screenshots taken from the live site"],
+      evidence: [
+        "Public live website",
+        "Public source code on GitHub; recent updates committed by Rachid",
+        "Screenshots taken from the live site on November 18, 2026",
+      ],
       limitations: [
+        "No audience measurement: the number of visits, scans or calls generated is unknown, so nothing is quantified here.",
+        "Some information depends on the client and is marked “to be confirmed” on the site (hours and phone for one Chefchaouen location).",
         "Static site: content is updated by editing the code.",
-        "No audience measurement is in place, so business impact is not quantified.",
       ],
-      flow: ["Card with QR code", "Redirect", "Mobile page", "Call, WhatsApp or directions"],
-      screenshotAlt: {
-        mobile: "Gold Fitness mobile page with call and contact buttons",
-        desktop: "Gold Fitness website on a desktop screen",
-      },
-      metaDescription:
-        "Case study: a mobile-first website for Gold Fitness gym, linked to its business card through a QR code.",
+      flow: [
+        "Card with QR code",
+        "Redirect",
+        "Choose a gym",
+        "Call, WhatsApp or directions",
+      ],
+      screenshotAlt: { mobile: "Gold Fitness mobile home page with the gym finder", desktop: "Gold Fitness website on a desktop screen" },
+      metaDescription: "Case study: Gold Fitness’s multi-location mobile site (Martil, Chefchaouen), linked to its business cards by QR code.",
     },
     "menu-chez-bassou": {
       title: "Menu Chez Bassou",
@@ -500,7 +507,7 @@ export const en: Dictionary = {
     featuresLabel: "Implemented features",
     flowLabel: "User flow",
     evidenceLabel: "What you can verify",
-    limitationsLabel: "Known limitations",
+    limitationsLabel: "Limitations and unverified points",
     stackLabel: "Technologies",
     linksLabel: "Links",
     noLinks: "No public link for this project.",
@@ -522,13 +529,13 @@ export const en: Dictionary = {
     notice: {
       title: "Legal notice",
       description: "Publisher, hosting and ownership of rachidberrada.com.",
-      updated: "Last updated: November 17, 2026",
+      updated: "Last updated: November 18, 2026",
       sections: [
         {
           heading: "Publisher",
           body: [
             "rachidberrada.com is published by Rachid Berrada, as an individual.",
-            "Contact: rachid.berrada20@gmail.com — +212 6 48 55 22 22.",
+            "Contact: {email} — {phone}.",
             "Business registration details will be added to this page as soon as they are available.",
           ],
         },
@@ -552,11 +559,11 @@ export const en: Dictionary = {
     privacy: {
       title: "Privacy policy",
       description: "What data this website collects, why, for how long, and how to exercise your rights.",
-      updated: "Last updated: November 17, 2026",
+      updated: "Last updated: November 18, 2026",
       sections: [
         {
           heading: "Data controller",
-          body: ["Rachid Berrada, reachable at rachid.berrada20@gmail.com."],
+          body: ["Rachid Berrada, reachable at {email}."],
         },
         {
           heading: "Data collected by the quote form",
@@ -603,7 +610,7 @@ export const en: Dictionary = {
         {
           heading: "Your rights",
           body: [
-            "You can request access to, correction or deletion of your data, and object to its processing, by writing to rachid.berrada20@gmail.com.",
+            "You can request access to, correction or deletion of your data, and object to its processing, by writing to {email}.",
             "These rights apply in particular under Moroccan Law No. 09-08 and, for people in the European Union, under the General Data Protection Regulation (GDPR).",
             "You can also file a complaint with the relevant authority: the CNDP in Morocco, the CNIL in France or the CNPD in Portugal.",
           ],

@@ -80,8 +80,8 @@ test("build : pas de visuel conceptuel ni de chaîne d'autre langue", { skip: !b
 
 test("build : la page /fr contient les 4 actions de contact", { skip: !built }, () => {
   const html = readFileSync(join(APP, "fr.html"), "utf8");
-  assert.match(html, /href="https:\/\/wa\.me\/212648552222\?text=/);
-  assert.match(html, /href="tel:\+212648552222"/);
+  assert.match(html, /href="https:\/\/wa\.me\/212661857517\?text=/);
+  assert.match(html, /href="tel:\+212661857517"/);
   assert.match(html, /href="mailto:rachid\.berrada20@gmail\.com"/);
   assert.match(html, /href="\/fr\/rachid-berrada\.vcf"/);
 });

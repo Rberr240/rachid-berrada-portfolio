@@ -200,39 +200,46 @@ export const pt: Dictionary = {
   projects: {
     "gold-fitness": {
       title: "Gold Fitness",
-      category: "Site para telemóvel e código QR de um ginásio",
-      tagline: "Uma página para telemóvel ligada ao cartão de visita do ginásio por código QR.",
-      summary:
-        "Site pensado para telemóvel para um ginásio em Martil: ligar, WhatsApp, Instagram e direções à distância de um toque depois de digitalizar o cartão.",
-      context: "Projeto realizado para o Gold Fitness, ginásio em Martil (Marrocos). O site está online.",
-      role: "Conceção, desenvolvimento, publicação e redirecionamento do código QR.",
+      category: "Site para telemóvel com várias salas e código QR para um ginásio",
+      tagline: "Um site para telemóvel, ligado aos cartões de visita do ginásio por código QR, que encaminha cada visitante para a sala certa.",
+      summary: "Site pensado para telemóvel para o Gold Fitness (Martil e Chefchaouen): o visitante escolhe a cidade e o espaço (só para mulheres ou misto), consulta o horário e liga, envia mensagem pelo WhatsApp ou abre as direções com um toque.",
+      context: "Trabalho para cliente: Gold Fitness, ginásios em Martil e Chefchaouen (Marrocos), apresentado com autorização do cliente. O site está online.",
+      role: "Conceção, desenvolvimento, publicação, evoluções e redirecionamento do código QR.",
       problem: [
         "O ginásio precisava de um ponto de contacto digital simples, acessível diretamente a partir do cartão de visita impresso.",
-        "Quem digitaliza o código QR deve encontrar de imediato a informação útil, sem navegação complicada.",
+        "Com duas cidades e espaços só para mulheres e mistos, o visitante tem de encontrar de imediato o ginásio certo, o horário e uma forma de contacto.",
       ],
       solution: [
         "Uma página única, pensada para telemóvel e alojada no GitHub Pages.",
-        "As ações principais estão visíveis logo à chegada: ligar, enviar mensagem pelo WhatsApp, abrir as direções no Google Maps.",
-        "Um segundo repositório serve apenas de redirecionamento técnico entre o código QR impresso e a página: o cartão nunca precisa de ser reimpresso quando a página muda.",
+        "Um seletor de ginásio (cidade e depois tipo de espaço) leva à ficha da sala: morada, horário e estado de abertura no momento.",
+        "Uma barra de ações fixa no fundo do ecrã: ligar, WhatsApp, direções.",
+        "Um segundo repositório serve apenas de redirecionamento técnico entre o código QR impresso e o site: o cartão nunca precisa de ser reimpresso quando o site muda.",
       ],
       features: [
-        "Botões para ligar e para contacto pelo WhatsApp",
-        "Localização no Google Maps e redes sociais",
-        "Galeria de vídeos do ginásio",
-        "Disposição pensada para consulta logo após a digitalização",
+        "Seletor de ginásio por cidade e tipo de espaço (só para mulheres ou misto)",
+        "Ficha por sala: morada, horário, ligação para o Google Maps",
+        "Estado de abertura calculado conforme a hora (aberto ou fechado)",
+        "Barra de ações fixa: chamada, WhatsApp, direções",
+        "Ligação para o Instagram e secção de vídeos",
       ],
-      evidence: ["Site público online", "Código-fonte público no GitHub", "Capturas feitas no site online"],
+      evidence: [
+        "Site público online",
+        "Código-fonte público no GitHub; evoluções recentes feitas por Rachid",
+        "Capturas feitas no site online a 18 de novembro de 2026",
+      ],
       limitations: [
+        "Não existe medição de audiência: o número de visitas, digitalizações ou chamadas geradas é desconhecido, por isso nada é quantificado aqui.",
+        "Algumas informações dependem do cliente e estão assinaladas «por confirmar» no site (horário e telefone de uma sala em Chefchaouen).",
         "Site estático: os conteúdos atualizam-se alterando o código.",
-        "Não existe medição de audiência: o impacto comercial não está quantificado.",
       ],
-      flow: ["Cartão com código QR", "Redirecionamento", "Página para telemóvel", "Chamada, WhatsApp ou direções"],
-      screenshotAlt: {
-        mobile: "Página do Gold Fitness no telemóvel com os botões de chamada e contacto",
-        desktop: "Site do Gold Fitness num ecrã de computador",
-      },
-      metaDescription:
-        "Estudo de caso: site para telemóvel do ginásio Gold Fitness, ligado ao seu cartão de visita por código QR.",
+      flow: [
+        "Cartão com código QR",
+        "Redirecionamento",
+        "Escolha do ginásio",
+        "Chamada, WhatsApp ou direções",
+      ],
+      screenshotAlt: { mobile: "Página inicial do Gold Fitness no telemóvel com o seletor de ginásio", desktop: "Site do Gold Fitness num ecrã de computador" },
+      metaDescription: "Estudo de caso: site para telemóvel do Gold Fitness (Martil, Chefchaouen), com várias salas, ligado aos cartões de visita por código QR.",
     },
     "menu-chez-bassou": {
       title: "Menu Chez Bassou",
@@ -508,7 +515,7 @@ export const pt: Dictionary = {
     featuresLabel: "Funcionalidades implementadas",
     flowLabel: "Percurso",
     evidenceLabel: "O que pode verificar",
-    limitationsLabel: "Limitações conhecidas",
+    limitationsLabel: "Limitações e pontos não verificados",
     stackLabel: "Tecnologias",
     linksLabel: "Ligações",
     noLinks: "Sem ligação pública para este projeto.",
@@ -531,13 +538,13 @@ export const pt: Dictionary = {
     notice: {
       title: "Informação legal",
       description: "Editor, alojamento e propriedade do site rachidberrada.com.",
-      updated: "Atualizado a 17 de novembro de 2026",
+      updated: "Atualizado a 18 de novembro de 2026",
       sections: [
         {
           heading: "Editor do site",
           body: [
             "O site rachidberrada.com é editado por Rachid Berrada, a título pessoal.",
-            "Contacto: rachid.berrada20@gmail.com — +212 6 48 55 22 22.",
+            "Contacto: {email} — {phone}.",
             "Os dados de registo profissional serão acrescentados a esta página logo que estejam disponíveis.",
           ],
         },
@@ -562,11 +569,11 @@ export const pt: Dictionary = {
       title: "Política de privacidade",
       description:
         "Que dados o site recolhe, para quê, durante quanto tempo e como exercer os seus direitos.",
-      updated: "Atualizado a 17 de novembro de 2026",
+      updated: "Atualizado a 18 de novembro de 2026",
       sections: [
         {
           heading: "Responsável pelo tratamento",
-          body: ["Rachid Berrada, contactável através de rachid.berrada20@gmail.com."],
+          body: ["Rachid Berrada, contactável através de {email}."],
         },
         {
           heading: "Dados recolhidos pelo formulário de orçamento",
@@ -613,7 +620,7 @@ export const pt: Dictionary = {
         {
           heading: "Os seus direitos",
           body: [
-            "Pode pedir o acesso, a retificação ou o apagamento dos seus dados e opor-se ao seu tratamento, escrevendo para rachid.berrada20@gmail.com.",
+            "Pode pedir o acesso, a retificação ou o apagamento dos seus dados e opor-se ao seu tratamento, escrevendo para {email}.",
             "Estes direitos aplicam-se, nomeadamente, ao abrigo da lei marroquina n.º 09-08 e, para pessoas na União Europeia, do Regulamento Geral sobre a Proteção de Dados (RGPD).",
             "Pode também apresentar reclamação à autoridade competente: a CNDP em Marrocos, a CNIL em França ou a CNPD em Portugal.",
           ],

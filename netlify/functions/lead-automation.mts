@@ -58,9 +58,13 @@ export interface NormalizedLead {
   isTest: boolean;
 }
 
-/** Une demande de test se signale par un nom ou un message commençant par [TEST]. */
+/**
+ * Une demande de test se signale par un nom ou un message commençant par
+ * « TEST » (ex. « TEST — PORTFOLIO V2 ») ou « [TEST] ».
+ */
+const TEST_MARKER = /^\s*\[?TEST\b/;
 export function isTestLead(data: Record<string, unknown>): boolean {
-  return /^\s*\[TEST\]/i.test(asString(data.name)) || /^\s*\[TEST\]/i.test(asString(data.message));
+  return TEST_MARKER.test(asString(data.name)) || TEST_MARKER.test(asString(data.message));
 }
 
 export function buildLeadPayload(data: Record<string, unknown>): NormalizedLead {

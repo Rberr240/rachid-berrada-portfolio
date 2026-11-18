@@ -43,9 +43,9 @@ test("formats e-mail et téléphone", () => {
   assert.ok(isValidEmail("nom@domaine.pt"));
   assert.ok(!isValidEmail("nom@domaine"));
   assert.ok(isValidPhone("+351 912 345 678"));
-  assert.ok(isValidPhone("06 48 55 22 22"));
+  assert.ok(isValidPhone("06 61 85 75 17"));
   assert.ok(!isValidPhone("12345"));
-  assert.ok(!isValidPhone("+212 6 48 55 22 22 ext. 4"));
+  assert.ok(!isValidPhone("+212 6 61 85 75 17 ext. 4"));
 });
 
 test("message trop long refusé", () => {
@@ -67,7 +67,9 @@ test("payload normalisé : champs historiques conservés, neutralisation tableur
 
 test("détection des demandes de test et du formulaire", () => {
   assert.ok(isTestLead({ name: "[TEST] x" }));
+  assert.ok(isTestLead({ name: "TEST — PORTFOLIO V2" }));
   assert.ok(!isTestLead({ name: "Vrai client" }));
+  assert.ok(!isTestLead({ name: "Testa Benali" }));
   assert.ok(isContactFormSubmission({ "form-name": "contact" }));
   assert.ok(!isContactFormSubmission({ "form-name": "autre" }));
   assert.equal(safeSpreadsheetText("@cmd"), "'@cmd");

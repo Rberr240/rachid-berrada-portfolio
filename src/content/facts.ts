@@ -12,9 +12,13 @@ export const person = {
   familyName: "Berrada",
   monogram: "RB",
   email: "rachid.berrada20@gmail.com",
-  phoneE164: "+212648552222",
-  phoneDisplay: "+212 6 48 55 22 22",
-  whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "212648552222",
+  // Numéro professionnel confirmé par Rachid (18/11/2026). Affichage au
+  // format national ; format international uniquement pour tel:, wa.me et vCard.
+  // Volontairement non surchargeable par variable d'environnement : une
+  // ancienne valeur restée sur Netlify ne peut plus réintroduire un autre numéro.
+  phoneDisplay: "0661857517",
+  phoneE164: "+212661857517",
+  whatsappNumber: "212661857517",
   githubUrl: "https://github.com/Rberr240",
   linkedinUrl: "",
   location: "",

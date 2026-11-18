@@ -8,7 +8,7 @@ const card = buildVCard({
   familyName: "Berrada",
   title: "Développeur web & solutions digitales",
   email: "rachid.berrada20@gmail.com",
-  phoneE164: "+212648552222",
+  phoneE164: "+212661857517",
   url: "https://rachidberrada.com/fr",
   githubUrl: "https://github.com/Rberr240",
   note: "Sites, automatisations; applications, sur mesure.",
@@ -21,7 +21,7 @@ test("vCard 3.0 structurée et terminée en CRLF", () => {
   assert.ok(!/[^\r]\n/.test(card), "aucun LF isolé");
   assert.match(card, /\r\nN:Berrada;Rachid;;;\r\n/);
   assert.match(card, /\r\nFN:Rachid Berrada\r\n/);
-  assert.match(card, /\r\nTEL;TYPE=CELL,VOICE:\+212648552222\r\n/);
+  assert.match(card, /\r\nTEL;TYPE=CELL,VOICE:\+212661857517\r\n/);
   assert.match(card, /\r\nEMAIL;TYPE=INTERNET,PREF:rachid\.berrada20@gmail\.com\r\n/);
 });
 
@@ -54,8 +54,8 @@ test("attribution : organique et direct", () => {
 });
 
 test("message WhatsApp remplacé et encodé", () => {
-  const href = withWhatsAppMessage("https://wa.me/212648552222?text=Bonjour", "J’ai scanné votre carte & …");
+  const href = withWhatsAppMessage("https://wa.me/212661857517?text=Bonjour", "J’ai scanné votre carte & …");
   const url = new URL(href);
-  assert.equal(url.pathname, "/212648552222");
+  assert.equal(url.pathname, "/212661857517");
   assert.equal(url.searchParams.get("text"), "J’ai scanné votre carte & …");
 });
