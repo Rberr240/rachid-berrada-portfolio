@@ -1,13 +1,9 @@
 import type { MetadataRoute } from "next";
-import { getProfile } from "@/data/profile";
+import { getSiteUrl } from "@/content/facts";
 
 export default function robots(): MetadataRoute.Robots {
-  const { siteConfig } = getProfile("en");
   return {
-    rules: {
-      userAgent: "*",
-      allow: "/",
-    },
-    sitemap: `${siteConfig.website}/sitemap.xml`,
+    rules: { userAgent: "*", allow: "/", disallow: ["/netlify-forms/"] },
+    sitemap: `${getSiteUrl()}/sitemap.xml`,
   };
 }

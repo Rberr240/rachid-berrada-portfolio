@@ -62,7 +62,7 @@ Notes:
 - **Status:** marked optional by the mission brief — lower priority than Instagram/TikTok/LinkedIn/GitHub. Only pursue if bandwidth allows; do not let it block higher-priority accounts.
 
 ### WhatsApp Business
-- Not a "handle" platform — it is tied to the existing phone number `+212 6 48 55 22 22` (canonical per `MASTER_BLUEPRINT.md`, configurable via `NEXT_PUBLIC_WHATSAPP_NUMBER`). No new number is being recommended here.
+- Not a "handle" platform — it is tied to the existing phone number `0661857517` (canonical per `MASTER_BLUEPRINT.md`, configurable via `NEXT_PUBLIC_WHATSAPP_NUMBER`). No new number is being recommended here.
 - Convert the existing WhatsApp number to a WhatsApp Business account (or set up Business alongside personal, per WhatsApp's own dual-account rules — verify current WhatsApp policy manually).
 - Content specs (business description, welcome message, away message, inquiry-response template): see Section 9.
 

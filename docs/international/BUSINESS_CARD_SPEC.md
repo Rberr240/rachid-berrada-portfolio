@@ -10,7 +10,7 @@ Internal reference. See [BRAND_SYSTEM.md](./BRAND_SYSTEM.md) for the visual lang
 - **Email:** rachid.berrada20@gmail.com (canonical public contact email, per `profile.ts`)
 - **Portfolio link:** `https://rachid-berrada-portfolio.netlify.app` — this is the current production URL and the correct one to print until a custom domain is confirmed (see `DOMAIN_AND_HANDLES.md`). Do not print a domain that hasn't been purchased.
 - **QR code:** encodes the portfolio link (with tracking parameters — see Section 4).
-- **Optional:** WhatsApp number `+212 6 48 55 22 22` (canonical per `MASTER_BLUEPRINT.md`) — include only if Rachid wants direct WhatsApp contact on the physical card; not required.
+- **Optional:** WhatsApp number `0661857517` (international: `+212661857517`, canonical per `MASTER_BLUEPRINT.md`) — include only if Rachid wants direct WhatsApp contact on the physical card; not required.
 
 Do not include a LinkedIn URL, a custom domain, or a GitHub handle unless/until each is confirmed — see the open questions at the end of this document.
 
@@ -31,7 +31,7 @@ Web Applications · AI Automation · Custom Software
 
 rachid-berrada-portfolio.netlify.app
 rachid.berrada20@gmail.com
-+212 6 48 55 22 22 (WhatsApp) — optional
+0661857517 (WhatsApp) — optional
 
 "I don't just build interfaces. I build complete systems."
 ```

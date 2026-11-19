@@ -2,33 +2,34 @@
 <html lang="fr">
   <head>
     <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
     <title>Netlify Forms — détection (contact)</title>
   </head>
   <body>
     <!--
-      Fichier statique dédié à la détection du formulaire par le crawler
-      Netlify Forms au build (Next.js runtime v5 / @netlify/plugin-nextjs).
-      Jamais servi ni affiché aux visiteurs : le formulaire interactif réel
-      est src/components/forms/ProjectForm.tsx, qui soumet en AJAX vers
-      "/netlify-forms/contact.html" (cette page).
-      Les noms des champs ci-dessous doivent rester strictement identiques
-      à ceux de ProjectForm.tsx.
+      Fichier statique dédié à la détection du formulaire par Netlify Forms
+      au build. Jamais affiché aux visiteurs : le formulaire réel est
+      src/components/quote/QuoteForm.tsx, qui soumet en AJAX vers cette page.
+      Les noms de champs doivent rester identiques à LEAD_FIELDS
+      (src/lib/lead.ts) — vérifié par tests/lead.test.ts.
     -->
-    <form
-      name="contact"
-      method="POST"
-      data-netlify="true"
-      data-netlify-honeypot="bot-field"
-      hidden
-    >
+    <form name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
       <input type="hidden" name="form-name" value="contact" />
       <input type="text" name="bot-field" />
       <input type="text" name="name" />
       <input type="text" name="company" />
-      <input type="tel" name="phone" />
       <input type="email" name="email" />
+      <input type="tel" name="phone" />
       <input type="text" name="projectType" />
       <textarea name="message"></textarea>
+      <input type="text" name="timeline" />
+      <input type="text" name="contactPreference" />
+      <input type="text" name="budget" />
+      <input type="text" name="consent" />
+      <input type="hidden" name="locale" />
+      <input type="hidden" name="channel" />
+      <input type="hidden" name="sourceDetail" />
+      <input type="hidden" name="entryPage" />
     </form>
   </body>
 </html>

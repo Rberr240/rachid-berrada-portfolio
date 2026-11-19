@@ -1,160 +1,106 @@
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
-import { Geist, Geist_Mono, Fraunces, Cairo } from "next/font/google";
+import { Geist, Fraunces, Cairo } from "next/font/google";
 import "../globals.css";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
-import { WhatsAppFloatingButton } from "@/components/layout/WhatsAppFloatingButton";
-import { Analytics } from "@/components/layout/Analytics";
-import { getProfile, isLocale, locales } from "@/data/profile";
+import { getDictionary } from "@/content";
+import { getSiteUrl, person } from "@/content/facts";
+import { LOCALES, LOCALE_META, isLocale } from "@/lib/i18n";
+import { alternatesFor, openGraphFor } from "@/lib/seo";
 import { getWhatsAppLink } from "@/lib/whatsapp";
-import { localeHomeHref } from "@/lib/locale-path";
+import { Header } from "@/components/site/Header";
+import { Footer } from "@/components/site/Footer";
+import { FloatingWhatsApp } from "@/components/site/FloatingWhatsApp";
+import { AttributionTracker } from "@/components/site/Attribution";
+import { Analytics } from "@/components/site/Analytics";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+const geist = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+// Instance statique (400, romain) : ~4x plus légère que la variable
+// opsz/SOFT + italique, préchargée en concurrence avec le portrait (LCP).
+const fraunces = Fraunces({ variable: "--font-fraunces", subsets: ["latin"], weight: "400" });
 
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
-  subsets: ["latin"],
-  axes: ["opsz", "SOFT"],
-  style: ["normal", "italic"],
-});
+// Geist et Fraunces ne couvrent pas l'arabe : Cairo prend le relais sur /ar
+// (voir l'override html[lang="ar"] dans globals.css).
+const cairo = Cairo({ variable: "--font-cairo", subsets: ["arabic", "latin"], preload: false });
 
-// Fraunces/Geist ne couvrent pas l'arabe : Cairo (latin + arabic) prend le
-// relais pour /ar uniquement, voir l'override `html[lang="ar"]` dans
-// globals.css qui redirige --font-sans/--font-serif/--font-mono vers elle.
-const cairo = Cairo({
-  variable: "--font-cairo",
-  subsets: ["latin", "arabic"],
-});
+export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return locales.map((lang) => ({ lang }));
+  return LOCALES.map((lang) => ({ lang }));
 }
 
-export async function generateMetadata({
-  params,
-}: LayoutProps<"/[lang]">): Promise<Metadata> {
+export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Promise<Metadata> {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
-  const { siteConfig } = getProfile(lang);
-  const home = localeHomeHref(lang);
-  const title = `${siteConfig.name} | ${siteConfig.title}`;
-
+  const t = getDictionary(lang);
   return {
-    metadataBase: new URL(siteConfig.website),
-    title: { default: title, template: `%s | ${siteConfig.name}` },
-    description: siteConfig.metaDescription,
-    keywords: siteConfig.knowsAbout,
-    authors: [{ name: siteConfig.name, url: siteConfig.website }],
-    creator: siteConfig.name,
-    alternates: {
-      canonical: home,
-      languages: { en: "/", fr: "/fr", ar: "/ar", "x-default": "/" },
-    },
-    openGraph: {
-      type: "website",
-      locale: siteConfig.localeTag,
-      url: home,
-      siteName: siteConfig.name,
-      title,
-      description: siteConfig.metaDescription,
-      images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description: siteConfig.metaDescription,
-      images: ["/opengraph-image"],
-    },
+    metadataBase: new URL(getSiteUrl()),
+    title: { default: t.meta.title, template: `%s — ${person.name}` },
+    description: t.meta.description,
+    keywords: t.meta.keywords,
+    authors: [{ name: person.name }],
+    creator: person.name,
+    alternates: alternatesFor(lang),
+    openGraph: openGraphFor(lang, `/${lang}`, t.meta.title, t.meta.description),
+    twitter: { card: "summary_large_image" },
     robots: { index: true, follow: true },
   };
 }
 
 export const viewport: Viewport = {
-  themeColor: "#020307",
+  themeColor: "#0f1115",
   colorScheme: "dark",
 };
 
 export default async function LocaleLayout({ children, params }: LayoutProps<"/[lang]">) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
-  const profile = getProfile(lang);
-  const { siteConfig, nav, socialLinks, ui } = profile;
-
-  const enabledSocials = socialLinks.filter((s) => s.enabled).map((s) => s.href);
-  const whatsappHref = getWhatsAppLink(siteConfig.whatsappNumber, siteConfig.whatsappDefaultMessage);
-  const localeLinks = locales.map((code) => ({
-    code,
-    href: localeHomeHref(code),
-    label: code.toUpperCase(),
-  }));
-
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    name: siteConfig.name,
-    jobTitle: siteConfig.title,
-    description: siteConfig.metaDescription,
-    url: siteConfig.website,
-    email: siteConfig.email,
-    knowsAbout: siteConfig.knowsAbout,
-    ...(siteConfig.location
-      ? { address: { "@type": "PostalAddress", addressLocality: siteConfig.location } }
-      : {}),
-    ...(enabledSocials.length > 0 ? { sameAs: enabledSocials } : {}),
-  };
+  const t = getDictionary(lang);
+  const meta = LOCALE_META[lang];
 
   return (
     <html
-      lang={lang}
-      dir={lang === "ar" ? "rtl" : "ltr"}
-      data-scroll-behavior="smooth"
-      className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} ${lang === "ar" ? cairo.variable : ""} h-full antialiased`}
+      lang={meta.htmlLang}
+      dir={meta.dir}
+      className={`${geist.variable} ${fraunces.variable} ${lang === "ar" ? cairo.variable : ""} antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-ink text-fg">
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+      <body className="flex min-h-dvh flex-col bg-ink font-sans text-fg">
         <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:start-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-accent focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-white"
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-accent focus:px-4 focus:py-2 focus:text-white"
         >
-          {ui.skipToContent}
+          {t.common.skipToContent}
         </a>
         <Header
-          nav={nav}
-          monogram={siteConfig.monogram}
-          name={siteConfig.name}
-          whatsappHref={whatsappHref}
-          email={siteConfig.email}
-          copy={ui.nav}
           lang={lang}
-          localeLinks={localeLinks}
+          name={person.name}
+          monogram={person.monogram}
+          labels={{
+            ariaLabel: t.nav.ariaLabel,
+            openMenu: t.nav.openMenu,
+            closeMenu: t.nav.closeMenu,
+            requestQuote: t.common.requestQuote,
+            language: t.nav.language,
+            autoLanguage: t.nav.autoLanguage,
+            autoLanguageHint: t.nav.autoLanguageHint,
+            items: [
+              { id: "services", label: t.nav.services },
+              { id: "realisations", label: t.nav.work },
+              { id: "methode", label: t.nav.method },
+              { id: "a-propos", label: t.nav.about },
+              { id: "contact", label: t.nav.contact },
+            ],
+          }}
         />
-        <main id="main-content" className="flex-1">
+        <main id="main" className="flex-1">
           {children}
         </main>
-        <Footer
-          nav={nav}
-          socialLinks={socialLinks}
-          name={siteConfig.name}
-          title={siteConfig.title}
-          tagline={siteConfig.tagline}
-          email={siteConfig.email}
-          location={siteConfig.location}
-          whatsappHref={whatsappHref}
-          copy={ui.footer}
+        <Footer lang={lang} t={t} />
+        <FloatingWhatsApp
+          href={getWhatsAppLink(person.whatsappNumber, t.whatsapp.defaultMessage)}
+          label={t.whatsapp.floatingLabel}
         />
-        <WhatsAppFloatingButton href={whatsappHref} ariaLabel={ui.whatsapp.floatingButtonAriaLabel} />
+        <AttributionTracker cardMessage={t.whatsapp.cardMessage} />
         <Analytics />
       </body>
     </html>

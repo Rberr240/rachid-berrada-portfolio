@@ -47,7 +47,7 @@ Every document and every piece of public copy must stay consistent with this tab
 - **Commercial promise:** "I help businesses automate operations, improve customer experience and build smarter digital products."
 - **Differentiator line:** "I don't just build interfaces. I build complete systems."
 - **Public contact email:** rachid.berrada20@gmail.com (from `src/data/profile.ts`)
-- **WhatsApp / phone:** +212 6 48 55 22 22 (configurable via `NEXT_PUBLIC_WHATSAPP_NUMBER`)
+- **WhatsApp / phone:** 0661857517 (international: +212661857517 ; single source: `src/content/facts.ts`)
 - **GitHub:** https://github.com/Rberr240
 - **LinkedIn:** not yet published — do not invent a URL (`socialLinks` has it disabled in `profile.ts`)
 - **Location:** intentionally blank in `profile.ts` pending confirmation — do not invent a city

@@ -1,98 +1,68 @@
 @import "tailwindcss";
 
+/*
+ * Système visuel V2 — « carte de visite numérique ».
+ * Graphite (fond), bleu (action), or (signature, avec parcimonie).
+ * Thème sombre unique, assumé : la marque est sombre sur tous les supports.
+ */
 :root {
-  --color-ink: #020307;
-  --color-navy: #06080d;
-  --color-surface: #0b0e14;
-  --color-surface-2: #11151d;
-  --color-graphite: #1a1f29;
-  --color-graphite-2: #262c38;
-  --color-border: rgba(255, 255, 255, 0.08);
-  --color-border-strong: rgba(255, 255, 255, 0.15);
-  --color-fg: #f5f7fb;
-  --color-fg-muted: #9aa4b6;
-  --color-fg-subtle: #7d8496;
+  --color-ink: #0f1115;
+  --color-surface: #161920;
+  --color-surface-2: #1d212a;
+  --color-line: rgba(255, 255, 255, 0.09);
+  --color-line-strong: rgba(255, 255, 255, 0.17);
+  --color-fg: #eef0f4;
+  --color-fg-muted: #a9b0bc;
+  --color-fg-subtle: #8a919e;
   --color-accent: #3d63ff;
-  --color-accent-2: #6f8dff;
-  --color-accent-soft: rgba(61, 99, 255, 0.14);
+  --color-accent-hover: #5577ff;
+  --color-accent-text: #93a8ff;
   --color-gold: #c9a96a;
-  --color-gold-soft: rgba(201, 169, 106, 0.12);
+  --color-danger: #ff8a8a;
+  color-scheme: dark;
 }
 
 @theme inline {
   --color-ink: var(--color-ink);
-  --color-navy: var(--color-navy);
   --color-surface: var(--color-surface);
   --color-surface-2: var(--color-surface-2);
-  --color-graphite: var(--color-graphite);
-  --color-graphite-2: var(--color-graphite-2);
-  --color-border: var(--color-border);
-  --color-border-strong: var(--color-border-strong);
+  --color-line: var(--color-line);
+  --color-line-strong: var(--color-line-strong);
   --color-fg: var(--color-fg);
   --color-fg-muted: var(--color-fg-muted);
   --color-fg-subtle: var(--color-fg-subtle);
   --color-accent: var(--color-accent);
-  --color-accent-2: var(--color-accent-2);
-  --color-accent-soft: var(--color-accent-soft);
+  --color-accent-hover: var(--color-accent-hover);
+  --color-accent-text: var(--color-accent-text);
   --color-gold: var(--color-gold);
-  --color-gold-soft: var(--color-gold-soft);
+  --color-danger: var(--color-danger);
   --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
   --font-serif: var(--font-fraunces);
-  --animate-fade-in-up: fade-in-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
-  --animate-fade-in: fade-in 0.8s ease both;
-  --animate-float-slow: float-slow 9s ease-in-out infinite;
-  --animate-float-slower: float-slow 13s ease-in-out infinite;
+}
 
-  @keyframes fade-in-up {
-    from {
-      opacity: 0;
-      transform: translateY(14px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-  @keyframes float-slow {
-    0%,
-    100% {
-      transform: translate3d(0, 0, 0);
-    }
-    50% {
-      transform: translate3d(0, -12px, 0);
-    }
-  }
+/* Fraunces/Geist ne couvrent pas l'arabe : /ar charge Cairo. "@theme inline"
+   inline les variables next/font dans les utilitaires : ce sont elles qu'il
+   faut rediriger, pas les alias --font-sans / --font-serif. */
+html[lang="ar"] {
+  --font-geist-sans: var(--font-cairo);
+  --font-fraunces: var(--font-cairo);
 }
 
 html {
   scroll-behavior: smooth;
-}
-
-/* Fraunces/Geist ne couvrent pas l'arabe : /ar charge Cairo (voir
-   [lang]/layout.tsx). "@theme inline" inline les variables --font-geist-sans,
-   --font-geist-mono et --font-fraunces directement dans les utilitaires
-   Tailwind au moment de la generation : ce sont donc CES variables (pas les
-   alias --font-sans / --font-serif / --font-mono) qu'il faut rediriger pour
-   que font-sans/font-serif/font-mono utilisent Cairo sur /ar, sans retoucher
-   chaque className. */
-html[lang="ar"] {
-  --font-geist-sans: var(--font-cairo);
-  --font-fraunces: var(--font-cairo);
-  --font-geist-mono: var(--font-cairo);
+  scroll-padding-top: 5rem;
+  -webkit-text-size-adjust: 100%;
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
   }
 }
 
@@ -107,106 +77,32 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-accent-2);
+  outline: 2px solid var(--color-accent-text);
   outline-offset: 3px;
-  border-radius: 2px;
 }
 
-.bg-hero-glow {
-  background:
-    radial-gradient(60% 55% at 82% 8%, var(--color-accent-soft) 0%, transparent 60%),
-    radial-gradient(45% 40% at 8% 0%, rgba(201, 169, 106, 0.08) 0%, transparent 65%),
-    linear-gradient(180deg, var(--color-navy) 0%, var(--color-ink) 55%);
+/* Titres éditoriaux : Fraunces à forte optique, interlignage serré. */
+.display {
+  font-family: var(--font-fraunces);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+}
+html[lang="ar"] .display {
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.25;
 }
 
-.bg-grid {
-  background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-  background-size: 56px 56px;
-  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, black 40%, transparent 100%);
-  mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, black 40%, transparent 100%);
-}
-
-.bg-dot-grid {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.14) 1px, transparent 1px);
-  background-size: 22px 22px;
-}
-
-.portrait-fade-edge {
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    black 78%,
-    transparent 100%
-  );
-  mask-image: linear-gradient(to bottom, black 78%, transparent 100%);
-}
-
-.portrait-fade-side {
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    black 14%,
-    black 100%
-  );
-  mask-image: linear-gradient(to right, transparent 0%, black 14%, black 100%);
-}
-
-.halo-blue {
-  background: radial-gradient(
-    closest-side,
-    rgba(111, 141, 255, 0.35) 0%,
-    rgba(61, 99, 255, 0.14) 45%,
-    transparent 75%
-  );
-  filter: blur(4px);
-}
-
-.blob-graphite {
-  background: radial-gradient(
-    circle at 35% 30%,
-    var(--color-graphite-2) 0%,
-    var(--color-graphite) 45%,
-    transparent 72%
-  );
-  border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%;
-}
-
-/* Repères d'angle — cadrage "instrument technique" pour le portrait About et
-   les visuels sans capture réelle. Remplace l'idée de carte/ombre par un
-   marquage de coordonnées, cohérent avec le vocabulaire grille/plan du site. */
-.corner-marks {
-  position: relative;
-}
-.corner-marks::before,
-.corner-marks::after {
-  content: "";
+/* Filet or « bord de carte » : un seul cadre décalé derrière le portrait. */
+.card-edge {
   position: absolute;
-  width: 22px;
-  height: 22px;
+  inset: 0;
+  transform: translate(14px, 14px);
+  border: 1px solid color-mix(in srgb, var(--color-gold) 55%, transparent);
+  border-radius: inherit;
   pointer-events: none;
 }
-.corner-marks::before {
-  top: 0;
-  left: 0;
-  border-top: 1px solid var(--color-gold);
-  border-left: 1px solid var(--color-gold);
-}
-.corner-marks::after {
-  bottom: 0;
-  right: 0;
-  border-bottom: 1px solid var(--color-gold);
-  border-right: 1px solid var(--color-gold);
-}
-
-/* Trame diagonale sobre pour les visuels sans asset réel — un motif
-   d'ingénierie plutôt qu'un faux écran ou une icône centrée seule. */
-.bg-hatch {
-  background-image: repeating-linear-gradient(
-    -45deg,
-    rgba(255, 255, 255, 0.05) 0px,
-    rgba(255, 255, 255, 0.05) 1px,
-    transparent 1px,
-    transparent 10px
-  );
+[dir="rtl"] .card-edge {
+  transform: translate(-14px, 14px);
 }
